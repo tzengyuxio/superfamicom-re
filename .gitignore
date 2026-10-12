@@ -1,0 +1,18 @@
+# ROM files (勿上傳)
+roms/
+*.sfc
+*.smc
+
+# Output files
+output/
+*.xlsx
+*.csv
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.ruff_cache/
+
+# macOS
+.DS_Store
