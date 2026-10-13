@@ -18,6 +18,7 @@
 |------|------|
 | `tools/mesen.py` | ctypes 呼叫 MesenCore，無頭執行 Lua |
 | `tools/drive.py` | 用按鍵序列操作遊戲，截圖（`@tag`）、dump WRAM／VRAM／CGRAM／OAM／SRAM；`--reads` 追蹤某段位址被哪個 PC 讀了 |
+| `tools/replay.py` | savestate 重播：照按鍵序列玩到某一幀存檔，之後每輪改 PRG ROM／WRAM、按鍵、在指定幀讀記憶體；NMI 掛勾位置從 LoROM／HiROM 表頭的向量算 |
 | `tools/koei_lz.py` | KOEI LZ 解壓（`decompress`），`find_tables` 用內容找解壓表，`find_pointer_tables` 找串流指標表 |
 | `tools/triage.py` | 所有 ROM 的標頭、LZ、Shift-JIS 字數一覽 |
 | `tools/kaodata.py` | kaodata/1 的寫入、讀取、參考渲染、checksums |
@@ -75,8 +76,8 @@
 
 每項解碼都要有一支用 Mesen 跑遊戲本身程式的驗證腳本。共通寫法：
 
-- 一個 process 只能開一次 Mesen；多輪比對用 savestate 重播
-- savestate 只能在 exec callback 裡建立／讀回，掛在 NMI handler（native NMI 向量 `0xFFEA`）上
+- 一個 process 只能開一次 Mesen；多輪比對用 savestate 重播（`tools/replay.py`）
+- savestate 只能在 exec callback 裡建立／讀回，掛在 NMI handler 的第二個指令上（光榮的 NMI handler 第一個指令都是 1 byte 的 SEI，所以是向量 + 1）
 - 讀回後第一輪不生效，第一項要重複一次再丟掉
 - Mesen 的 log 有大約 500 行的上限，大量資料要在 Lua 裡先彙總，或分輪 `breakExecution()` 後由 Python 讀
 
@@ -89,6 +90,8 @@
 | 外部能力值 | `san4/verify_persons.py`：和 kaodata-re 的 ROTK 能力表比對 |
 | 頭像（換 ROM） | `tenshouki/tools/face_capture.py`：改 ROM 裡某人的頭像碼 |
 | 地圖 | `tenshouki/verify_maps.py`、`san2/verify_maps.py` |
+| 畫面數值（C 寫的作品） | `dokuritsu/verify_persons.py`：在 printf 上掛 exec callback 讀格式與引數，再改 immediate 換人 |
+| 國／城數值（WRAM patch） | `genchou/verify_countries.py` |
 | kaodata | `kouryuuki/verify_kaodata_export.py`（單一調色盤）、`tenshouki/verify_kaodata_export.py`（組合臉） |
 
 ## 4. 交付清單
@@ -153,3 +156,12 @@
 | 航空霸業II | LoROM 1 MB | 有解壓表，指標表未找到 |
 
 只有武將風雲錄、航空霸業 I 沒有這套 LZ（和三國志II 一樣是早期的 LoROM 作品）。
+- 開機或開新局時，常把 ROM 裡一整塊初始資料原封複製到 WRAM（大航海時代II `0x8780D` → `$7E:2000`、獨立戰爭 6 塊）：在選角畫面 dump WRAM 和 ROM 比對，0 byte 差異就能一次定位人物、勢力、地點等表
+- 要走到目標畫面可以直接改 WRAM（大航海時代II 把船寫進主角的開始艦隊才能出海，艦隊 1 而不是 0）
+- 動畫或時段會換調色盤；驗證地圖時接受一組變體，不要只比一列
+- C 寫的作品（獨立戰爭 `$C1:430F`）在 vprintf 掛 exec callback，讀格式指標和 va 引數，就拿得到畫面上每個數字與字串的來源；再改 immediate 換人，一次驗完全部人物，比截圖辨識可靠
+- 畫面上的半形數字和等級字有固定的 tile 編號，直接讀 tilemap 就能驗證欄位，不需要 OCR（元朝秘史）
+- 畫面數值通常在畫面第一次畫出時就固定，WRAM patch 要在那之前做（元朝秘史的國資訊要在「戦闘を見ますか」之前改）
+- bank `$C0` 的程式要掛 exec callback，得在 `$00`、`$40`、`$80`、`$C0` 四個 bank 都註冊；`--reads` 也可能因為走別的 mirror bank 而追不到
+- `replay.py`：存檔幀之後的開機按鍵會被丟掉（讀回後改用每輪的 `steps`），存檔點要在最後一個按鍵之後；`EXTRA_RESET` 被丟掉的第一輪也會呼叫，每輪的參數用 `wram` patch 傳，不要在 Lua 裡數呼叫次數
+- 需要不同開機序列時，用子程序呼叫自己（`genchou/verify_faces.py --scene`），因為一個 process 只能開一次 Mesen
