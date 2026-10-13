@@ -15,6 +15,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | `kouryuuki/` | 項劉記 (KOEI, HiROM)：自訂字型與文字編碼、人物 92 人、4 劇本人物／地點／軍隊、頭像（kaodata `kouryuuki-sfc`），全部有 Mesen 驗證；大地圖渲染與戰術地圖未解 |
 | `san3/` | 三國志III (KOEI, 1992, HiROM)：自訂字型、人物 532 人、6 劇本人物／州／勢力／寶物、頭像（含組合臉，kaodata `san3-sfc`）、大地圖、46 州戰場資料，全部有 Mesen 驗證；戰場的等角渲染未解 |
 | `san4/` | 三國志IV (KOEI, 1994, HiROM)：Shift-JIS＋外字、人物 462 人、6 劇本人物／都市／勢力、頭像（含組合臉，kaodata `san4-sfc`）、大地圖（mode 7）、88 張戰場（野戰 45、攻城 43），全部有 Mesen 驗證 |
+| `bushou/` | スーパー信長の野望・武将風雲録 (KOEI, 1992, LoROM)：自訂字碼與字型、武將 2 劇本、48 國、大名、茶器、頭像（含組合臉，kaodata `bushou-sfc`）、大地圖、48 張野戰地圖，全部有 Mesen 驗證；城地圖畫面未解 |
 
 - ROM 都放 `roms/`（zip，不進版控），程式預設直接讀 zip。分析時可暫時把 ROM 解出來，做完要刪掉，只留 zip 作為來源
 
