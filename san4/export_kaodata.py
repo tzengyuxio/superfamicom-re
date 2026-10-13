@@ -91,7 +91,7 @@ def build(rom_path: str) -> tuple[dict, list[bytes]]:
     for code in range(PORTRAIT_COUNT):
         pal = rom.face_palette_number(code)
         portraits.append({"img": add(bytes(pal * 16 + v for v in rom.face_pixels(code)), blob=1),
-                          "label": f"{code:03d}"})
+                          "code": f"{code:04X}"})
 
     characters = []
     for p in rom.persons():

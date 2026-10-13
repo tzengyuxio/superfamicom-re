@@ -50,7 +50,7 @@ def build(rom_path: str) -> tuple[dict, list[bytes]]:
                  for p, (sid, _) in enumerate(SLOTS)}
         variants.append({"id": str(t), "label": f"型 {t}", "parts": parts})
 
-    portraits = [{"img": add(bytes(rom.face_pixels(n)), 1), "label": f"P{n:03d}"} for n in range(1, FACE_COUNT + 1)]
+    portraits = [{"img": add(bytes(rom.face_pixels(n)), 1), "code": f"{n:04X}"} for n in range(1, FACE_COUNT + 1)]
 
     characters = []
     for p in rom.persons():
