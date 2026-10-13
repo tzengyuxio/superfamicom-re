@@ -67,7 +67,9 @@
 
 - 回合畫面 dump VRAM，從 PPU 暫存器（或 tilemap 內容）判斷哪個 BG 是地形
 - 在 ROM／LZ entry 裡搜尋 tilemap 片段
-- 戰術地圖：開一場戰鬥，同樣方法。天翔記的 `0x10DEA0` 有一張 1047 筆的 LZ 表，內容像 tilemap，還沒確認用途
+- 戰術地圖：開一場戰鬥，同樣方法。用 `--reads` 追蹤所有 LZ 指標表的讀取，看戰鬥載入了哪幾個 entry
+  - 天翔記：野戰地圖在第二張 LZ 表（`0x10DEA0`），全日本切成 30 × 11 張，可以拼成一整張（`tenshouki/docs/ROM_FORMAT.md` §9）。找排列寬度的方法：試各種寬度，算相鄰地圖接邊處海／陸一致的比例
+  - 驗證範本：`tenshouki/verify_field_maps.py`，存 savestate 後改 ROM 裡的指標表，把任意地圖換進戰場
 
 ## 3. 驗證
 

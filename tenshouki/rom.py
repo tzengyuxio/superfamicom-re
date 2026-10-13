@@ -62,6 +62,23 @@ MAP_TILES_ENTRY = 19
 MAP_TILE0 = 435
 MAP_PALETTES = 0x1F9E1D        # CGRAM palettes 3, 4, 5
 
+# Field-battle maps: Japan cut into a 30 x 11 grid of maps (row-major), numbered 0-329, each 16 x 12 BG tiles
+# (8 x 6 cells of 2 x 2 tiles). A battle shows the 3 x 4 maps around the castle. They are entries of a second
+# pointer table, FIELD_TABLE: entry n (768 bytes) holds the terrain tilemap (192 LE16) and an overlay tilemap
+# (192 LE16, 0 / FFFF = empty) for BG1 / BG2; entry 330 + n is its 8 x 6 terrain cells (11 = sea).
+# Tilemap entry t is shown as t + 0x0D20: tile t + 0x120 (FIELD_TILES_ENTRY of TILE_TABLE) with
+# palette 3 + (t >> 10 & 7) (FIELD_PALETTES, CGRAM 3-6).
+FIELD_TABLE = 0x10DEA0
+FIELD_COUNT = 330
+FIELD_COLS, FIELD_ROWS = 30, 11
+FIELD_MAP_W, FIELD_MAP_H = 16, 12
+FIELD_CELLS = 330
+FIELD_SHOWN = 0x0D20
+TILE_TABLE = 0x1FB205
+FIELD_TILES_ENTRY = 51
+FIELD_TILE0 = 0x120
+FIELD_PALETTES = 0x1FB56A      # CGRAM palettes 3-6
+
 # 軍団 (data entries 13, 14): 128 x 31, see Rom.corps
 SCENARIO_CORPS = 13
 CORPS_SIZE = 31
@@ -187,16 +204,22 @@ class Rom:
     def __init__(self, path: str = DEFAULT_ROM):
         self.path = path
         self.data = load_rom_bytes(path)
-        self._cache: dict[int, bytes] = {}
+        self._cache: dict[int | tuple[int, int], bytes] = {}
 
     def entry_offset(self, i: int) -> int:
         return hirom(int.from_bytes(self.data[DATA_TABLE + 3 * i:DATA_TABLE + 3 * i + 3], "little"))
 
     def entry(self, i: int) -> bytes:
         """Decompressed data entry i of DATA_TABLE."""
-        if i not in self._cache:
-            self._cache[i] = decompress(self.data, self.entry_offset(i))[0]
-        return self._cache[i]
+        return self.table_entry(DATA_TABLE, i)
+
+    def table_entry(self, table: int, i: int) -> bytes:
+        """Decompressed entry i of a pointer table (DATA_TABLE, FIELD_TABLE, TILE_TABLE)."""
+        key = i if table == DATA_TABLE else (table, i)
+        if key not in self._cache:
+            p = hirom(int.from_bytes(self.data[table + 3 * i:table + 3 * i + 3], "little"))
+            self._cache[key] = decompress(self.data, p)[0]
+        return self._cache[key]
 
     def name(self, pid: int, sc: int = 0) -> tuple[str, str]:
         """(surname, given name) of person pid as scenario sc spells it."""
@@ -344,4 +367,40 @@ class Rom:
                         continue
                     ty, tx = divmod(k, 8)
                     out[(y0 + (7 - ty if t & 0x8000 else ty)) * w + x0 + (7 - tx if t & 0x4000 else tx)] = colours[c]
+        return out
+
+    def field_layers(self, n: int) -> tuple[list[int], list[int]]:
+        """(terrain, overlay) tilemaps of field map n, 16 x 12 LE16 entries each, row-major."""
+        e = self.table_entry(FIELD_TABLE, n)
+        return [le16(e, 2 * i) for i in range(192)], [le16(e, 384 + 2 * i) for i in range(192)]
+
+    def field_cells(self, n: int) -> bytes:
+        """8 x 6 terrain cells of field map n (11 = sea; other values not decoded)."""
+        return self.table_entry(FIELD_TABLE, FIELD_CELLS + n)
+
+    def field_palettes(self) -> dict[int, list[int]]:
+        d = self.data
+        return {3 + p: [le16(d, FIELD_PALETTES + 32 * p + 2 * i) for i in range(16)] for p in range(4)}
+
+    def field_pixels(self) -> list[tuple[int, int, int]]:
+        """All 330 field maps in their 30 x 11 grid (480 x 132 tiles) as RGB pixels."""
+        e = self.table_entry(TILE_TABLE, FIELD_TILES_ENTRY)
+        tiles = [decode_tile(e[32 * k:32 * k + 32]) for k in range(len(e) // 32)]
+        pal = {p: [bgr555_rgb(c) for c in cs] for p, cs in self.field_palettes().items()}
+        w = FIELD_COLS * FIELD_MAP_W * 8
+        out = [(0, 0, 0)] * (w * FIELD_ROWS * FIELD_MAP_H * 8)
+        for n in range(FIELD_COUNT):
+            for layer, cells in enumerate(self.field_layers(n)):
+                for i, t in enumerate(cells):
+                    if layer and t in (0, 0xFFFF):
+                        continue
+                    px, colours = tiles[t & 0x3FF], pal[3 + (t >> 10 & 7)]
+                    y0 = (n // FIELD_COLS * FIELD_MAP_H + i // FIELD_MAP_W) * 8
+                    x0 = (n % FIELD_COLS * FIELD_MAP_W + i % FIELD_MAP_W) * 8
+                    for k, c in enumerate(px):
+                        if layer and not c:
+                            continue
+                        ty, tx = divmod(k, 8)
+                        out[(y0 + (7 - ty if t & 0x8000 else ty)) * w + x0 + (7 - tx if t & 0x4000 else tx)] = \
+                            colours[c]
         return out

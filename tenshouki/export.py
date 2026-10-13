@@ -6,7 +6,8 @@ Usage: .venv/bin/python tenshouki/export.py [--rom ROM] [--out DIR] [--scale N]
 Writes persons.csv, person_scenarios.csv (2 scenarios), castles.csv (2 x 128), corps.csv
 (+ tenshouki.xlsx when openpyxl is installed), faces/ (one PNG per person), portraits/ (P000-P311),
 face_packs.png (the 19 packs of 4 generic faces), mob_parts.png and mob_parts/, map.png
-(terrain + roads), map_terrain.png and map_castles.png (castle numbers and names).
+(terrain + roads), map_terrain.png, map_castles.png (castle numbers and names), field_map.png (the 330
+field-battle maps joined into one map of Japan) and field_map_grid.png (the same with map numbers).
 """
 import argparse
 import csv
@@ -19,6 +20,11 @@ from rom import (
     FACE_BYTES,
     FACE_H,
     FACE_W,
+    FIELD_COLS,
+    FIELD_COUNT,
+    FIELD_MAP_H,
+    FIELD_MAP_W,
+    FIELD_ROWS,
     MAP_H,
     MAP_W,
     PACK_COUNT,
@@ -187,6 +193,24 @@ def castle_map(rom: Rom, path: str, scale: int) -> None:
     im.save(path)
 
 
+def field_maps(rom: Rom, out: str) -> None:
+    """field_map.png and field_map_grid.png (map borders and numbers)."""
+    w, h = FIELD_COLS * FIELD_MAP_W * 8, FIELD_ROWS * FIELD_MAP_H * 8
+    im = Image.new("RGB", (w, h))
+    im.putdata(rom.field_pixels())
+    im.save(os.path.join(out, "field_map.png"))
+    dr = ImageDraw.Draw(im)
+    try:
+        font = ImageFont.truetype(LABEL_FONT, 20)
+    except OSError:
+        font = ImageFont.load_default(20)
+    for n in range(FIELD_COUNT):
+        x, y = n % FIELD_COLS * FIELD_MAP_W * 8, n // FIELD_COLS * FIELD_MAP_H * 8
+        dr.rectangle([x, y, x + FIELD_MAP_W * 8 - 1, y + FIELD_MAP_H * 8 - 1], outline=(255, 255, 255))
+        dr.text((x + 4, y + 2), str(n), fill="white", font=font, stroke_width=2, stroke_fill="black")
+    im.save(os.path.join(out, "field_map_grid.png"))
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description="匯出 SFC 信長の野望・天翔記 資料")
     ap.add_argument("--rom", default=DEFAULT_ROM)
@@ -217,6 +241,7 @@ def main() -> None:
         im.putdata(rom.map_pixels(roads))
         im.resize((im.width * args.scale, im.height * args.scale), Image.NEAREST).save(os.path.join(args.out, f"{name}.png"))
     castle_map(rom, os.path.join(args.out, "map_castles.png"), args.scale)
+    field_maps(rom, args.out)
 
     import export_kaodata
     meta, blobs = export_kaodata.build(args.rom)

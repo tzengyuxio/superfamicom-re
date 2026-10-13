@@ -11,7 +11,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | 資料夾 | 遊戲 |
 |--------|------|
 | `san2/` | スーパー三國志II (KOEI, 1991, LoROM)：人物、6 劇本配置、41 州、相鄰、字型與漢字、頭像（kaodata `san2-sfc`）、大地圖、41 張戰場，全部有 Mesen 驗證 |
-| `tenshouki/` | 信長の野望・天翔記 (KOEI, 1996, HiROM)：人物 700 人、2 劇本人物／城／軍団、頭像（kaodata `nobu6-sfc`）、大地圖，全部有 Mesen 驗證；戰術地圖未解 |
+| `tenshouki/` | 信長の野望・天翔記 (KOEI, 1996, HiROM)：人物 700 人、2 劇本人物／城／軍団、頭像（kaodata `nobu6-sfc`）、大地圖、野戰地圖 330 張（拼成全日本戰場圖），全部有 Mesen 驗證；攻城戰地圖未解 |
 | `kouryuuki/` | 項劉記 (KOEI, HiROM)：自訂字型與文字編碼、人物 92 人、4 劇本人物／地點／軍隊、頭像（kaodata `kouryuuki-sfc`），全部有 Mesen 驗證；大地圖渲染與戰術地圖未解 |
 
 - ROM 都放 `roms/`（zip，不進版控），程式預設直接讀 zip。分析時可暫時把 ROM 解出來，做完要刪掉，只留 zip 作為來源
