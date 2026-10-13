@@ -1,0 +1,42 @@
+# 三國志英傑伝 user-area characters (Shift-JIS 0xEB9F-0xEBE7): code, font glyph number, character, where used.
+# The font (rom.FONT) has one glyph per entry of the sorted code table rom.FONT_CODES; these 37 codes are the
+# last glyphs 1618-1654. Identified from the glyph shapes and the names that use them.
+# EBCC has the same glyph as EBBF (邳); EBD5 (glyph 1646, 艹 + 日 + 小-like bottom, perhaps 慕) is not used
+# by any name and stays unidentified. EBE6 牀 is read from 三弓牀子弩 / 牀子弩 (Song crossbows) and the glyph.
+# Lines starting with # are comments; columns are tab-separated.
+EB9F	1618	瓚	公孫瓚
+EBA0	1619	昱	程昱
+EBA1	1620	彧	荀彧
+EBA2	1621	郃	張郃
+EBA3	1622	蒯	蒯越
+EBA4	1623	蔡	蔡瑁、蔡陽
+EBA5	1624	傕	李傕
+EBA7	1625	汜	汜水関、郭汜
+EBA8	1626	詡	賈詡
+EBA9	1627	鄧	鄧賢
+EBAA	1628	兗	兗州
+EBAB	1629	龐	龐徳、龐統
+EBAE	1630	騭	歩騭
+EBAF	1631	畯	厳畯
+EBB0	1632	闞	闞沢
+EBB1	1633	玠	毛玠
+EBB3	1634	邢	邢道栄
+EBB6	1635	禕	費禕
+EBB8	1636	琬	蒋琬
+EBB9	1637	郝	郝昭、郝萌
+EBBF	1638	邳	下邳
+EBC0	1639	琦	劉琦
+EBC1	1640	琮	劉琮
+EBC4	1641	璝	劉璝
+EBCA	1642	褚	許褚
+EBCC	1643	邳	(same glyph as EBBF)
+EBCD	1644	宛	宛
+EBCE	1645	釭	青釭の剣
+EBD7	1647	鄴	鄴
+EBD8	1648	雒	雒
+EBD9	1649	涪	涪
+EBE2	1650	邈	張邈
+EBE4	1651	潁	潁川
+EBE5	1652	鑲	鉤鑲
+EBE6	1653	牀	三弓牀子弩、牀子弩
+EBE7	1654	焔	火焔斧
