@@ -26,7 +26,7 @@ KOEI，1991，SFC（LoROM 1 MB）。FC 版三國志II 的移植，資料表大�
 |------|------|
 | `rom.py` | ROM 解碼：檔案表、人物、配置、州、相鄰、字型、頭像、大地圖、戰場 |
 | `export.py` | 匯出 CSV／XLSX／PNG |
-| `export_kaodata.py` | 匯出 kaodata 統一格式資料集 `san2-sfc` |
+| `export_kaodata.py` | 匯出 kaodata 統一格式資料集 `san2-sfc`（姓名改用史書寫法、讀音分姓名，見 `docs/ROM_FORMAT.md` §4.2） |
 | `verify_kaodata_export.py` | 資料集與 ROM、checksums、模擬器畫面三方比對 |
 | `verify_scenarios.py` | 6 劇本開局 WRAM 與 ROM 解碼比對 |
 | `verify_maps.py` | 大地圖與 41 張戰場，和模擬器 VRAM 比對 |
@@ -35,6 +35,7 @@ KOEI，1991，SFC（LoROM 1 MB）。FC 版三國志II 的移植，資料表大�
 | `tools/build_kanji_map.py` | 從 PC 版姓名推出漢字碼對照 |
 | `tools/kanji_sheet.py` | ROM 字形與對照字並排的檢查圖 |
 | `data/kanji_ext.json` | 漢字碼 → 漢字（外部資料推得，已用 ROM 字形核對） |
+| `data/surnames.tsv` | 姓氏讀音（kaodata 讀音分姓名用） |
 
 ## 輸出（`san2/output/`）
 

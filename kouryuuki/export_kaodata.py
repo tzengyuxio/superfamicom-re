@@ -25,7 +25,7 @@ def build(rom_path: str) -> tuple[dict, list[bytes]]:
     for n in range(FACE_COUNT):
         images.append([len(pixels), FACE_W * 8, FACE_H * 8])
         pixels.extend(rom.face_pixels(n))
-        portraits.append({"img": n, "label": f"F{n:02d}"})
+        portraits.append({"img": n})
     characters = [{"id": p["id"], "name": p["name"], "reading": kaodata.hiragana(p["reading"]),
                    "face": {"portrait": p["id"]}} for p in rom.persons()]
     meta = {
