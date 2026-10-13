@@ -18,6 +18,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | `eiketsu/` | 三國志英傑伝 (KOEI, 1995, HiROM)：Shift-JIS＋外字 37 字、人物 384 人、勢力／兵種／地形／道具、頭像 240 張（kaodata `eiketsu-sfc`）、大地圖與地點、58 張戰場地圖，全部有 Mesen 驗證；劇本腳本未解 |
 | `haouden/` | 信長の野望・覇王伝 (KOEI, 1993, HiROM，原版與 Rev 1)：自訂字碼 1808 字、3 劇本人物／城／大名、名稱表、頭像（含組合臉，kaodata `nobu5-sfc`）、大地圖、143 張戰場地圖，全部有 Mesen 驗證 |
 | `daikoukai/` | スーパー大航海時代 (KOEI, LoROM)：資料表與文字和 FC 版相同、人物 41 人、女性 20 人、港口 70、名稱表、頭像（含組合臉，kaodata `daikoukai-sfc`）、世界地圖（4 緯度組）、港町圖，全部有 Mesen 驗證；海戰畫面未解 |
+| `daikoukai2/` | 大航海時代II (KOEI, HiROM)：自訂字型 1631 字、開機初始狀態區塊、人物 120 人、6 主角開始設定、船種／交易品／道具／發見物、港 130、頭像（含組合臉，kaodata `daikoukai2-sfc`）、世界地圖（2160×1080 格），全部有 Mesen 驗證；海戰畫面、VIP／女性／艦隊多數欄位未解 |
 | `bushou/` | スーパー信長の野望・武将風雲録 (KOEI, 1992, LoROM)：自訂字碼與字型、武將 2 劇本、48 國、大名、茶器、頭像（含組合臉，kaodata `bushou-sfc`）、大地圖、48 張野戰地圖，全部有 Mesen 驗證；城地圖畫面未解 |
 
 - ROM 都放 `roms/`（zip，不進版控），程式預設直接讀 zip。分析時可暫時把 ROM 解出來，做完要刪掉，只留 zip 作為來源
