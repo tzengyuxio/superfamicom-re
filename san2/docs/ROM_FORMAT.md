@@ -4,7 +4,7 @@ KOEI，1991，SFC。檔案 `roms/Super Sangokushi II (Japan).zip`（Rev 1 的資
 
 本文的偏移一律是**檔案偏移**（無 copier header 的 1 MB 映像）。CPU 位址寫成 `$bb:aaaa`，LoROM：檔案偏移 = `(bank & 0x7F) × 0x8000 + (addr − 0x8000)`。
 
-這是 FC 版三國志II（`~/works/fc-sangokushi/san2`）的移植。劇本、人物配置、州、相鄰、戰場這些資料表和 FC 版**逐 byte 相同**，只是位置不同（§9 對照表）。欄位意義沿用 FC 版的結論，再用模擬器在 SFC 上重新驗證。
+這是 FC 版三國志II（`~/works/famicom-re/san2`）的移植。劇本、人物配置、州、相鄰、戰場這些資料表和 FC 版**逐 byte 相同**，只是位置不同（§9 對照表）。欄位意義沿用 FC 版的結論，再用模擬器在 SFC 上重新驗證。
 
 ## 1. 硬體與引擎
 
@@ -144,7 +144,7 @@ KOEI，1991，SFC。檔案 `roms/Super Sangokushi II (Japan).zip`（Rev 1 的資
 - 進軍點標記：攻方的 5 個進場格，遊戲會把右上角的 tile 換成 `0x1F3`（白圈）。這 5 格在 hex 11、12、24、25、38，也就是第 0 列第 11、12 欄、第 1 列第 11、12 欄、第 2 列第 12 欄（右上角）。這是從州 19 進攻時的位置，換別的方向進攻是否會變沒有測。
 - 開戰時另外讀了 `0x31C20` 起的 156 bytes。它在 `0x31914` 那張 13 × 12 nibble 圖之後 780 bytes 處，那張圖和 FC 版 `0x28BE4` 相同，推測是佈陣範本，尚未解。
 
-全中國戰場拼接：資料與 FC 版相同，所以沿用 FC 版的「直欄」排法（`fc-sangokushi/san2/docs/ROM_FORMAT.md`〈全中國戰場拼接測試〉）。`output/china_battle_map.png` 裡，河流與地形都跨接縫接起來。
+全中國戰場拼接：資料與 FC 版相同，所以沿用 FC 版的「直欄」排法（`famicom-re/san2/docs/ROM_FORMAT.md`〈全中國戰場拼接測試〉）。`output/china_battle_map.png` 裡，河流與地形都跨接縫接起來。
 
 ## 9. 與 FC 版的表格位置對照
 

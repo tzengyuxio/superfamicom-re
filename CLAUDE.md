@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## 專案概述
 
-超任（SFC/SNES）遊戲的 ROM 逆向工程專案：解析人物資料、頭像、地點、地圖等遊戲內容，並輸出 kaodata 統一格式資料集。FC 版的對應專案是 `~/works/fc-sangokushi`（預定改名 `famicom-re`），做法與慣例沿用它。
+超任（SFC/SNES）遊戲的 ROM 逆向工程專案：解析人物資料、頭像、地點、地圖等遊戲內容，並輸出 kaodata 統一格式資料集。FC 版的對應專案是 `~/works/famicom-re`（GitHub `tzengyuxio/famicom-re`，原名 fc-sangokushi），做法與慣例沿用它。
 
 每款遊戲各放一個子資料夾，分析結果記在該資料夾的 `README.md` 與 `docs/`：
 
@@ -26,4 +26,4 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - 輸出 CSV 用 UTF-8-BOM（Excel 相容）；匯出結果放各遊戲的 `output/`（不進版控）
 - 解碼要有獨立驗證（模擬器跑遊戲本身的程式、截圖或 Mesen 紀錄）
 - 模擬器：`tools/mesen.py` 用 ctypes 呼叫 Mesen 2 的 MesenCore（無頭、跑 Lua）。一個 process 只能開一次 Mesen，多輪比對用 savestate 重播；savestate 只能在 exec callback 裡建立／讀回（用 NMI handler），讀回後第一輪不生效，要多跑一輪丟掉
-- 光榮的移植版先比對 FC 版（`~/works/fc-sangokushi`）的已知資料表：SFC 三國志II 的劇本、州、戰場等表和 FC 版逐 byte 相同，直接拿 FC ROM 的表去 SFC ROM 裡搜尋就能定位
+- 光榮的移植版先比對 FC 版（`~/works/famicom-re`）的已知資料表：SFC 三國志II 的劇本、州、戰場等表和 FC 版逐 byte 相同，直接拿 FC ROM 的表去 SFC ROM 裡搜尋就能定位
