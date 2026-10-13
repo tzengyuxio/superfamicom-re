@@ -27,6 +27,9 @@ OUT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 
 # The PC table simplifies some names; the ROM glyphs (font at 0x80000) show 阿會喃, 蔡瑁, 董荼奴, 嚴畯, 劉璝, 張顗
 FIXES = {0x832D: "于", 0x81F5: "禁", 0x8250: "淳", 0x8354: "瓊", 0x81D7: "桓", 0x82D2: "範",
          0x8332: "喃", 0x8350: "瑁", 0x8363: "荼", 0x8387: "畯", 0x8396: "璝", 0x838A: "顗"}
+# The PC table writes old forms; the ROM glyphs (and the FC version) use the Japanese new forms
+SHINJITAI = dict(zip("儉勳吳嚴國圖廣德惠應懷會榮樂橫權步溫滿澤濟熙當禪禮繡續肅蔣覽觀觸豐鐵關雙霸靈顏黃默齡",
+                     "倹勲呉厳国図広徳恵応懐会栄楽横権歩温満沢済煕当禅礼繍続粛蒋覧観触豊鉄関双覇霊顔黄黙齢"))
 
 
 def align(sfc: list[list[int]], pc: list[str], known: dict[int, str]) -> list[tuple[int, int]]:
@@ -81,6 +84,7 @@ def main() -> None:
         known = {c: v.most_common(1)[0][0] for c, v in votes.items()}
         pairs = align(sfc, pc, known)
     known.update(FIXES)
+    known = {c: SHINJITAI.get(ch, ch) for c, ch in known.items()}
     missing = sorted({c for codes in sfc for c in codes} - set(known))
     with open(OUT, "w", encoding="utf-8") as f:
         json.dump({f"{c:04X}": known[c] for c in sorted(known)}, f, ensure_ascii=False, indent=0)
