@@ -65,16 +65,10 @@ def build(rom_path: str) -> tuple[dict, list[bytes]]:
                  for p, (sid, _) in enumerate(SLOTS)}
         variants.append({"id": str(g), "label": f"第 {g} 組", "parts": parts})
 
-    users: dict[int, list[int]] = {}
-    for fid in rom.face_ids():
-        s = rom.face_source(fid)
-        if s[0] == "entry":
-            users.setdefault(s[1], []).append(fid)
     portraits = []
     for n in range(PORTRAIT_COUNT):
         tiles = rom.entry(FACE_ENTRY + n)[:960]
-        portraits.append({"img": add(bytes(rom.face_pixels(tiles=tiles)), blob=1),
-                          "label": f"{n:03d}" + (f"（頭像 id {'、'.join(map(str, users[n]))}）" if n in users else "")})
+        portraits.append({"img": add(bytes(rom.face_pixels(tiles=tiles)), blob=1)})
 
     characters = []
     for pid, m in rom.person_master().items():

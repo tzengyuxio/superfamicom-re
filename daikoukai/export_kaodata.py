@@ -75,7 +75,7 @@ def build(rom_path: str) -> tuple[dict, list[bytes]]:
                  for slot, _, _ in COMPOSITE_SLOTS}
         variants.append({"id": str(head), "label": f"頭型 {head}", "parts": parts})
 
-    portraits = [{"img": add(rom.face_pixels(n)), "label": f"{n:02d}"} for n in range(PORTRAIT_COUNT)]
+    portraits = [{"img": add(rom.face_pixels(n)), "code": f"{n:04X}"} for n in range(PORTRAIT_COUNT)]
 
     chars = []
     for c in characters(rom):

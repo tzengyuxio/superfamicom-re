@@ -29,7 +29,7 @@ def build(rom_path: str) -> tuple[dict, list[bytes]]:
         assert len(px) == w * h
         images.append([len(blob), w, h])
         blob.extend(px)
-        portraits.append({"img": n, "label": f"{n:03d}"})
+        portraits.append({"img": n, "code": f"{n:02X}"})
     characters = [{"id": p["id"], "name": p["name"], "reading": kaodata.hiragana(p["reading"]),
                    "face": {"portrait": p["face"]}} for p in rom.persons()]
     meta = {

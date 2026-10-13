@@ -102,7 +102,7 @@ def build(rom_path: str) -> tuple[dict, list[bytes]]:
     for n in range(PORTRAIT_COUNT):
         pal = PALETTE_NUMBERS.index(rom.face_palette_number(n))
         portraits.append({"img": add(bytes(pal * 16 + v for v in rom.face_pixels(n)), blob=1),
-                          "label": f"{n:02d}" if n < WOMAN_PORTRAIT else f"女 {n - WOMAN_PORTRAIT:02d}"})
+                          "code": f"{n if n < WOMAN_PORTRAIT else n - WOMAN_PORTRAIT:04X}"})
 
     chars = []
     for c in characters(rom):
