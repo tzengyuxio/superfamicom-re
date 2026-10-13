@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Check the main map (rom.Rom.map_tiles / map_palette) against the game (needs Mesen 2, about 20 seconds).
 
-From the scenario menu (savestate replay, genchou/tools/replay.py; the 4th scenario through the menu patch of
+From the scenario menu (savestate replay, tools/replay.py; the 4th scenario through the menu patch of
 verify_scenarios.py) every scenario is started up to a screen that shows the map. Then BG2 is read back:
 the 552 tiles at VRAM byte 0x4E00 (character base 0x4000 + tile 0x70 * 32) must equal the LZ map entry in every
 pixel whose ROM colour is not MAP_FILL (the game paints the regions' insides per house), the tilemap (VRAM
@@ -16,7 +16,7 @@ import sys
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, os.path.join(HERE, "tools"))
+sys.path.insert(0, os.path.join(os.path.dirname(HERE), "tools"))
 from replay import replay
 from rom import DEFAULT_ROM, MAP_ENTRY, MAP_FILL, MAP_H, MAP_PALETTE, MAP_W, SCENARIO_COUNT, Rom, decode_tile
 from verify_scenarios import BOOT, MENU_ARG, SAVE_AT

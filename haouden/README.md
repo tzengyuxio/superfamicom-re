@@ -17,7 +17,7 @@ KOEI，1993，SFC（HiROM 2 MB）。3 個劇本（1551、1568、1582 年），�
 - ROM 預設直接讀 `roms/Nobunaga no Yabou - Haouden (Japan).zip`，`--rom` 也接受 .sfc 與 Rev 1（`roms/Nobunaga no Yabou - Haouden (Japan) (Rev 1).zip`），匯出與全部驗證腳本都支援兩版。Rev 1 搬動了大部分的表，偏移分版本放在 `rom.OFFSETS`，由解壓表的位置自動判斷；兩版解出來的資料除了劇本 1 的 34 人的人物 +27（未解欄位）以外完全相同。
 - 解壓縮用共用的 `tools/koei_lz.py`（表在 `0xA0D9`，Rev 1 `0xA0D3`）。
 - 依賴：Pillow；openpyxl（可選，匯出 .xlsx）。地圖標註用 macOS 的ヒラギノ角ゴシック，找不到時退回 PIL 預設字型。
-- 驗證腳本需要 Mesen 2（`tools/mesen.py` 用 ctypes 呼叫 MesenCore），savestate 重播用 `haouden/tools/replay.py`。Mesen 會在 stderr 印大量 `Uninitialized memory read`，可以用 `2>&1 | rg -v Uninitialized` 濾掉。
+- 驗證腳本需要 Mesen 2（`tools/mesen.py` 用 ctypes 呼叫 MesenCore），savestate 重播用 `tools/replay.py`。Mesen 會在 stderr 印大量 `Uninitialized memory read`，可以用 `2>&1 | rg -v Uninitialized` 濾掉。
 
 ## 檔案
 
@@ -31,7 +31,6 @@ KOEI，1993，SFC（HiROM 2 MB）。3 個劇本（1551、1568、1582 年），�
 | `verify_faces.py` | 927 個頭像碼逐一換進主畫面城資訊欄的頭像呼叫，比對遊戲寫進 VRAM 的 tile 與調色盤 |
 | `verify_maps.py` | 大地圖：遊戲解壓到 WRAM 的地圖、BG2 tilemap、tile、調色盤 |
 | `verify_battle_maps.py` | 143 張戰場：把戰場載入程式讀的地圖編號換掉，比對遊戲組出的兩層 BG tilemap、tile、調色盤 |
-| `tools/replay.py` | Mesen savestate 重播（從 `bushou/tools/replay.py` 複製；NMI 掛勾位置由 ROM 的 NMI 向量決定、log 緩衝加大） |
 | `data/charset.txt` | 1808 個字形 → 字元（每行 32 字） |
 
 ## 輸出（`haouden/output/`）

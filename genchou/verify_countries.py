@@ -2,7 +2,7 @@
 """Check country fields of rom.Rom.countries (金 食糧 人口 and the three values +20..+22) against the main
 screen's country panel (needs Mesen 2, about 1 minute).
 
-Scenario 1 is started (savestate replay, genchou/tools/replay.py; the save is taken at "戦闘を見ますか", before
+Scenario 1 is started (savestate replay, tools/replay.py; the save is taken at "戦闘を見ますか", before
 the main screen is drawn). For every country record of the 4 scenarios, bytes +9..+14 and +20..+22 of country 0 (オノン河流域,
 WRAM $7E:430A) are overwritten there; after the setup questions and the opening event the panel at the bottom
 shows the player's country: 金, 食糧 and 人口 on the left (BG3 rows 20 / 22 / 24, columns 7-10) and three numbers
@@ -18,7 +18,7 @@ import sys
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, os.path.join(HERE, "tools"))
+sys.path.insert(0, os.path.join(os.path.dirname(HERE), "tools"))
 from replay import replay
 from rom import A_WRAM, COUNTRIES_AT, DEFAULT_ROM, SCENARIO_COUNT, Rom
 from verify_faces import save_frame

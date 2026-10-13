@@ -21,7 +21,7 @@ import sys
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, os.path.join(HERE, "tools"))
+sys.path.insert(0, os.path.join(os.path.dirname(HERE), "tools"))
 from replay import replay
 from rom import DEFAULT_ROM, LZ_POINTERS, MAP_ENTRY, MAP_H, MAP_PALETTE, MAP_W, REGIONS, Rom, decode_tile, le16
 from verify_scenarios import MAIN, presses

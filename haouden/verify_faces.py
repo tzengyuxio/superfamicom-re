@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Check rom.Rom.face_tiles / face_palette against the game (needs Mesen 2, about 5 minutes).
 
-Scenario 1 is started as 龍造寺隆信 in Mesen (tools/mesen.py, savestate replay haouden/tools/replay.py). When the
+Scenario 1 is started as 龍造寺隆信 in Mesen (tools/mesen.py, savestate replay tools/replay.py). When the
 first turn's main screen appears, the castle panel calls the face routine $C1:187F with the person id it reads
 at $C1:8185 (LDY #$1F; LDA ($10),y = person +31). A savestate is taken just before; for every face id (0-928 except 920, 921) the
 two instructions are patched to LDA #id and the state replayed, so the game's own routine builds the face
@@ -16,7 +16,7 @@ import sys
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, os.path.join(HERE, "tools"))
+sys.path.insert(0, os.path.join(os.path.dirname(HERE), "tools"))
 from replay import replay
 from rom import DEFAULT_ROM, FACE_BYTES, Rom
 

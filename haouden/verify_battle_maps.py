@@ -20,7 +20,7 @@ import sys
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, os.path.join(HERE, "tools"))
+sys.path.insert(0, os.path.join(os.path.dirname(HERE), "tools"))
 from replay import replay
 from rom import BATTLE_CHARS, BATTLE_COUNT, BATTLE_H, BATTLE_W, DEFAULT_ROM, Rom
 

@@ -33,7 +33,6 @@ KOEI，1994，SFC（HiROM 1.25 MB）。美國獨立戰爭，劇本只有 1775 �
 | `verify_faces.py` | 同一畫面把ワシントン的頭像碼換成每個碼，比對 VRAM 的 960 bytes 與 CGRAM |
 | `verify_maps.py` | 第一個指令畫面的大地圖：改 LZ 指標換成 3 區，比對 VRAM tile、tilemap、調色盤 |
 | `verify_battle_maps.py` | 看電腦戰鬥：改地點編號換成 53 張，比對 WRAM 複本與遊戲建好的 BG2 tilemap |
-| `tools/replay.py` | savestate 重播（照抄 `haouden/tools/replay.py`） |
 
 ## 輸出（`dokuritsu/output/`）
 

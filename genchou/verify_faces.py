@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Check rom.Rom.face_tiles / face_palette_number against the game (needs Mesen 2, about 1 minute).
 
-Two scenes of scenario 1 (savestate replay, genchou/tools/replay.py) show a face drawn by the game's own code:
+Two scenes of scenario 1 (savestate replay, tools/replay.py) show a face drawn by the game's own code:
   A: 人事 → 政治顧問 → オノン河流域 → カサル: the card "カサル殿を…の顧問にしますか" draws the face of the family
      record カサル ($7E:4C94, face code at +24) with the person face routine $C4:5EDB.
   B: 人事 → 后妃 → ボルテ: the night scene draws the face of woman 0 ($7E:4F38, face code at +19) with the
@@ -21,7 +21,7 @@ import sys
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, os.path.join(HERE, "tools"))
+sys.path.insert(0, os.path.join(os.path.dirname(HERE), "tools"))
 from replay import presses, replay
 from rom import (
     B_WRAM,

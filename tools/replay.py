@@ -1,10 +1,10 @@
 """Savestate replay in Mesen (tools/mesen.py): play a button script once, take a savestate, then for every run
 patch PRG ROM / WRAM, press more buttons, and read memory back at a given frame.
-(Copied from haouden/tools/replay.py unchanged except this docstring.)
 
 Savestates only work inside exec callbacks, so they are taken and loaded in the NMI handler, at its second
-instruction (native NMI vector + 1, after its SEI: $00:848E),
-and the first load does not take effect (that run still continues from power-on), so run 0 is done twice.
+instruction (native NMI vector + 1, read from the LoROM or HiROM header; pass nmi= to hook elsewhere). A state
+cannot be loaded in the callback that created it, so the first load waits for the next NMI, and the first load
+does not take effect (that run still continues from power-on), so run 0 is done twice.
 extra_lua can add callbacks (e.g. a read trace) and hand their result back through EXTRA_SHOT().
 
     runs = [{"patch": [(rom_offset, bytes)], "wram": [(addr, bytes)], "steps": "a:10 w100",
@@ -13,20 +13,21 @@ extra_lua can add callbacks (e.g. a read trace) and hand their result back throu
 
 "steps" use tools/drive.py syntax (button[:hold], w<n>) and count from the savestate frame; "shot" is the
 frame (after the savestate) at which the reads are made. PRG patches of a run are undone before the next run.
+Boot presses after save_at are dropped (each run plays its own "steps" from the savestate), so take the
+savestate after the last boot press, or put the whole sequence into every run's steps.
 """
 import os
 import sys
+import zipfile
 
-sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "tools"))
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from mesen import Mesen
 
-NMI_VECTOR = 0xFFEA  # native NMI vector (file offset of the HiROM header field)
 LOG_SIZE = 1 << 26  # the log keeps every run's line; 4 MB (the Mesen.log default) is too small for big reads
 MEM = {"vram": "snesVideoRam", "cgram": "snesCgRam", "wram": "snesWorkRam", "oam": "snesSpriteRam",
        "rom": "snesPrgRom"}
 
 LUA = """
-%(extra)s
 local boot=%(boot)s
 local runs={%(runs)s}
 local f, idx, state = 0, 0, nil
@@ -86,6 +87,27 @@ def presses(steps: str, start: int) -> list[tuple[int, str, int]]:
     return out
 
 
+def load_rom_bytes(path: str) -> bytes:
+    """The ROM image of a .sfc / .smc file or a zip holding one, without a 512-byte copier header."""
+    if path.lower().endswith(".zip"):
+        with zipfile.ZipFile(path) as z:
+            data = z.read(next(n for n in z.namelist() if n.lower().endswith((".sfc", ".smc"))))
+    else:
+        with open(path, "rb") as f:
+            data = f.read()
+    return data[len(data) % 0x8000:]
+
+
+def nmi_hook(data: bytes) -> int:
+    """Second instruction of the native NMI handler: the vector of the LoROM or HiROM header whose checksum and
+    complement add up to 0xFFFF, + 1 (every KOEI SFC handler starts with a one-byte SEI)."""
+    for header in (0x7FC0, 0xFFC0):
+        h = data[header:header + 0x40]
+        if len(h) == 0x40 and (h[0x1C] | h[0x1D] << 8) + (h[0x1E] | h[0x1F] << 8) == 0xFFFF:
+            return (h[0x2A] | h[0x2B] << 8) + 1
+    raise ValueError("no valid LoROM / HiROM header")
+
+
 def _lua_list(items) -> str:
     return "{" + ",".join(items) + "}"
 
@@ -95,10 +117,10 @@ def _bytes(b: bytes) -> str:
 
 
 def replay(rom_path: str, steps: str, save_at: int, runs: list[dict], timeout: float = 1800,
-           extra_lua: str = "") -> list[list[bytes]]:
+           extra_lua: str = "", nmi: int | None = None) -> list[list[bytes]]:
     """extra_lua may define EXTRA_RESET() (called after each savestate load) and EXTRA_SHOT() (returns a hex
-    string appended to the reads of the run)."""
-    from rom import load_rom_bytes
+    string appended to the reads of the run). EXTRA_RESET also runs for the dropped first load, so it is called
+    once more than there are runs: hand per-run values over through "wram" patches, not by counting calls."""
     data = load_rom_bytes(rom_path)
     runs = [runs[0]] + list(runs)
     lua_runs = []
@@ -113,8 +135,8 @@ def replay(rom_path: str, steps: str, save_at: int, runs: list[dict], timeout: f
             + ",read=" + _lua_list(f'{{"{MEM[m]}",{a},{n}}}' for m, a, n in r["read"]) + "}")
     lua = LUA % {"boot": _lua_list(f'{{{f},"{b}",{h}}}' for f, b, h in presses(steps, 10)),
                  "runs": ",\n".join(lua_runs), "save": save_at,
-                 "nmi": (data[NMI_VECTOR] | data[NMI_VECTOR + 1] << 8) + 1,
-                 "extra": extra_lua}
+                 "nmi": nmi_hook(data) if nmi is None else nmi}
+    lua = extra_lua + "\n" + lua  # not through %: extra Lua may contain % and braces
     out = {}
     with Mesen(rom_path) as m:
         m.run(lua, timeout)

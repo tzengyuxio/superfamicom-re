@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Check the scenario images (rom.Rom.image / common) against the game (needs Mesen 2, about 1 minute).
 
-For each of the 3 scenarios the game is started in Mesen (tools/mesen.py, savestate replay haouden/tools/replay.py)
+For each of the 3 scenarios the game is started in Mesen (tools/mesen.py, savestate replay tools/replay.py)
 up to the daimyo selection, and WRAM $7E:2000-$7E:872F (filled by the game's loader $C3:0AD1) is compared with
 the scenario image (0x6303 bytes) and the common block (0x42D bytes). Bytes the game changes after copying are
 listed per table and field (record +offset), so the decoded tables and fields can be told from runtime state.
@@ -16,7 +16,7 @@ import sys
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, os.path.join(HERE, "tools"))
+sys.path.insert(0, os.path.join(os.path.dirname(HERE), "tools"))
 from replay import replay
 from rom import (
     CASTLE_COUNT,

@@ -33,7 +33,6 @@ KOEI，SFC（LoROM 1 MB）。主角レオン、航海士 20 人、4 國 × 5 名
 | `verify_faces.py` | 序幕顯示レオン頭像時換成每個頭像碼，比對 VRAM 與 CGRAM |
 | `verify_maps.py` | 改艦隊位置後出港，比對海面畫面的 tilemap、緯度組、CHR、調色盤 |
 | `verify_towns.py` | 改目前港口（與建物旗標）後進港，比對港口記錄讀取位置、港町 BG2 tilemap、CHR、調色盤 |
-| `tools/replay.py` | savestate 重播（由 `bushou/tools/replay.py` 複製，NMI 改為 `$00:8362`） |
 | `tools/boot.py` | 共用的按鍵序列（新遊戲 → リスボン → 港務所 → 出港）與各 savestate frame |
 
 ## 輸出（`daikoukai/output/`）

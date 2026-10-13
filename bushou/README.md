@@ -17,7 +17,7 @@ KOEI，1992，SFC（LoROM 1 MB，無壓縮）。2 個劇本（1555 戦国の動�
 
 - ROM 預設直接讀 `roms/Super Nobunaga no Yabou - Bushou Fuuunroku (Japan).zip`，`--rom` 也接受 .sfc。
 - 依賴：Pillow、openpyxl。字型總覽與城地圖示意圖的標字用 macOS 的ヒラギノ角ゴシック，找不到時退回 PIL 預設字型。
-- 驗證腳本需要 Mesen 2（`tools/mesen.py`）。共用的存檔重播放在 `bushou/tools/replay.py`：先照按鍵序列玩到某一幀、在 NMI（`$00:832B`）存檔，之後每一輪改 ROM／WRAM、重播、在指定幀讀記憶體。Mesen 會在 stderr 印大量 `Uninitialized memory read`，可用 `2>&1 | rg -v Uninitialized` 濾掉。
+- 驗證腳本需要 Mesen 2（`tools/mesen.py`）。存檔重播用共用的 `tools/replay.py`：先照按鍵序列玩到某一幀、在 NMI handler 的第二個指令（`$00:832C`）存檔，之後每一輪改 ROM／WRAM、重播、在指定幀讀記憶體。Mesen 會在 stderr 印大量 `Uninitialized memory read`，可用 `2>&1 | rg -v Uninitialized` 濾掉。
 
 ## 檔案
 
@@ -32,7 +32,6 @@ KOEI，1992，SFC（LoROM 1 MB，無壓縮）。2 個劇本（1555 戦国の動�
 | `verify_text.py` | 868 個文字碼逐一換進信長的名字，追蹤遊戲讀的字型位址 |
 | `verify_faces.py` | 180 張專屬頭像＋278 種組合臉碼逐一換進信長的姓名記錄，比對遊戲寫進 VRAM 的 tile 與調色盤 |
 | `verify_maps.py` | 大地圖（BG1／BG2／調色盤）、48 張野戰地圖（遊戲自己畫的 BG2 tilemap、CHR、調色盤） |
-| `tools/replay.py` | Mesen 存檔重播（驗證腳本共用） |
 | `tools/battle_capture.py` | 把任一張野戰地圖換進美濃的合戰，讓遊戲畫出來 |
 | `tools/province_probe.py` | 在 WRAM 把尾張的每個欄位改成自己的偏移後截國畫面，用來對照欄位意義 |
 

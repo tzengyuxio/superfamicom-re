@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Check the big map decoding (rom.Rom.map_tilemap / map_rgb inputs) against the game (needs Mesen 2, about 40 s).
 
-Scenario 1 is started as 龍造寺隆信 in Mesen (tools/mesen.py, savestate replay haouden/tools/replay.py) up to the
+Scenario 1 is started as 龍造寺隆信 in Mesen (tools/mesen.py, savestate replay tools/replay.py) up to the
 first turn's main screen. The map is BG2 (16x16 tiles, tilemap VRAM 0xF000, characters 0x8000). Checked:
   - the game's map in WRAM $7F:E800 (its own decompression, 96 x 32 LE16) equals LZ entry 15, except castle
     icon cells, which the game redraws with the owner's palette or a flag tile;
@@ -19,7 +19,7 @@ import sys
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, os.path.join(HERE, "tools"))
+sys.path.insert(0, os.path.join(os.path.dirname(HERE), "tools"))
 from replay import replay
 from rom import DEFAULT_ROM, MAP_CHARS, MAP_H, MAP_TILEMAP, MAP_W, Rom
 

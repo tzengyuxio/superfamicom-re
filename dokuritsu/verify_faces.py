@@ -15,7 +15,7 @@ import sys
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, os.path.join(HERE, "tools"))
+sys.path.insert(0, os.path.join(os.path.dirname(HERE), "tools"))
 from replay import replay
 from rom import DEFAULT_ROM, FACE_BYTES, FACE_PALETTE, PERSON_SIZE, PERSONS, PORTRAIT_COUNT, TYPE_COUNT, Rom
 from verify_persons import BOOT, FACE_VRAM, SAVE_AT, SHOT

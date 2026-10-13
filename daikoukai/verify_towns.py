@@ -22,6 +22,7 @@ import time
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 sys.path.insert(0, os.path.join(HERE, "tools"))
+sys.path.insert(0, os.path.join(os.path.dirname(HERE), "tools"))
 from boot import NEW_GAME, TOWN_SAVE, TOWN_SHOT, TOWN_STEPS
 from replay import replay
 from rom import DATA, DEFAULT_ROM, PORT_COUNT, PORT_SIZE, PORTS, TOWN_FLAGS, TOWN_H, TOWN_PALETTES, TOWN_W, Rom, le16

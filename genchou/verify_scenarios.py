@@ -2,7 +2,7 @@
 """Check the scenario blocks (rom.Rom.block_a / block_b, FAMILY, region names and positions) against the game
 (needs Mesen 2, about 30 seconds).
 
-The game is started in Mesen (tools/mesen.py, savestate replay genchou/tools/replay.py) up to the scenario menu;
+The game is started in Mesen (tools/mesen.py, savestate replay tools/replay.py) up to the scenario menu;
 for each scenario the WRAM areas the loader $C4:400F fills are cleared, the scenario is chosen and the areas are
 read back: $7E:37F7 (block A as Rom.loaded_a gives it: persons, countries, houses), $7E:4F38 (block B: women ...), $7E:4C94 (family),
 $7E:2000 (region names) and $7E:545C (region label positions). The 4th scenario is not in the menu (the game
@@ -17,7 +17,7 @@ import sys
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, os.path.join(HERE, "tools"))
+sys.path.insert(0, os.path.join(os.path.dirname(HERE), "tools"))
 from replay import replay
 from rom import (
     A_SIZE,

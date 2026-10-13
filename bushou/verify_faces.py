@@ -16,7 +16,7 @@ import sys
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, os.path.join(HERE, "tools"))
+sys.path.insert(0, os.path.join(os.path.dirname(HERE), "tools"))
 from export_kaodata import distinct_characters
 from replay import replay
 from rom import DEFAULT_ROM, FACE_BYTES, FACE_PALETTE, PORTRAIT_COUNT, Rom, is_composite

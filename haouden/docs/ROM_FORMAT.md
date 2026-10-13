@@ -12,7 +12,7 @@ KOEI，1993，SFC。檔案 `roms/Nobunaga no Yabou - Haouden (Japan).zip`（另�
 | 向量 | native NMI `$00:848D`（Rev 1 `$00:8491`），第一個指令是 SEI |
 | 劇本載入 | `$C3:0AD1` 把劇本映像與共用區複製到 WRAM（§5） |
 
-Mesen 的 savestate 只能在 exec callback 裡建立／載入，驗證腳本都掛在 NMI handler 的第二個指令上（`haouden/tools/replay.py` 從 ROM 的 NMI 向量算出）；載入後第一輪不生效，第一項都做兩次再丟掉。按鍵要按住約 10 幀，太短常被吃掉。
+Mesen 的 savestate 只能在 exec callback 裡建立／載入，驗證腳本都掛在 NMI handler 的第二個指令上（`tools/replay.py` 從 ROM 的 NMI 向量算出）；載入後第一輪不生效，第一項都做兩次再丟掉。按鍵要按住約 10 幀，太短常被吃掉。
 
 **操作序列**（`tools/drive.py` 語法，幀數從開機算起）：
 

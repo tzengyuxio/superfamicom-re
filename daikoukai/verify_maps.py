@@ -24,6 +24,7 @@ import time
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 sys.path.insert(0, os.path.join(HERE, "tools"))
+sys.path.insert(0, os.path.join(os.path.dirname(HERE), "tools"))
 from boot import DEPART, HARBOR, HARBOR_SAVE, NEW_GAME, SEA_SHOT
 from replay import replay
 from rom import CHUNK_TILES, DEFAULT_ROM, MAP_CHR_COUNT, MAP_CHR_TILE, PORT_SIZE, PORTS, SEA_CHR, Rom, le16

@@ -2,7 +2,7 @@
 """Check the battle maps (rom.Rom.battle_values / battle_tileset / battle_palette) against the game (needs
 Mesen 2, about 1 minute).
 
-Scenario 1 is played (savestate replay, genchou/tools/replay.py) up to the press that starts an expedition from
+Scenario 1 is played (savestate replay, tools/replay.py) up to the press that starts an expedition from
 オノン河流域 to ゴルゴナク河原 (軍事 → 遠征, the rest with the defaults). The three loaders the battle runs read
 the target country with `LDY #4; LDA ($00),y`: $C7:92F4 (map record, LZ entry 136 + country (+ 14 in the world
 scenarios, flag $7E:5425)), $C7:9395 (tile set, LZ entry 229 + k) and $C7:9527 (palette 0x20 + 2k); for every map
@@ -19,7 +19,7 @@ import sys
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, os.path.join(HERE, "tools"))
+sys.path.insert(0, os.path.join(os.path.dirname(HERE), "tools"))
 from replay import presses, replay
 from rom import (
     BATTLE_COUNT,

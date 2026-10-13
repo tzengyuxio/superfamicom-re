@@ -36,7 +36,6 @@ KOEI，1993，SFC（HiROM 1.5 MB）。4 個劇本（1184／1206／1271／1185 �
 | `verify_faces.py` | 每個頭像碼寫進確認卡（男）與后妃畫面（女），比對 VRAM tile、tilemap 調色盤號、CGRAM |
 | `verify_map.py` | 4 劇本主畫面的大地圖 tile、tilemap、調色盤 |
 | `verify_battle_maps.py` | 47 張戰場：強制遠征目標，比對 tilemap、tile 組、調色盤 |
-| `tools/replay.py` | Mesen savestate 重播（和 haouden 的同名工具相同，只有說明文字不同） |
 
 ## 輸出（`genchou/output/`）
 
