@@ -33,6 +33,31 @@ from rom import (
 )
 
 CANVAS = (40, 48)
+SURNAMES = os.path.join(HERE, "data", "surnames.tsv")
+# The ROM writes some names with a stand-in kanji (or cut to 3 kanji); the dataset uses the historical spelling.
+NAME_FIXES = {
+    "張資": "張咨", "雷同": "雷銅", "夏侯懋": "夏侯楙", "桓楷": "桓階", "陳嬉": "陳紀", "辛毘": "辛毗",
+    "李湛": "李堪", "寥化": "廖化", "步鷙": "步騭", "蔡仲": "蔡中", "尚拳": "向舉", "尚寵": "向寵",
+    "鮑龍": "鮑隆", "朵思王": "朶思大王", "金環結": "金環三結", "沙摩可": "沙摩柯", "母丘儉": "毌丘儉",
+}
+READING_FIXES = {"李堪": "りかん", "朶思大王": "だしだいおう", "金環三結": "きんかんさんけつ"}
+UNSPLIT = {"金環三結", "董荼奴"}  # 南蠻 names: no family / given split
+
+
+def load_surnames() -> dict[str, str]:
+    with open(SURNAMES, encoding="utf-8") as f:
+        return dict(line.rstrip("\n").split("\t") for line in f if not line.startswith("#"))
+
+
+def split_reading(name: str, kana: str, surnames: dict[str, str]) -> str:
+    """'じゅん ゆう': a space after the family name's reading (compound family names first)."""
+    if name in UNSPLIT:
+        return kana
+    for k in (2, 1):
+        fam = surnames.get(name[:k])
+        if fam and kana.startswith(fam) and len(kana) > len(fam):
+            return f"{fam} {kana[len(fam):]}"
+    return kana
 
 
 def cells_image(rom: Rom, offsets: dict[int, int], palette: int) -> bytes:
@@ -50,6 +75,7 @@ def cells_image(rom: Rom, offsets: dict[int, int], palette: int) -> bytes:
 def build(rom_path: str) -> tuple[dict, list[bytes]]:
     rom = Rom(rom_path)
     kanji = load_kanji()
+    surnames = load_surnames()
     images, blobs = [], [bytearray(), bytearray()]
 
     def add(px: bytes, blob: int = 0) -> int:
@@ -79,8 +105,10 @@ def build(rom_path: str) -> tuple[dict, list[bytes]]:
     characters = []
     for p in rom.persons():
         code = p["face"]
-        ch = {"id": p["id"], "name": "".join(kanji.get(c, "?") for c in p["kanji_codes"]),
-              "reading": kaodata.hiragana(p["reading"])}
+        name = "".join(kanji.get(c, "?") for c in p["kanji_codes"])
+        name = NAME_FIXES.get(name, name)
+        reading = READING_FIXES.get(name, kaodata.hiragana(p["reading"]))
+        ch = {"id": p["id"], "name": name, "reading": split_reading(name, reading, surnames)}
         if is_composite(code):
             pal = code >> 13 & 3
             ch["face"] = {"variant": pal * COMPOSITE_HEADS + (code & 7),
@@ -126,6 +154,8 @@ def main() -> None:
     print(f"san2-sfc: {len(chars)} characters ({len(chars) - len(mobs)} portrait, {len(mobs)} composite), "
           f"{len(meta['composite']['variants'])} variants, {len(meta['portraits'])} portraits, "
           f"{len(meta['images'])} images")
+    unsplit = [c["name"] for c in chars if " " not in c["reading"]]
+    print(f"  reading without family/given split: {' '.join(unsplit) or '-'}")
     for name in [*meta["blobs"], "dataset.json", "checksums.json"]:
         print(f"  {name}: {os.path.getsize(os.path.join(args.out, name))} B")
 
