@@ -1,6 +1,6 @@
 # 新遊戲解析流程
 
-從スーパー三國志II、天翔記、項劉記三款整理出來的做法。新的一款照這裡的順序做，各步驟的範本程式寫在每節最後。
+從スーパー三國志II、天翔記、項劉記、三國志III、三國志IV 整理出來的做法。新的一款照這裡的順序做，各步驟的範本程式寫在每節最後。
 
 ## 0. 選版本、分診
 
@@ -84,6 +84,9 @@
 |----------|------|
 | 劇本 WRAM | `kouryuuki/verify_scenarios.py`（WRAM 整塊比對）、`tenshouki/verify_scenarios.py`（逐表、串列另計） |
 | 頭像（換引數） | `kouryuuki/verify_faces.py`：在頭像程式入口改 stack 引數 |
+| 頭像（組合臉） | `san3/verify_faces.py`、`san4/verify_faces.py` |
+| 戰場地圖 | `tenshouki/verify_field_maps.py`（改 ROM 指標表換圖）、`san4/verify_maps.py`（強制旗標觸發攻城戰） |
+| 外部能力值 | `san4/verify_persons.py`：和 kaodata-re 的 ROTK 能力表比對 |
 | 頭像（換 ROM） | `tenshouki/tools/face_capture.py`：改 ROM 裡某人的頭像碼 |
 | 地圖 | `tenshouki/verify_maps.py`、`san2/verify_maps.py` |
 | kaodata | `kouryuuki/verify_kaodata_export.py`（單一調色盤）、`tenshouki/verify_kaodata_export.py`（組合臉） |
@@ -99,6 +102,28 @@
 ## 5. 踩過的坑
 
 - macOS 的 `seq 1 0` 會倒數，產生多餘的按鍵；用 Python 組序列
+- 很多遊戲要按住約 10 幀才有反應：`drive.py` 用 `a:10` 這種寫法
+- 按鍵時機受亂數影響：三國志III 選劉備時差 1 幀就會進 AI 戰鬥。序列固定下來後，用截圖確認每一步
+- savestate 不能掛在 NMI handler 的第一個指令上（三國志III 要用 `$00:8392`，不能用 `$8391`）；讀回要延到下一次 NMI
+- Mesen state 的 `tilemapAddress`、`chrAddress` 是 word 位址，乘 2 才是 byte；mode 7 的矩陣即使在 bgMode 1 也看得到
+- `drive.py --reads` 對整個 ROM 追蹤會超過 10 分鐘：先只追蹤指標表本身，或在 `$420B` 下 write callback 記錄 DMA（source、size、VRAM 位址）
+- 平常難以觸發的畫面：找到切換用的旗標強制改值（三國志IV 的攻城戰 `$3DAE`）
+- C 編譯的遊戲通常有一張共用服務跳轉表（三國志III `$C0:9024`：解壓、DMA、memset），適合下 exec 斷點
+- MesenCore 會在 stderr 印大量 `Uninitialized memory read`，用 `grep -v Uninit` 過濾；這訊息也可能黏在 log 的同一行，解析時用包含字串比對，不要只看行首
+- 同一個 Python process 開第二次 Mesen 會 segfault；需要多次時改用子程序
+- 同一次 NMI callback 裡先 `createSavestate` 再 `loadSavestate`，有時會報 "must be called inside an exec memory operation callback"；改到下一次 NMI 再讀回
+- `drive.py --reads` 的位址或幀範圍太大時，有時一行都不輸出；先縮小範圍
+- 重播腳本的 NMI 位址不要寫死，從 ROM 的 NMI 向量算（霸王傳原版 `$00:848D`、Rev 1 `$00:8491`）；Rev 1 的電腦走法也不同，savestate 幀數要分版本
+- `Mesen.log()` 預設緩衝 4 MB，大量 hex 會被截斷（`fromhex` 出錯）；用 `m.log(1 << 26)`
+- 光榮 p-code 遊戲的檔案 handle（`$7E:1E00` 一帶每筆 14 bytes，服務 1A／1C／1E 開檔、seek、讀取）：記錄 seek 位置就能定位資料表（大航海時代）
+- 組合臉的 tile 表欄位可能是 LE16，當成 byte 讀會全錯（大航海時代，Mesen 驗證抓出來的）
+- 重播時每輪都讀大量 VRAM 很慢；CHR 只在少數幾輪讀
+- 要看電腦之間的戰鬥：玩家 0 人、他國合戰選「見る」，不用操作就會進戰場（霸王傳）
+- 鏡頭停在地圖角落時，畫面上只有部分格子落在地圖內；比對 tilemap 要只看地圖內的格子（英傑傳 `verify_maps.py`）
+- 光榮 p-code 遊戲（武將風雲錄）的表用相對檔案開頭的偏移（例如 `hdata+4`），直接搜 CPU 位址找不到
+- 自訂 2-byte 字碼裡低位 byte 為 00 的字寫不進字串，武將風雲錄用跳脫碼 `85F0/85F1/85F2` 代表 `8200/8300/8400`；其他光榮作品可能也有
+- 在 worktree 裡跑 ruff，import 排序的判定可能和主 repo 不同；合併後要在主 repo 再跑一次
+- 看起來像代碼的值（例如寶物持有者 0、600）不要直接當人物編號；意思不明就輸出原始值
 - `rm` 是 trash 的 alias，不吃旗標；要真的刪用 `command rm`
 - 不是每個 LZ entry 都是壓縮串流（天翔記 17、18、20、102–105 是未壓縮資料），`koei_lz.decompress` 遇到不合法的複製會丟 `ValueError`
 - 天翔記、三國志IV 等遊戲有多張 LZ 指標表；大航海時代II、英傑傳等找得到解壓表、卻找不到 3-byte 指標表，指標格式要另外追
