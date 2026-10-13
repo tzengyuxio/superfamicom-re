@@ -7,7 +7,8 @@ Steps (space separated):
   w<n>                 wait n frames
   @<tag>               screenshot → OUT_<tag>.png
 The script starts at frame 10. At the end OUT.wram / .vram / .cgram / .oam / .sram and OUT.log are written,
-plus OUT_all.png (all screenshots side by side, half size).
+plus OUT_all.png (all screenshots side by side, half size). OUT.log leaves out the screenshot lines; Mesen keeps
+only about the last 500 log lines, so log summaries rather than one line per event.
 
 --reads LO-HI traces CPU reads of that address range (hex, e.g. C00000-FFFFFF) during --window START-END
 (frames) and logs one line per (PC, 256-byte page): count and address range, most frequent first. That
@@ -123,8 +124,8 @@ end, emu.eventType.endFrame)
             m.run(lua, args.timeout)
         finally:
             log = m.log()
-            with open(f"{args.out}.log", "w") as fh:
-                fh.write(log)
+            with open(f"{args.out}.log", "w") as fh:  # screenshots are logged as hex: they go to the PNGs only
+                fh.write("".join(line for line in log.splitlines(True) if not line.startswith("PNG ")))
         shots = m.screenshots()
         for tag, png in shots.items():
             with open(f"{args.out}_{tag}.png", "wb") as fh:
