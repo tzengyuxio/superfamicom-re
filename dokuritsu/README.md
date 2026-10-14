@@ -6,8 +6,8 @@ KOEI，1994，SFC（HiROM 1.25 MB）。美國獨立戰爭，劇本只有 1775 �
 
 ```bash
 .venv/bin/python dokuritsu/export.py [--rom ROM] [--out DIR]          # → dokuritsu/output/（CSV、XLSX、PNG）
-.venv/bin/python dokuritsu/export_kaodata.py --out <kaodata>/data-local/dokuritsu-sfc
-.venv/bin/python dokuritsu/verify_kaodata_export.py --dataset <kaodata>/data-local/dokuritsu-sfc
+.venv/bin/python dokuritsu/export_kaodata.py --out <kaodata>/data-local/liberty-sfc
+.venv/bin/python dokuritsu/verify_kaodata_export.py --dataset <kaodata>/data-local/liberty-sfc
 .venv/bin/python dokuritsu/verify_scenarios.py                    # 約 1 分鐘
 .venv/bin/python dokuritsu/verify_persons.py [--quick]            # 約 3 分鐘（--quick 約 45 秒）
 .venv/bin/python dokuritsu/verify_faces.py [--quick]              # 約 3.5 分鐘（--quick 約 50 秒）
@@ -26,7 +26,7 @@ KOEI，1994，SFC（HiROM 1.25 MB）。美國獨立戰爭，劇本只有 1775 �
 |------|------|
 | `rom.py` | ROM 解碼：文字、人物、地點、州、1775 年劇本（人物狀態、地點狀態、陣營）、頭像（專屬＋組合）、大地圖 3 區、HEX 戰場 53 張 |
 | `export.py` | 匯出 CSV／XLSX／PNG |
-| `export_kaodata.py` | 匯出 kaodata 統一格式資料集 `dokuritsu-sfc`（專屬頭像 174 張＋4 型組合臉） |
+| `export_kaodata.py` | 匯出 kaodata 統一格式資料集 `liberty-sfc`（專屬頭像 174 張＋4 型組合臉） |
 | `verify_kaodata_export.py` | 資料集用參考渲染器畫出來，和 ROM 解碼逐 pixel 比對；頭像碼；checksums |
 | `verify_scenarios.py` | 開局 6 塊 WRAM 與 ROM 逐 byte 比對；掛 vprintf 比對選陣營畫面、指令畫面、人物列表的欄位 |
 | `verify_persons.py` | 選陣營畫面把ワシントン換成每個人（改 10 處 `LDA #$00EE`），比對姓名指標、能力、名声、頭像 tile 與調色盤 |
@@ -57,7 +57,7 @@ KOEI，1994，SFC（HiROM 1.25 MB）。美國獨立戰爭，劇本只有 1775 �
 - ✓ 人物 250 人：姓名、首字母、体力、統率力、戦術力、指導力、頭像碼
 - ✓ 1775 年劇本：6 塊初始 WRAM 的 ROM 來源；人物狀態（串列、所在、体力、名声、忠誠）、地點狀態（人物串列、支持、食糧、兩種物資）、陣營（待機串列）
 - ✓ 地點 53 個：名稱、相鄰、地區、州；州名 15 個
-- ✓ 頭像：專屬 174 張＋組合臉 4 型（未壓縮部件）；kaodata 資料集 `dokuritsu-sfc`
+- ✓ 頭像：專屬 174 張＋組合臉 4 型（未壓縮部件）；kaodata 資料集 `liberty-sfc`
 - ✓ 大地圖 3 區（tile、tilemap 配置、調色盤）
 - ✓ HEX 戰場 53 張（地形、疊加、tile、調色盤）
 - … 未解：漢字字型、擁有者上色遮罩、多個未知欄位、戰場部隊／兵種（ROM_FORMAT.md §12）

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Check a dokuritsu-sfc kaodata dataset against the ROM decoding.
+"""Check a liberty-sfc kaodata dataset against the ROM decoding.
 
 1. Every character and portrait rendered with the reference renderer (tools/kaodata.py, spec §6)
    must equal rom.Rom.face_rgb, which verify_persons.py / verify_faces.py check against the game's VRAM.
@@ -20,7 +20,7 @@ from rom import DEFAULT_ROM, Rom
 
 
 def main() -> None:
-    ap = argparse.ArgumentParser(description="驗證 kaodata 資料集 dokuritsu-sfc")
+    ap = argparse.ArgumentParser(description="驗證 kaodata 資料集 liberty-sfc")
     ap.add_argument("--dataset", required=True)
     ap.add_argument("--rom", default=DEFAULT_ROM)
     args = ap.parse_args()

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Export SFC 独立戦争 as a kaodata dataset (dokuritsu-sfc, format kaodata/1).
+"""Export SFC 独立戦争 as a kaodata dataset (liberty-sfc, format kaodata/1).
 
 All faces use one 16-colour palette (FACE_PALETTE). Portraits 0-173 are LZ entries 67-240; the face code of a
 portrait is its number ("code" 0000-00AD). Composed faces (code bit 15 set, $C2:3E66 / $C2:3ADA): the code's
@@ -76,8 +76,8 @@ def build(rom_path: str) -> tuple[dict, list[bytes]]:
     colors = [f"#{r:02x}{g:02x}{b:02x}" for r, g, b in (bgr555_rgb(c) for c in rom.face_palette())]
     meta = {
         "format": kaodata.FORMAT,
-        "id": "dokuritsu-sfc",
-        "game": "DOKURITSU",
+        "id": "liberty-sfc",
+        "game": "LIBERTY",
         "platform": "SFC",
         "title": {"ja": "独立戦争 Liberty or Death", "zh": "獨立戰爭"},
         "source": {"producer": "superfamicom-re", "revision": kaodata.revision(REPO),
@@ -99,7 +99,7 @@ def build(rom_path: str) -> tuple[dict, list[bytes]]:
 
 
 def main() -> None:
-    ap = argparse.ArgumentParser(description="匯出 kaodata 統一格式資料集 dokuritsu-sfc")
+    ap = argparse.ArgumentParser(description="匯出 kaodata 統一格式資料集 liberty-sfc")
     ap.add_argument("--rom", default=DEFAULT_ROM, help="roms/Dokuritsu Sensou - Liberty or Death (Japan).zip 或 .sfc")
     ap.add_argument("--out", required=True, help="輸出目錄")
     args = ap.parse_args()
@@ -107,7 +107,7 @@ def main() -> None:
     kaodata.write_dataset(args.out, meta, blobs)
     chars = meta["characters"]
     mobs = [c for c in chars if "variant" in c["face"]]
-    print(f"dokuritsu-sfc: {len(chars)} characters ({len(chars) - len(mobs)} portrait, {len(mobs)} composite), "
+    print(f"liberty-sfc: {len(chars)} characters ({len(chars) - len(mobs)} portrait, {len(mobs)} composite), "
           f"{len(meta['composite']['variants'])} variants, {len(meta['portraits'])} portraits, "
           f"{len(meta['images'])} images")
     for name in [*meta["blobs"], "dataset.json", "checksums.json"]:
