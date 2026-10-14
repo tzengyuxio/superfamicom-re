@@ -22,6 +22,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | `genchou/` | スーパー蒼き狼と白き牝鹿・元朝秘史 (KOEI, HiROM)：自訂字型 2046 字、4 劇本人物／國／王家／女性、兵科／交易品等表、頭像（含組合臉，kaodata `genchou-sfc`）、大地圖（モンゴル與世界）、47 張戰場地圖（和 FC 版相同），全部有 Mesen 驗證；事件與城內地圖未解 |
 | `dokuritsu/` | 独立戦争 Liberty or Death (KOEI, HiROM)：文字編碼（漢字只對出 10 字）、人物 250 人、1775 年劇本人物／地點／陣營、53 地點與 15 州、頭像（含組合臉，kaodata `dokuritsu-sfc`）、大地圖 3 區、53 張 HEX 戰場，全部有 Mesen 驗證；漢字字型、大地圖擁有者上色未解 |
 | `europe/` | ヨーロッパ戦線 Europe Sensen (KOEI, 1992, HiROM)：自訂字型 652 字、6 劇本將領／都市、將領 94 人＋領袖 6 人與經歷、都市 94、兵器 158 種、頭像（kaodata `europe-sfc`）、歐洲地圖、6 張戰場地圖，全部有 Mesen 驗證；部隊編制、勝利條件未解 |
+| `taikou/` | 太閤立志伝 (KOEI, 1993, HiROM)：自訂字型 2048 字、人物 713 筆、勢力 20、城 125、頭像（含組合臉，kaodata `taikoh-sfc`）、日本地圖、19 張戰場，全部有 Mesen 驗證；戰場選圖規則、多個人物／城欄位未解 |
 | `bushou/` | スーパー信長の野望・武将風雲録 (KOEI, 1992, LoROM)：自訂字碼與字型、武將 2 劇本、48 國、大名、茶器、頭像（含組合臉，kaodata `nobu4-sfc`）、大地圖、48 張野戰地圖，全部有 Mesen 驗證；城地圖畫面未解 |
 
 - ROM 都放 `roms/`（zip，不進版控），程式預設直接讀 zip。分析時可暫時把 ROM 解出來，做完要刪掉，只留 zip 作為來源
