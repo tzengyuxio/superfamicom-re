@@ -1,0 +1,27 @@
+# Europe Sensen font glyph -> character, 32 glyphs per line; glyph g is text code 0x8140 + g.
+# Glyph g is at file 0xA9000 + 32 g (16x16 1bpp, four 8x8 tiles TL TR BL BR; $C1:19C0). Codes 0x8460-0x89EF
+# draw glyph 0; codes from 0x89F0 are folded back (rom.glyph_number). Kana and ASCII are not in this font
+# (they are half-width single bytes, 8x16 glyphs at 0xA8000). The font is a JIS X 0208-ordered kanji subset
+# (level 1, then 651 = 擲 of level 2), derived by matching every glyph against a system Japanese font in JIS order
+# and reviewed by eye. Lines starting with # are comments.
+々愛悪圧安暗案以伊位囲意為畏移維違域一印員引右雨運栄英衛益越延援
+沿遠央押横王沖音下化何価加可夏家果架河火稼過我画会解回壊海界絵開
+害確角閣掛割活冠完官敢艦間陥含岸顔危器奇揮既期棄機帰気祈季規貴起
+鬼義吉却丘久休及急救求級給旧去居拒拠虚許魚協境強恐橋況驚業局曲極
+玉近苦駆空屈勲君軍刑型形経継計迎撃激決結血月件健検権肩見遣険験元
+原減源現言限個呼固弧故互後御護交候光功向工康抗攻更構港甲考航荒行
+降高号合刻告国込今困佐左差砂座再最塞砕裁際在作昨策察殺雑参残使司
+史士始子市師志思指支施止死私至視資事持時次治示自軸失湿実射者車弱
+主取守手殊種首受需収周修秀終衆襲週集充従重縮出術準処初所緒諸助女
+傷勝将小少招消焦称章象障上乗城場常情条状植職食信侵心振新森神親進
+人尽陣図帥遂数枢世是制勢征性成政晴正生製西請積赤切設雪絶先千占宣
+川戦潜線選前全素阻双想掃早争相総装走送増造側即息束足速属続卒存損
+村多打駄体対耐待態滞退逮隊代台大第卓択叩達奪脱誰担探誕団弾断談値
+知地置遅築蓄逐着中虫駐調超長直墜槌追通潰低停定帝抵挺艇敵的撤鉄天
+展転点電渡登途都度土島投東当統到討頭闘動同道得特独突届曇内南難二
+日入任認年念燃能派破廃拝敗配白漠爆発抜判半反範番蛮否彼疲罷被避非
+備尾必標表病不付富布府敷普膚負武部封風伏副復服腹払仏物分兵平柄米
+壁変編保捕歩補報崩放方法砲芳蜂訪豊亡望謀防北勃本末万満味未民務無
+霧娘名命明迷滅免面模猛網耗目戻門野役約薬躍輸優勇友有由遊予余与誉
+様洋用要養翌来頼雷絡落乱嵐利理離陸率立略流留了両料猟良量陵領力林
+臨類令歴列劣連路露労和擲
