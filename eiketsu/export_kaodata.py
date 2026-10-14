@@ -30,8 +30,10 @@ def build(rom_path: str) -> tuple[dict, list[bytes]]:
         images.append([len(blob), w, h])
         blob.extend(px)
         portraits.append({"img": n, "code": f"{n:02X}"})
-    characters = [{"id": p["id"], "name": p["name"], "reading": kaodata.hiragana(p["reading"]),
-                   "face": {"portrait": p["face"]}} for p in rom.persons()]
+    # Generic persons (軍楽隊, 民衆, ？？？ ...) have "0" as their reading: leave it out
+    characters = [{"id": p["id"], "name": p["name"]}
+                  | ({"reading": kaodata.hiragana(p["reading"])} if p["reading"] != "0" else {})
+                  | {"face": {"portrait": p["face"]}} for p in rom.persons()]
     meta = {
         "format": kaodata.FORMAT,
         "id": "eiketsu-sfc",
