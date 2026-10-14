@@ -8,8 +8,8 @@ KOEI，SFC（LoROM 1 MB，SRAM 8 KB，無壓縮）。航空公司經營模擬：
 
 ```bash
 .venv/bin/python airmanage/export.py [--rom ROM] [--out DIR]       # → airmanage/output/（CSV、XLSX、PNG）
-.venv/bin/python airmanage/export_kaodata.py --out <kaodata>/data-local/airmanage-sfc
-.venv/bin/python airmanage/verify_kaodata_export.py --dataset <kaodata>/data-local/airmanage-sfc
+.venv/bin/python airmanage/export_kaodata.py --out <kaodata>/data-local/air-sfc
+.venv/bin/python airmanage/verify_kaodata_export.py --dataset <kaodata>/data-local/air-sfc
 .venv/bin/python airmanage/verify_scenarios.py [--rom ROM]        # 約 90 秒（兩個劇本各一個子程序）
 .venv/bin/python airmanage/verify_tables.py [--rom ROM]           # 約 2 分鐘
 .venv/bin/python airmanage/verify_faces.py [--rom ROM] [--quick]  # 約 35 秒
@@ -28,7 +28,7 @@ KOEI，SFC（LoROM 1 MB，SRAM 8 KB，無壓縮）。航空公司經營模擬：
 |------|------|
 | `rom.py` | ROM 解碼：檔案表、模組資料（以 p-code 位址讀取）、都市、距離、劇本、機種、製造商、頭像、字型、大地圖 |
 | `export.py` | 匯出 CSV／XLSX／PNG |
-| `export_kaodata.py` | 匯出 kaodata 統一格式資料集 `airmanage-sfc`（33 張頭像，沒有人物） |
+| `export_kaodata.py` | 匯出 kaodata 統一格式資料集 `air-sfc`（33 張頭像，沒有人物；頭像分 部下／交涉對象／廠商 三組，廠商頭像附公司名） |
 | `verify_kaodata_export.py` | 資料集用參考渲染器畫出來，和 ROM 解碼逐 pixel 比對；checksums |
 | `verify_scenarios.py` | 兩劇本開局後的 WRAM 都市／スロット／玩家記錄，以及讓遊戲對 22 都市各開一次都市畫面的 printf 引數 |
 | `verify_tables.py` | 讓遊戲的交易畫面顯示 20 種機種、主畫面的距離框顯示 462 組距離，比對 printf 引數 |
@@ -64,7 +64,7 @@ KOEI，SFC（LoROM 1 MB，SRAM 8 KB，無壓縮）。航空公司經營模擬：
 - ✓ 2 劇本 × 22 都市：人口、経済力、観光地、スロット、本社スロット；玩家本社的初期スロット與 4 個參數（數值驗證過，意義未解）
 - ✓ 20 機種：名稱、座席、航続距離、価格、燃料費（等級）；メーカー對應；発売年、生産終了年（推測，見下）
 - ✓ 5 家製造商：名稱、頭像、販售機種
-- ✓ 頭像 33 張（部下 8、交渉相手 20、メーカー 5）、12 組調色盤與遊戲的配對；kaodata 資料集 `airmanage-sfc`
+- ✓ 頭像 33 張（部下 8、交渉相手 20、メーカー 5）、12 組調色盤與遊戲的配對；kaodata 資料集 `air-sfc`
 - ✓ 大地圖（ALMAPE）與 22 都市位置
 - — 戰術地圖：本作沒有戰鬥，不適用
 - … 未解：見 [docs/ROM_FORMAT.md §12](docs/ROM_FORMAT.md#12-未解)（第二組航空公司名、matrix2、航線表的值、本社參數、機種 +14、片頭 mode 7 地圖、事件、乗換率等）
