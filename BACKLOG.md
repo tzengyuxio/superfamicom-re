@@ -7,7 +7,6 @@
 
 分診結果見 `docs/PLAYBOOK.md` §6。
 
-- [ ] 航空霸業（Air Management，原版與 Rev 1） — LoROM 1 MB，沒有 KOEI LZ（2026-10-14）
 - [ ] 航空霸業II — LoROM 1 MB，有解壓表、指標表未找到（2026-10-14）
 - [ ] 提督の決断（原版與 Rev 1） — LoROM 1.25 MB，LZ 指標表 `0x4F3EF` ×433（2026-10-14）
 - [ ] 提督の決断II（原版與 Rev 1） — HiROM 3 MB，LZ 指標表 `0x1A9C8E` 等 4 張（2026-10-14）
