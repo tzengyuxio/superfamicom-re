@@ -125,8 +125,16 @@ def le16(raw: bytes, i: int) -> int:
     return raw[i] | raw[i + 1] << 8
 
 
+# User-defined SJIS codes: 3 glyphs that together draw a 4-kanji surname (EC8C seen on the daimyo list as 長宗;
+# EC8F, used only by 親泰, read as 香宗)
+GAIJI = {b"\xec\x8c\xec\x8d\xec\x8e": "長宗我部", b"\xec\x8f\xec\x8d\xec\x8e": "香宗我部"}
+
+
 def sjis(raw: bytes) -> str:
-    return raw.split(b"\0")[0].decode("shift_jis", "replace")
+    raw = raw.split(b"\0")[0]
+    for code, text in GAIJI.items():
+        raw = raw.replace(code, text.encode("shift_jis"))
+    return raw.decode("shift_jis", "replace")
 
 
 def load_rom_bytes(path: str) -> bytes:
