@@ -1,4 +1,4 @@
-# 欧陸戦線 Europe Sensen（SFC）
+# ヨーロッパ戦線 Europe Sensen（SFC，中文名歐陸戰線）
 
 KOEI，1992，HiROM 1.5 MB（標頭 `EUROPE SENSEN`，SRAM 32 KB），只做日版。ROM：`roms/Europe Sensen (Japan).zip`。
 格式細節見 [docs/ROM_FORMAT.md](docs/ROM_FORMAT.md)。
@@ -7,8 +7,8 @@ KOEI，1992，HiROM 1.5 MB（標頭 `EUROPE SENSEN`，SRAM 32 KB），只做日�
 
 ```sh
 .venv/bin/python europe/export.py                  # CSV（UTF-8-BOM）＋ europe.xlsx ＋ PNG → europe/output/
-.venv/bin/python europe/export_kaodata.py --out europe/output/kaodata   # kaodata europe-sfc（要在 commit 之後跑）
-.venv/bin/python europe/verify_kaodata_export.py --dataset europe/output/kaodata
+.venv/bin/python europe/export_kaodata.py --out <kaodata>/data-local/europe-sfc   # 要在 commit 之後跑
+.venv/bin/python europe/verify_kaodata_export.py --dataset <kaodata>/data-local/europe-sfc
 .venv/bin/python europe/verify_persons.py          # 以下都要 Mesen 2，時間見驗證結果
 .venv/bin/python europe/verify_scenarios.py
 .venv/bin/python europe/verify_maps.py

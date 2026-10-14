@@ -6,8 +6,8 @@ KOEI，1992，SFC（LoROM 1 MB，無壓縮）。2 個劇本（1555 戦国の動�
 
 ```bash
 .venv/bin/python bushou/export.py [--rom ROM] [--out DIR] [--scale N]   # → bushou/output/（CSV、XLSX、PNG）
-.venv/bin/python bushou/export_kaodata.py --out <kaodata>/data-local/bushou-sfc
-.venv/bin/python bushou/verify_kaodata_export.py --dataset <kaodata>/data-local/bushou-sfc
+.venv/bin/python bushou/export_kaodata.py --out <kaodata>/data-local/nobu4-sfc
+.venv/bin/python bushou/verify_kaodata_export.py --dataset <kaodata>/data-local/nobu4-sfc
 .venv/bin/python bushou/verify_scenarios.py              # 約 10 秒
 .venv/bin/python bushou/verify_text.py [--quick]         # 約 3.5 分鐘
 .venv/bin/python bushou/verify_faces.py [--quick]        # 約 5 分鐘
@@ -26,7 +26,7 @@ KOEI，1992，SFC（LoROM 1 MB，無壓縮）。2 個劇本（1555 戦国の動�
 | `rom.py` | ROM 解碼：檔案表、文字與字型、劇本（國、茶器、大名、武將）、姓名表、登場武將、頭像（專屬＋組合）、大地圖、野戰地圖與戰場畫面、戰場名 |
 | `data/charset.txt` | 字型 868 字對應的字元（`〓` = 外字，見 `rom.GAIJI`） |
 | `export.py` | 匯出 CSV／XLSX／PNG |
-| `export_kaodata.py` | 匯出 kaodata 統一格式資料集 `bushou-sfc`（專屬頭像 180 張＋組合臉 8 頭） |
+| `export_kaodata.py` | 匯出 kaodata 統一格式資料集 `nobu4-sfc`（專屬頭像 180 張＋組合臉 8 頭） |
 | `verify_kaodata_export.py` | 資料集用參考渲染器畫出來，和 ROM 解碼逐 pixel 比對；checksums |
 | `verify_scenarios.py` | 2 劇本在選大名畫面的 WRAM 與 ROM 劇本區塊逐 byte 比對 |
 | `verify_text.py` | 868 個文字碼逐一換進信長的名字，追蹤遊戲讀的字型位址 |
@@ -60,7 +60,7 @@ KOEI，1992，SFC（LoROM 1 MB，無壓縮）。2 個劇本（1555 戦国の動�
 - ✓ 檔案表、文字碼（含低位 byte 為 00 的跳脫碼 `85F0–85F2`）、字型 868 字與字元對照、外字 4 組
 - ✓ 劇本 2 個：國 48 × 32 bytes、茶器、大名、武將 15 bytes 記錄、姓名表 20 bytes、改名、登場武將
 - ✓ 國欄位：金 米 石高 治水 町 文化 技術 民忠 城 兵 鉄砲 訓練 兵忠（畫面＋WRAM 探測；FC 版文件的民忠／兵忠寫反了）
-- ✓ 頭像：專屬 180 張、組合臉 8 頭（區域表 `0x1793C`），單一調色盤；kaodata 資料集 `bushou-sfc`
+- ✓ 頭像：專屬 180 張、組合臉 8 頭（區域表 `0x1793C`），單一調色盤；kaodata 資料集 `nobu4-sfc`
 - ✓ 大地圖：BG2 tilemap、BG1 陸地點陣、調色盤
 - ✓ 野戰地圖 48 張：地形 → 2×2 metatile 規則、底圖、CHR、調色盤（遊戲畫面逐 tile 一致）
 - … 推定：戰場名表（與 FC 版相同的 98 個名字，遊戲中沒看到顯示處）、登場武將表（結構與 FC 相同，未在遊戲中等到登場）

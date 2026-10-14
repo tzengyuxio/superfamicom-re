@@ -124,7 +124,7 @@ def build(rom_path: str) -> tuple[dict, list[bytes]]:
         "id": "genchou-sfc",
         "game": "GENCHOU",
         "platform": "SFC",
-        "title": {"ja": "スーパー蒼き狼と白き牝鹿・元朝秘史", "zh": "蒼狼與白鹿・元朝秘史（SFC）"},
+        "title": {"ja": "スーパー蒼き狼と白き牝鹿・元朝秘史", "zh": "超級蒼狼與白鹿・元朝秘史"},
         "source": {"producer": "superfamicom-re", "revision": kaodata.revision(REPO),
                    "inputs": [{"path": os.path.basename(rom_path), "sha1": hashlib.sha1(rom.data).hexdigest()}]},
         "display": {"scale": 6},

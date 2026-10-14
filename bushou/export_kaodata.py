@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Export SFC スーパー信長の野望・武将風雲録 as a kaodata dataset (bushou-sfc, format kaodata/1).
+"""Export SFC スーパー信長の野望・武将風雲録 as a kaodata dataset (nobu4-sfc, format kaodata/1).
 
 Pixels are colour numbers 0-15 of the one face palette (ROM 0x174DC, BG palette 5 of the province screen;
 verify_faces.py checks it for every face). Composite faces: one variant per head (8). The game copies five
@@ -95,7 +95,7 @@ def build(rom_path: str) -> tuple[dict, list[bytes]]:
     colors = [f"#{r:02x}{g:02x}{b:02x}" for r, g, b in (bgr555_rgb(c) for c in rom.face_palette())]
     meta = {
         "format": kaodata.FORMAT,
-        "id": "bushou-sfc",
+        "id": "nobu4-sfc",
         "game": "NOBU4",
         "platform": "SFC",
         "title": {"ja": "スーパー信長の野望・武将風雲録", "zh": "超級信長之野望・武將風雲錄"},
@@ -118,7 +118,7 @@ def build(rom_path: str) -> tuple[dict, list[bytes]]:
 
 
 def main() -> None:
-    ap = argparse.ArgumentParser(description="匯出 kaodata 統一格式資料集 bushou-sfc")
+    ap = argparse.ArgumentParser(description="匯出 kaodata 統一格式資料集 nobu4-sfc")
     ap.add_argument("--rom", default=DEFAULT_ROM, help="roms/Super Nobunaga no Yabou - Bushou Fuuunroku (Japan).zip 或 .sfc")
     ap.add_argument("--out", required=True, help="輸出目錄")
     args = ap.parse_args()
@@ -126,7 +126,7 @@ def main() -> None:
     kaodata.write_dataset(args.out, meta, blobs)
     chars = meta["characters"]
     mobs = [c for c in chars if "variant" in c["face"]]
-    print(f"bushou-sfc: {len(chars)} characters ({len(chars) - len(mobs)} portrait, {len(mobs)} composite), "
+    print(f"nobu4-sfc: {len(chars)} characters ({len(chars) - len(mobs)} portrait, {len(mobs)} composite), "
           f"{len(meta['composite']['variants'])} variants, {len(meta['portraits'])} portraits, "
           f"{len(meta['images'])} images")
     for name in [*meta["blobs"], "dataset.json", "checksums.json"]:

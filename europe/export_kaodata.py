@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Export SFC 欧陸戦線 as a kaodata dataset (europe-sfc, format kaodata/1).
+"""Export SFC ヨーロッパ戦線 as a kaodata dataset (europe-sfc, format kaodata/1).
 
 Faces are portraits only: 120 faces of 40x48 (LZ entries 87-206), all with the one palette at FACE_PALETTE.
 Person id n uses portrait n (the game has no face code, so portraits carry no "code"). Characters are the
@@ -33,7 +33,7 @@ def build(rom_path: str) -> tuple[dict, list[bytes]]:
         "id": "europe-sfc",
         "game": "EUROPE",
         "platform": "SFC",
-        "title": {"ja": "欧陸戦線", "zh": "歐陸戰線（SFC）"},
+        "title": {"ja": "ヨーロッパ戦線", "zh": "歐陸戰線"},
         "source": {"producer": "superfamicom-re", "revision": kaodata.revision(REPO),
                    "inputs": [{"path": os.path.basename(rom_path), "sha1": hashlib.sha1(rom.data).hexdigest()}]},
         "display": {"scale": 6},

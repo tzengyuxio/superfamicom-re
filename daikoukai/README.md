@@ -8,8 +8,8 @@ KOEI，SFC（LoROM 1 MB）。主角レオン、航海士 20 人、4 國 × 5 名
 
 ```bash
 .venv/bin/python daikoukai/export.py [--rom ROM] [--out DIR] [--no-map]   # → daikoukai/output/（CSV、XLSX、PNG）
-.venv/bin/python daikoukai/export_kaodata.py --out <kaodata>/data-local/daikoukai-sfc
-.venv/bin/python daikoukai/verify_kaodata_export.py --dataset <kaodata>/data-local/daikoukai-sfc
+.venv/bin/python daikoukai/export_kaodata.py --out <kaodata>/data-local/koukai-sfc
+.venv/bin/python daikoukai/verify_kaodata_export.py --dataset <kaodata>/data-local/koukai-sfc
 .venv/bin/python daikoukai/verify_persons.py     # 約 30 秒
 .venv/bin/python daikoukai/verify_faces.py       # 約 2 分鐘
 .venv/bin/python daikoukai/verify_maps.py        # 約 1.5 分鐘
@@ -27,7 +27,7 @@ KOEI，SFC（LoROM 1 MB）。主角レオン、航海士 20 人、4 國 × 5 名
 |------|------|
 | `rom.py` | ROM 解碼：文字、初始狀態（人物、能力、艦隊、建物旗標）、女性、港口、名稱表、頭像（專屬＋組合）、世界地圖、港町圖 |
 | `export.py` | 匯出 CSV／XLSX／PNG |
-| `export_kaodata.py` | 匯出 kaodata 統一格式資料集 `daikoukai-sfc`（專屬 53 張＋4 頭型組合臉） |
+| `export_kaodata.py` | 匯出 kaodata 統一格式資料集 `koukai-sfc`（專屬 53 張＋4 頭型組合臉） |
 | `verify_kaodata_export.py` | 資料集用參考渲染器畫出來，和 ROM 解碼逐 pixel 比對；checksums |
 | `verify_persons.py` | 新遊戲時 WRAM 初始區塊、リスボン時的人物表／能力表／艦隊／建物旗標、檔案 handle |
 | `verify_faces.py` | 序幕顯示レオン頭像時換成每個頭像碼，比對 VRAM 與 CGRAM |
@@ -58,7 +58,7 @@ KOEI，SFC（LoROM 1 MB）。主角レオン、航海士 20 人、4 國 × 5 名
 - ✓ 女性 20 人姓名（頭像對應推定）
 - ✓ 港口 70：名稱、座標、屬性（經濟圈、特產品、道具推定）
 - ✓ 名稱表：交易品、大砲、船首像、船種、木材、桅、帆
-- ✓ 頭像：專屬 53 張、組合臉 4 頭型（代碼 ≥ 0x1000）；kaodata 資料集 `daikoukai-sfc`
+- ✓ 頭像：專屬 53 張、組合臉 4 頭型（代碼 ≥ 0x1000）；kaodata 資料集 `koukai-sfc`
 - ✓ 世界地圖：72 × 36 chunk、18 種 metatile、4 個緯度組的 CHR 與調色盤
 - ✓ 港町圖（戰術地圖的替代）：所有港共用一套圖，零件依建物旗標 bit 2／bit 4 增減
 - … 未解：海戰畫面（戰術地圖）、港町 BG1 的船與文字窗、海面與調色盤動畫順序、出港後艦隊記錄的座標意義、市場行情、船隻資料、多個未知欄位（ROM_FORMAT.md §10）

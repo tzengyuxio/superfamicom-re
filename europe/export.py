@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""匯出 SFC 欧陸戦線 的劇本、將領、領袖、經歷、都市、兵器、地形、頭像與地圖。
+"""匯出 SFC ヨーロッパ戦線 的劇本、將領、領袖、經歷、都市、兵器、地形、頭像與地圖。
 
 Usage: .venv/bin/python europe/export.py [--rom ROM] [--out DIR]
 
@@ -182,7 +182,7 @@ def font_sheet(rom: Rom, path: str) -> None:
 
 
 def main() -> None:
-    ap = argparse.ArgumentParser(description="匯出 SFC 欧陸戦線資料")
+    ap = argparse.ArgumentParser(description="匯出 SFC ヨーロッパ戦線資料")
     ap.add_argument("--rom", default=DEFAULT_ROM)
     ap.add_argument("--out", default=os.path.join(HERE, "output"))
     args = ap.parse_args()

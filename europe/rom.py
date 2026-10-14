@@ -1,4 +1,4 @@
-"""SFC 欧陸戦線 Europe Sensen (KOEI, 1992) ROM decoding.
+"""SFC ヨーロッパ戦線 Europe Sensen (KOEI, 1992) ROM decoding.
 
 Offsets are file offsets of the headerless 1.5 MB HiROM image (CPU $C0:0000 = file 0). See docs/ROM_FORMAT.md.
 The LZ decompressor ($C0:9A96) is the shared one in tools/koei_lz.py. The game is written in C: services go

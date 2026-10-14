@@ -6,8 +6,8 @@ KOEI，1993，SFC（HiROM 2 MB，無 header）。沒有劇本，遊戲開始時�
 
 ```bash
 .venv/bin/python daikoukai2/export.py [--rom ROM] [--out DIR]          # → daikoukai2/output/（CSV、XLSX、PNG），約 3 秒
-.venv/bin/python daikoukai2/export_kaodata.py --out <kaodata>/data-local/daikoukai2-sfc
-.venv/bin/python daikoukai2/verify_kaodata_export.py --dataset <kaodata>/data-local/daikoukai2-sfc
+.venv/bin/python daikoukai2/export_kaodata.py --out <kaodata>/data-local/koukai2-sfc
+.venv/bin/python daikoukai2/verify_kaodata_export.py --dataset <kaodata>/data-local/koukai2-sfc
 .venv/bin/python daikoukai2/verify_scenarios.py              # 約 25 秒
 .venv/bin/python daikoukai2/verify_persons.py [--quick]      # 約 3 分鐘
 .venv/bin/python daikoukai2/verify_faces.py [--quick]        # 約 4 分鐘
@@ -26,7 +26,7 @@ KOEI，1993，SFC（HiROM 2 MB，無 header）。沒有劇本，遊戲開始時�
 |------|------|
 | `rom.py` | ROM 解碼：文字與字型、初始狀態區塊、人物、VIP、女性、艦隊、船種、港與港的狀態、道具、發見物、字串表、頭像（專屬＋組合臉）、世界地圖 |
 | `export.py` | 匯出 CSV／XLSX／PNG |
-| `export_kaodata.py` | 匯出 kaodata 統一格式資料集 `daikoukai2-sfc`（專屬頭像 128 張＋組合臉 7 包） |
+| `export_kaodata.py` | 匯出 kaodata 統一格式資料集 `koukai2-sfc`（專屬頭像 128 張＋組合臉 7 包） |
 | `verify_kaodata_export.py` | 資料集用參考渲染器（`tools/kaodata.py`）畫出來，和 ROM 解碼逐 pixel 比對；checksums |
 | `verify_scenarios.py` | 初始狀態區塊（選主角畫面的 WRAM）與 ROM 逐 byte 比對；6 位主角的開始設定 |
 | `verify_persons.py` | 120 人逐一寫進ジョアン的紀錄，打開「人物情報」畫面讀回能力、年齡、等級、經驗、頭像、名字與國籍 |
@@ -64,7 +64,7 @@ KOEI，1993，SFC（HiROM 2 MB，無 header）。沒有劇本，遊戲開始時�
 - ✓ 初始狀態區塊：開機時整塊複製到 WRAM（人物、VIP、女性、艦隊、船種、港、港的狀態都在裡面）
 - ✓ 人物 120 人：姓名、7 項能力、年齡、等級、經驗、國籍、頭像碼
 - ✓ 6 位主角的開始設定（母港、開始艦隊）
-- ✓ 頭像：專屬 128 張＋組合臉 7 包（上半臉、下半臉、部件 A、部件 B）；kaodata 資料集 `daikoukai2-sfc`
+- ✓ 頭像：專屬 128 張＋組合臉 7 包（上半臉、下半臉、部件 A、部件 B）；kaodata 資料集 `koukai2-sfc`
 - ✓ 世界地圖：90 × 45 區塊 × 12 × 12 metatile、tile 編號規則（海岸遮罩、緯度帶）、tile 與調色盤；130 港的座標
 - ✓ 船種名稱、交易品、道具、發見物、各種字串表
 - … 推測：VIP／女性的欄位、港的經濟／工業／占有率、道具價格、船的 9 byte 中的船種

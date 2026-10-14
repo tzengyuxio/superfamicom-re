@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Export SFC 大航海時代II as a kaodata dataset (daikoukai2-sfc, format kaodata/1).
+"""Export SFC 大航海時代II as a kaodata dataset (koukai2-sfc, format kaodata/1).
 
 Pixels are `palette * 16 + colour`; the dataset palettes are the portrait palette (0) and the two palettes of the
 composed faces (1: packs 0, 1, 3-6; 2: pack 2). Portraits 0-127 use palette 0.
@@ -92,8 +92,8 @@ def build(rom_path: str) -> tuple[dict, list[bytes]]:
               for r, g, b in (bgr555_rgb(le16(rom.data, at + 2 * i)) for i in range(16))]
     meta = {
         "format": kaodata.FORMAT,
-        "id": "daikoukai2-sfc",
-        "game": "DAIKOUKAI2",
+        "id": "koukai2-sfc",
+        "game": "KOUKAI2",
         "platform": "SFC",
         "title": {"ja": "大航海時代II", "zh": "大航海時代II"},
         "source": {"producer": "superfamicom-re", "revision": kaodata.revision(REPO),
@@ -116,7 +116,7 @@ def build(rom_path: str) -> tuple[dict, list[bytes]]:
 
 
 def main() -> None:
-    ap = argparse.ArgumentParser(description="匯出 kaodata 統一格式資料集 daikoukai2-sfc")
+    ap = argparse.ArgumentParser(description="匯出 kaodata 統一格式資料集 koukai2-sfc")
     ap.add_argument("--rom", default=DEFAULT_ROM, help="roms/Daikoukai Jidai II (Japan).zip 或 .sfc")
     ap.add_argument("--out", required=True, help="輸出目錄")
     args = ap.parse_args()
@@ -124,7 +124,7 @@ def main() -> None:
     kaodata.write_dataset(args.out, meta, blobs)
     chars = meta["characters"]
     mobs = [c for c in chars if "variant" in c["face"]]
-    print(f"daikoukai2-sfc: {len(chars)} characters ({len(chars) - len(mobs)} portrait, {len(mobs)} composite), "
+    print(f"koukai2-sfc: {len(chars)} characters ({len(chars) - len(mobs)} portrait, {len(mobs)} composite), "
           f"{len(meta['composite']['variants'])} variants, {len(meta['portraits'])} portraits, "
           f"{len(meta['images'])} images")
     for name in [*meta["blobs"], "dataset.json", "checksums.json"]:
