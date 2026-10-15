@@ -1,6 +1,6 @@
 # 新遊戲解析流程
 
-從スーパー三國志II、天翔記、項劉記、三國志III、三國志IV 整理出來的做法。新的一款照這裡的順序做，各步驟的範本程式寫在每節最後。
+從本專案 20 款作品整理出來的做法。新的一款照這裡的順序做，各步驟的範本程式寫在每節最後。專案的資料夾與工具架構見 [ARCHITECTURE.md](ARCHITECTURE.md)。
 
 ## 0. 選版本、分診
 
@@ -18,7 +18,8 @@
 |------|------|
 | `tools/mesen.py` | ctypes 呼叫 MesenCore，無頭執行 Lua |
 | `tools/drive.py` | 用按鍵序列操作遊戲，截圖（`@tag`）、dump WRAM／VRAM／CGRAM／OAM／SRAM；`--reads` 追蹤某段位址被哪個 PC 讀了 |
-| `tools/replay.py` | savestate 重播：照按鍵序列玩到某一幀存檔，之後每輪改 PRG ROM／WRAM、按鍵、在指定幀讀記憶體；NMI 掛勾位置從 LoROM／HiROM 表頭的向量算 |
+| `tools/replay.py` | savestate 重播：照按鍵序列玩到某一幀存檔，之後每輪改 PRG ROM／WRAM、按鍵、在指定幀讀記憶體；NMI 掛勾位置從 LoROM／HiROM 表頭的向量算。按鍵序列和 `drive.py` 同語法（含 `*n`），`expand()` 展開、`end_frame()` 算序列結束幀 |
+| `tools/printf_trace.py` | 給 `replay.py` 用的 printf／vsprintf 追蹤 Lua：記錄每次呼叫的格式位址、依格式讀出的引數（數字、`%s` 字串與指標）、vsprintf 的輸出；引數在 stack 上的位置由呼叫端指定 |
 | `tools/koei_lz.py` | KOEI LZ 解壓（`decompress`），`find_tables` 用內容找解壓表，`find_pointer_tables` 找串流指標表 |
 | `tools/triage.py` | 所有 ROM 的標頭、LZ、Shift-JIS 字數一覽 |
 | `tools/kaodata.py` | kaodata/1 的寫入、讀取、參考渲染、checksums |
@@ -90,7 +91,10 @@
 | 外部能力值 | `san4/verify_persons.py`：和 kaodata-re 的 ROTK 能力表比對 |
 | 頭像（換 ROM） | `tenshouki/tools/face_capture.py`：改 ROM 裡某人的頭像碼 |
 | 地圖 | `tenshouki/verify_maps.py`、`san2/verify_maps.py` |
-| 畫面數值（C 寫的作品） | `dokuritsu/verify_persons.py`：在 printf 上掛 exec callback 讀格式與引數，再改 immediate 換人 |
+| 畫面數值（C 寫的作品） | `tools/printf_trace.py`：`teitoku2/verify_tables.py`（vsprintf，22 個畫面）、`sangokushi/verify_persons.py`（printf）；較早的寫法 `dokuritsu/verify_persons.py` |
+| 畫面文字（逐 tile 比對） | `zenkoku/scenes.py`：用 ROM 字型把畫面 tilemap 轉回文字 |
+| 把記錄換進畫面 | `taikou/verify_persons.py`、`europe/verify_cities.py`：顯示前把 WRAM 換成待測記錄，一輪驗多筆 |
+| 原版與 Rev 1 共用 | `teitoku/rom.py` 的 `REVISIONS`（移位的格式字串換算表）、`haouden/`、`airmanage/` |
 | 國／城數值（WRAM patch） | `genchou/verify_countries.py` |
 | kaodata | `kouryuuki/verify_kaodata_export.py`（單一調色盤）、`tenshouki/verify_kaodata_export.py`（組合臉） |
 
@@ -130,6 +134,27 @@
 - `rm` 是 trash 的 alias，不吃旗標；要真的刪用 `command rm`
 - 不是每個 LZ entry 都是壓縮串流（天翔記 17、18、20、102–105 是未壓縮資料），`koei_lz.decompress` 遇到不合法的複製會丟 `ValueError`
 - 天翔記、三國志IV 等遊戲有多張 LZ 指標表；大航海時代II、英傑傳等找得到解壓表、卻找不到 3-byte 指標表，指標格式要另外追
+- 開機或開新局時，常把 ROM 裡一整塊初始資料原封複製到 WRAM（大航海時代II `0x8780D` → `$7E:2000`、獨立戰爭 6 塊）：在選角畫面 dump WRAM 和 ROM 比對，0 byte 差異就能一次定位人物、勢力、地點等表
+- 要走到目標畫面可以直接改 WRAM（大航海時代II 把船寫進主角的開始艦隊才能出海，艦隊 1 而不是 0）
+- 動畫或時段會換調色盤；驗證地圖時接受一組變體，不要只比一列
+- C 寫的作品（獨立戰爭 `$C1:430F`）在 vprintf 掛 exec callback，讀格式指標和 va 引數，就拿得到畫面上每個數字與字串的來源；再改 immediate 換人，一次驗完全部人物，比截圖辨識可靠
+- 畫面上的半形數字和等級字有固定的 tile 編號，直接讀 tilemap 就能驗證欄位，不需要 OCR（元朝秘史）
+- 畫面數值通常在畫面第一次畫出時就固定，WRAM patch 要在那之前做（元朝秘史的國資訊要在「戦闘を見ますか」之前改）
+- bank `$C0` 的程式要掛 exec callback，得在 `$00`、`$40`、`$80`、`$C0` 四個 bank 都註冊；`--reads` 也可能因為走別的 mirror bank 而追不到
+- `replay.py`：存檔幀之後的開機按鍵會被丟掉（讀回後改用每輪的 `steps`），存檔點要在最後一個按鍵之後；`EXTRA_RESET` 被丟掉的第一輪也會呼叫，每輪的參數用 `wram` patch 傳，不要在 Lua 裡數呼叫次數
+- 需要不同開機序列時，用子程序呼叫自己（`genchou/verify_faces.py --scene`），因為一個 process 只能開一次 Mesen
+- 改版 ROM 夾在程式碼間的格式字串會移位；攔 printf 比對格式位址時要依版本換算（`teitoku/rom.py` 的 `REVISIONS`）
+- 程式可能在 `$00`／`$80`、`$04`／`$84` 等鏡像 bank 兩邊執行，exec callback 要兩邊都掛
+- LZ 串流不一定都在指標表裡，程式也會直接用位址讀（スーパー三國志 `0x2C00`、`0x74D7`）
+- 頭像是 sprite 還是 BG、用哪組調色盤，只看 VRAM 判斷不出來；用截圖逐 pixel 確認（スーパー三國志原本誤用 BG 調色盤）
+- 比對畫面數值要用同一時點的 WRAM dump，不要用 ROM 的劇本映像：開局後遊戲會改值（提督の決断II 的予備兵力）
+- 驗證腳本加 `--dump`／`--load`，可以不跑模擬器重做比對（`teitoku2/verify_tables.py`）
+- 改變數讓遊戲自己載入（戰場目標國的指標、建地圖前改支配勢力），比改 ROM 指標可靠，也驗得到執行時才加上的東西（スーパー三國志的城）
+- PRG patch 可以借 ROM 的 0xFF 填充區放 stub，把現有的呼叫改道去呼叫遊戲自己的函式（航空霸業II 開國家代表視窗）
+- KOEI 的 MVN 複製例程可能放在 WRAM（全国版 `$00:006C`），讀取追蹤看到的 PC 會在 bank `$00`
+- 同一組按鍵在 `drive.py` 不同次執行，電腦對戰的事件可能不同；在 `replay.py` 的 savestate 之後則固定
+- `drive.py` 的 `@tag` 會多算 1 幀；`replay.py` 略過 `@tag`
+- 不要用 `until ! pgrep -f <名稱>` 等背景程式：`bash -c` 的指令列本身含那個名稱，pgrep 會比對到自己而永遠等不完
 
 ## 6. 分診結果（2026-10-13）
 
@@ -153,15 +178,8 @@
 | 提督の決断 | LoROM 1.25 MB | `0x4F3EF` ×433 |
 | 提督の決断II | HiROM 3 MB | `0x1A9C8E` 等 4 張 |
 | 航空霸業（Air Management） | LoROM 1 MB | 無 |
-| 航空霸業II | LoROM 1 MB | 有解壓表，指標表未找到 |
+| 航空霸業II | LoROM 1 MB | 有解壓表；資料在 `0x6000` 的檔案表（196 個檔），不是指標表 |
 
 只有武將風雲錄、航空霸業 I 沒有這套 LZ（和三國志II 一樣是早期的 LoROM 作品）。
-- 開機或開新局時，常把 ROM 裡一整塊初始資料原封複製到 WRAM（大航海時代II `0x8780D` → `$7E:2000`、獨立戰爭 6 塊）：在選角畫面 dump WRAM 和 ROM 比對，0 byte 差異就能一次定位人物、勢力、地點等表
-- 要走到目標畫面可以直接改 WRAM（大航海時代II 把船寫進主角的開始艦隊才能出海，艦隊 1 而不是 0）
-- 動畫或時段會換調色盤；驗證地圖時接受一組變體，不要只比一列
-- C 寫的作品（獨立戰爭 `$C1:430F`）在 vprintf 掛 exec callback，讀格式指標和 va 引數，就拿得到畫面上每個數字與字串的來源；再改 immediate 換人，一次驗完全部人物，比截圖辨識可靠
-- 畫面上的半形數字和等級字有固定的 tile 編號，直接讀 tilemap 就能驗證欄位，不需要 OCR（元朝秘史）
-- 畫面數值通常在畫面第一次畫出時就固定，WRAM patch 要在那之前做（元朝秘史的國資訊要在「戦闘を見ますか」之前改）
-- bank `$C0` 的程式要掛 exec callback，得在 `$00`、`$40`、`$80`、`$C0` 四個 bank 都註冊；`--reads` 也可能因為走別的 mirror bank 而追不到
-- `replay.py`：存檔幀之後的開機按鍵會被丟掉（讀回後改用每輪的 `steps`），存檔點要在最後一個按鍵之後；`EXTRA_RESET` 被丟掉的第一輪也會呼叫，每輪的參數用 `wram` patch 傳，不要在 Lua 裡數呼叫次數
-- 需要不同開機序列時，用子程序呼叫自己（`genchou/verify_faces.py --scene`），因為一個 process 只能開一次 Mesen
+
+以上 17 款都已解析完成（各遊戲的資料夾見根目錄 `CLAUDE.md`）。

@@ -36,8 +36,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## 開發慣例
 
 - Python 一律用 `.venv/bin/python`；lint 用 `uvx ruff check --line-length 120`
-- 新遊戲：開新資料夾，`README.md` 寫指令／檔案／進度，`docs/` 寫 ROM 格式（含尚未解開的部分）；步驟、範本與分診結果見 `docs/PLAYBOOK.md`
-- 共用工具在 `tools/`：`drive.py`（按鍵序列、截圖、dump、ROM 讀取追蹤）、`replay.py`（savestate 重播，驗證腳本共用）、`koei_lz.py`（KOEI LZ 解壓與找表，三國志II、武將風雲錄、航空霸業以外的作品都用它）、`triage.py`（ROM 分診）、`kaodata.py`
+- 新遊戲：開新資料夾，`README.md` 寫指令／檔案／進度，`docs/` 寫 ROM 格式（含尚未解開的部分）；步驟、範本與分診結果見 `docs/PLAYBOOK.md`；資料夾結構與共用／專用工具一覽見 `docs/ARCHITECTURE.md`
+- 共用工具在 `tools/`：`drive.py`（按鍵序列、截圖、dump、ROM 讀取追蹤）、`replay.py`（savestate 重播，驗證腳本共用；按鍵序列的 `*n`、`expand`、`end_frame`）、`printf_trace.py`（printf／vsprintf 追蹤）、`koei_lz.py`（KOEI LZ 解壓與找表，三國志II、武將風雲錄、航空霸業以外的作品都用它）、`triage.py`（ROM 分診）、`kaodata.py`
 - 每款遊戲提供：人物資料、頭像（含 kaodata 資料集與驗證）、地點資料、大地圖、戰術地圖，以及分析或攻略用得到的表
 - 外部資料（不是 ROM 解析出來的）欄位名加 `[EXT]` 前綴，並註明出處
 - 輸出 CSV 用 UTF-8-BOM（Excel 相容）；匯出結果放各遊戲的 `output/`（不進版控）
