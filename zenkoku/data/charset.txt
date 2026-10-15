@@ -1,0 +1,26 @@
+# Super Nobunaga no Yabou Zenkoku-ban font glyph -> character, 32 glyphs per line; glyph g is text code 0x8140 + g.
+# Glyph g is at file 32 g (16x16 1bpp, four 8x8 tiles TL TR BL BR; drawn by $C3:33B9). 636 glyphs (codes 0x8140-0x83BB).
+# Derived by exact bitmap matches against the fonts of 歐陸戰線, 霸王傳, 太閤立志傳, 元朝秘史, 三國志III, 項劉記 and
+# 武將風雲錄 (631 of 633 glyphs; 0 is blank, 4 is drawn as ←). Bitmaps shared by two characters were resolved by
+# JIS X 0208 order (the font is a JIS-ordered subset: 5 symbols, then kanji 阿-蘆). 〓 = glyphs 633-635, one 3-cell
+# ligature for the 4-character surname 長宗我部 (rom.LIGATURES). Kana are not in this font (half-width single bytes).
+　々ー→←阿愛悪旭葦圧綾安以伊位夷委惟意為移違井一因姻右宇羽雨嘘
+浦噂運雲影栄永鋭疫越延炎遠奥応横王岡屋俺音下何価加可夏嫁家果河蝦
+我賀解壊改海界開外害各角楽割葛轄勘巻完漢間関丸岸岩顔願危喜器基奇
+岐揮気畿季紀規記貴起輝騎義吉却久休及宮求級拠強教狭尭業近金九駆具
+空隅君訓群軍慶景継計軽芸撃決結月健兼見謙賢元原幻減玄現言限雇五互
+後御語光功口向好孝工広康攻更江甲綱考行貢高合国黒込今墾婚混佐左差
+最済斎細在財坂堺崎札薩雑三参山産讃残使史四士姉子市師志指支施止死
+氏事字寺持時次治示自鹿七失柴者借若取守手首受宗就州秀秋終習住十重
+出術春駿準順処所書勝商将小昌昭松沼章上城場常条譲織職色信寝心新申
+真神親人須図吹水粋翠数杉世瀬勢姓成政晴正生盛西誠斉石切摂節説千宣
+川戦泉浅選前善全曾素蘇倉争相総装送騒蔵造足属賊続存孫村他多騨体待
+戴貸退隊代台大第択但達谷誰丹担断男値知地智池置致竹筑着中忠貯張朝
+町調長頂直鎮津墜追鎚通塚辻鶴偵定底程訂敵鉄天殿田登都度土倒冬島東
+当筒統藤豆逃動同道得徳奈那内謎灘南難二尼弐肉虹日入如任忍認濡猫熱
+年念燃粘之濃納能農播覇波派馬敗杯配買売伯白幡畠八発抜反叛番磐斐疲
+肥被避飛備尾美姫百標表病品不負武部風福淵払分兵平柄陛米別変編辺返
+保捕方砲豊亡房望謀防北睦堀本摩磨魔麻埋毎幕枕万味魅岬密稔妙民眠夢
+無名命明盟滅模茂毛猛蒙木黙目紋門也冶夜耶野弥矢役靖柳油輸唯優勇友
+有由祐裕雄予余与様用葉要陽養来頼雷落乱嵐藍蘭覧利里陸率略留隆竜龍
+了糧良領力隣麟瑠涙累類令麗齢暦列練路朗六録和揆耆蘆〓〓〓
