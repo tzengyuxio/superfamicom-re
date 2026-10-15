@@ -49,7 +49,7 @@ def build(rom_path: str) -> tuple[dict, list[bytes]]:
         "id": "tk-sfc",
         "game": "TK",
         "platform": "SFC",
-        "title": {"ja": "提督の決断", "zh": "提督的決斷"},
+        "title": {"ja": "提督の決断", "zh": "提督之決斷"},
         "source": {"producer": "superfamicom-re", "revision": kaodata.revision(REPO),
                    "inputs": [{"path": os.path.basename(rom_path), "sha1": hashlib.sha1(rom.data).hexdigest()}]},
         "display": {"scale": 6},
