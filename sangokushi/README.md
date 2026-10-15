@@ -27,8 +27,8 @@ KOEI，SFC（HiROM 1 MB，只有一個版本）。FC 版 `三國志`（`~/works/
 |------|------|
 | `rom.py` | ROM 解碼：字型與文字、名表、劇本（國／勢力／人物的複製與修補）、靜態國表、州、頭像（肖像＋男女組合臉）、大地圖（含支配勢力上色層）、戰場（格子、tilemap、城位置） |
 | `data/charset.txt` | 字表：字型 921 字 → 字元（32 字一行，`#` 開頭是註解） |
-| `tools/sequences.py` | 按鍵序列（劇本一覽、189 年曹操的指令畫面、情報子選單、全圖、對 5 國開戰）與 `*n` 展開（`replay.py` 不支援） |
-| `tools/printf.py` | 攔遊戲的 printf `$C2:16DC`，收集格式位址與引數（數字、`%s` 指標），給驗證腳本用 |
+| `tools/sequences.py` | 按鍵序列（劇本一覽、189 年曹操的指令畫面、情報子選單、全圖、對 5 國開戰）（`*n` 展開與 `end_frame` 用共用的 `tools/replay.py`） |
+| `tools/printf.py` | 用共用的 `tools/printf_trace.py` 攔遊戲的 printf `$C2:16DC`，收集格式位址與引數（數字、`%s` 指標），給驗證腳本用 |
 | `export.py` | 匯出 CSV／XLSX／PNG |
 | `export_kaodata.py` | 匯出 kaodata 統一格式資料集 `san1-sfc`（肖像 128＋男性組合 6 型＋女性組合 52 張） |
 | `verify_kaodata_export.py` | 資料集用參考渲染器畫出來，和 ROM 解碼逐 pixel 比對；頭像碼；checksums |

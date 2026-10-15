@@ -1,6 +1,12 @@
-"""Button sequences of 提督の決断 for tools/replay.py and tools/drive.py, plus the "*n" repeat that drive.py has
-and replay.py lacks. A press holds `hold` frames and is followed by 20 (replay.py / drive.py timing).
+"""Button sequences of 提督の決断 for tools/replay.py and tools/drive.py. A press holds `hold` frames and is
+followed by 20 (replay.py / drive.py timing); expand() and end_frame() come from tools/replay.py.
 """
+
+import os
+import sys
+
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "tools"))
+from replay import end_frame, expand  # noqa: F401  (re-exported for the verify scripts)
 
 # title -> 新しくゲームを始める -> scenario menu (cursor on 1), about frame 2460
 TO_SCENARIOS = "w1800 start:10 w300 start:10 w300 a:10 w300"
@@ -20,22 +26,3 @@ def new_game(sc: int, side: int) -> str:
     return (f"{'down:10 w30 ' * (sc - 1)}a:10 w200 up:10 w100 a:10 w300 {'down:10 w60 ' if side else ''}"
             "a:10 w300 a:10 w300 a:10 w300 a:10 w300 b:10 w200 b:10 w200 b:10 w200 start:10 w200 a:10 w200 "
             f"start:10 w200 {ROLL} w200 a:10 w200")
-
-
-def expand(steps: str) -> str:
-    out = []
-    for st in steps.split():
-        s, _, n = st.partition("*")
-        out += [s] * int(n or 1)
-    return " ".join(out)
-
-
-def end_frame(steps: str, start: int = 10) -> int:
-    """Frame after the last step."""
-    f = start
-    for st in expand(steps).split():
-        if st.startswith("w"):
-            f += int(st[1:])
-        elif not st.startswith("@"):
-            f += int(st.partition(":")[2] or 4) + 20
-    return f

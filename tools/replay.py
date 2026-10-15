@@ -11,8 +11,10 @@ extra_lua can add callbacks (e.g. a read trace) and hand their result back throu
              "shot": 150, "read": [("vram", 0xC800, 960), ("cgram", 0xA0, 32)]}]
     results = replay(rom_path, "w900 start:10 ...", save_at=3790, runs=runs)  # [[bytes per read], ...]
 
-"steps" use tools/drive.py syntax (button[:hold], w<n>) and count from the savestate frame; "shot" is the
-frame (after the savestate) at which the reads are made. PRG patches of a run are undone before the next run.
+"steps" use tools/drive.py syntax (button[:hold][*n], w<n>; @tag is skipped) and count from the savestate frame;
+"shot" is the frame (after the savestate) at which the reads are made. expand() spells out the *n repeats and
+end_frame() gives the frame after the last step, e.g. replay(rom, boot, end_frame(boot), ...) saves right after
+the boot presses. PRG patches of a run are undone before the next run.
 Boot presses after save_at are dropped (each run plays its own "steps" from the savestate), so take the
 savestate after the last boot press, or put the whole sequence into every run's steps.
 """
@@ -75,16 +77,37 @@ end, emu.eventType.endFrame)
 """
 
 
-def presses(steps: str, start: int) -> list[tuple[int, str, int]]:
-    out, f = [], start
+def expand(steps: str) -> str:
+    """'a:10*3 w100' -> 'a:10 a:10 a:10 w100'."""
+    out = []
     for st in steps.split():
+        s, _, n = st.partition("*")
+        out += [s] * int(n or 1)
+    return " ".join(out)
+
+
+def presses(steps: str, start: int) -> list[tuple[int, str, int]]:
+    """[(frame, button, hold)]: a press holds `hold` frames (default 4) and is followed by 20."""
+    out, f = [], start
+    for st in expand(steps).split():
         if st.startswith("w"):
             f += int(st[1:])
-        else:
+        elif not st.startswith("@"):
             b, _, hold = st.partition(":")
             out.append((f, b, int(hold or 4)))
             f += int(hold or 4) + 20
     return out
+
+
+def end_frame(steps: str, start: int = 10) -> int:
+    """Frame after the last step; start is 10 for a boot script, 0 for a run's steps (counted from the savestate)."""
+    f = start
+    for st in expand(steps).split():
+        if st.startswith("w"):
+            f += int(st[1:])
+        elif not st.startswith("@"):
+            f += int(st.partition(":")[2] or 4) + 20
+    return f
 
 
 def load_rom_bytes(path: str) -> bytes:

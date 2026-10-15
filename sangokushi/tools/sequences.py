@@ -1,5 +1,5 @@
 """Button sequences of スーパー三國志 for tools/drive.py and tools/replay.py (a press holds `hold` frames and is
-followed by 20 more; "x*n" repeats a step, expand() spells it out for replay.py).
+followed by 20 more; "x*n" repeats a step; expand() and end_frame() come from tools/replay.py).
 
     TO_SCENARIOS   title -> 新しいゲーム -> the scenario list (frame ~1530)
     scenario(k)    -> scenario k (1-5), one player -> the ruler selection screen (8 rulers)
@@ -8,6 +8,12 @@ followed by 20 more; "x*n" repeats a step, expand() spells it out for replay.py)
     MAP            main screen -> the whole map
     WAR_5 + WAR_START  main screen -> war on 5国 -> the battle field
 """
+
+import os
+import sys
+
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "tools"))
+from replay import end_frame, expand  # noqa: F401  (re-exported for the verify scripts)
 
 TO_SCENARIOS = "w1040 start:10 w200 a:10 w200"
 
@@ -29,22 +35,3 @@ MAP = "b:10 w200"                                 # main screen -> the whole map
 WAR_5 = ("down:10 w40 a:10 w100 down:10 w40 down:10 w40 a:10 w100 down:4 w20 a:3 w100 a:10 w150 a:10 w60 down:10 w40"
          " a:10 w60 start:10 w150 a:10 w150 a:10 w150 a:10 w150 a:10 w150")
 WAR_START = "a:10 w300"
-
-
-def expand(steps: str) -> str:
-    out = []
-    for st in steps.split():
-        s, _, n = st.partition("*")
-        out += [s] * int(n or 1)
-    return " ".join(out)
-
-
-def end_frame(steps: str, start: int = 10) -> int:
-    """Frame after the last step (replay.py / drive.py timing)."""
-    f = start
-    for st in expand(steps).split():
-        if st.startswith("w"):
-            f += int(st[1:])
-        else:
-            f += int(st.partition(":")[2] or 4) + 20
-    return f

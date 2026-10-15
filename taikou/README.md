@@ -27,7 +27,7 @@ KOEI，1993，SFC（HiROM 1.5 MB）。主角木下藤吉郎，1560 年（桶狭�
 |------|------|
 | `rom.py` | ROM 解碼：字型與文字、名表、開始時區塊（人物、勢力、城狀態）、之後登場的人物、城、字串表、頭像（專屬＋組合）、大地圖、戰場地圖 |
 | `data/charset.txt` | 字表：字型 2048 字 → 字元（32 字一行，`#` 開頭是註解） |
-| `tools/sequences.py` | 按鍵序列（到選型畫面、日本地圖、桶狭間情報畫面）、`*n` 展開（`replay.py` 不支援）、在中途切開序列 |
+| `tools/sequences.py` | 按鍵序列（到選型畫面、日本地圖、桶狭間情報畫面）、在中途切開序列（`*n` 展開與 `end_frame` 用共用的 `tools/replay.py`） |
 | `export.py` | 匯出 CSV／XLSX／PNG |
 | `export_kaodata.py` | 匯出 kaodata 統一格式資料集 `taikoh-sfc`（專屬頭像 258 張＋12 型組合臉） |
 | `verify_kaodata_export.py` | 資料集用參考渲染器畫出來，和 ROM 解碼逐 pixel 比對；portrait code；checksums |

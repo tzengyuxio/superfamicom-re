@@ -41,8 +41,7 @@ ROM：`roms/Teitoku no Ketsudan II (Japan).zip`（原版，預設）與 `roms/Te
 | `verify_text.py` | 把提督名換成各個字碼，記錄字型函式讀的 glyph：1216 字＋空白碼 |
 | `verify_faces.py` | 人事畫面：104 張頭像的 VRAM tile 與 CGRAM；提督／將軍 → 頭像號 |
 | `verify_maps.py` | 大地圖位圖與遊戲 WRAM 比對；拠点、潜水艦、艦隊座標與海陸 |
-| `tools/sequences.py` | 按鍵序列（標題→劇本選單、開新遊戲到主畫面、情報／一覧／人事選單），以及 `tools/replay.py` 沒有的 `*n` 重複語法 |
-| `tools/printf_trace.py` | 給 `tools/replay.py` 用的 vsprintf 追蹤 Lua：記錄每次呼叫的格式位址、依格式字串讀出的參數（%d/%ld/%s/%c）、實際輸出字串 |
+| `tools/sequences.py` | 按鍵序列（標題→劇本選單、開新遊戲到主畫面、情報／一覧／人事選單）（`*n` 展開與 `end_frame` 用共用的 `tools/replay.py`） |
 | `data/charset.txt` | 字型 glyph → 字元對照（1216 字，每行 32 字） |
 
 ## 輸出（`teitoku2/output/`）
@@ -97,7 +96,7 @@ ROM：`roms/Teitoku no Ketsudan II (Japan).zip`（原版，預設）與 `roms/Te
 
 - `verify_scenarios.py`：每個劇本比對載入程式最後一次複製後的 19 個 WRAM 區段（29755 bytes）與 `Rom.wram_image` 逐 byte 相同；
   確認畫面 vsprintf 的標題指標；主畫面日期 printf 與 $7E:21A7 的日期。
-- `verify_tables.py`：劇本 0 以日本開始，進各畫面翻頁，用 `tools/printf_trace.py` 記錄 vsprintf，同一時點 dump WRAM，
+- `verify_tables.py`：劇本 0 以日本開始，進各畫面翻頁，用共用的 `tools/printf_trace.py` 記錄 vsprintf，同一時點 dump WRAM，
   用 `rom.Decoders` 解 dump 後比對（開局後部分值會變，所以比對同時的 WRAM，不是 ROM 映像）。項目：就航艦船、予備艦船
   （水雷遊戲印 0，不比）、艦型性能（日 48／米 40／その他 22 類）、航空機性能、戦車性能、潜水艦性能（日米各 10 類）、
   国力情報、海軍兵力、陸軍兵力、外交情報、艦隊一覧、陸戦隊一覧、潜水艦一覧、基地一覧（生産力、油鉱）、拠点一覧（100）、

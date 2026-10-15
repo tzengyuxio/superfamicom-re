@@ -29,23 +29,23 @@ SC = 0
 TO_MAIN = f"{TO_SCENARIOS} {new_game(SC)}"
 WRAM_LO, WRAM_HI = 0x2000, 0xA300
 R_PAGE = " r:10 w200"
-CHOICE = ["a:10 w300", "down:10 w60 a:10 w300", "down:10 w60*2 a:10 w300"]  # 日本 / アメリカ / その他
+CHOICE = ["a:10 w300", "down:10 w60 a:10 w300", "down:10 w60 down:10 w60 a:10 w300"]  # 日本 / アメリカ / その他
 RUNS = {
     "active": INFO + " a:10 w300" + R_PAGE * 8,
-    "reserve": INFO + " down:10 w60*3 a:10 w300" + R_PAGE * 17,
+    "reserve": INFO + " down:10 w60 down:10 w60 down:10 w60 a:10 w300" + R_PAGE * 17,
     **{f"classes{k}": INFO + " right:10 w60 a:10 w200 " + CHOICE[k] + R_PAGE * 12 for k in range(3)},
     **{f"aircraft{k}": INFO + " right:10 w60 down:10 w60 a:10 w200 " + CHOICE[k] + R_PAGE * 8 for k in range(3)},
-    "tanks": INFO + " right:10 w60 down:10 w60*2 a:10 w300" + R_PAGE * 2,
-    **{f"subclasses{k}": INFO + " right:10 w60 down:10 w60*3 a:10 w200 " + CHOICE[k] + R_PAGE * 3 for k in range(2)},
-    "power": INFO + " right:10 w60*2 a:10 w300",
-    "navy": INFO + " right:10 w60*2 down:10 w60 a:10 w300" + R_PAGE * 2,
-    "army": INFO + " right:10 w60*2 down:10 w60*2 a:10 w300" + R_PAGE * 2,
-    "diplomacy": INFO + " right:10 w60*2 down:10 w60*3 a:10 w300",
+    "tanks": INFO + " right:10 w60 down:10 w60 down:10 w60 a:10 w300" + R_PAGE * 2,
+    **{f"subclasses{k}": INFO + " right:10 w60 down:10 w60 down:10 w60 down:10 w60 a:10 w200 " + CHOICE[k] + R_PAGE * 3 for k in range(2)},
+    "power": INFO + " right:10 w60 right:10 w60 a:10 w300",
+    "navy": INFO + " right:10 w60 right:10 w60 down:10 w60 a:10 w300" + R_PAGE * 2,
+    "army": INFO + " right:10 w60 right:10 w60 down:10 w60 down:10 w60 a:10 w300" + R_PAGE * 2,
+    "diplomacy": INFO + " right:10 w60 right:10 w60 down:10 w60 down:10 w60 down:10 w60 a:10 w300",
     "fleets": LIST + " a:10 w300" + R_PAGE * 2,
-    "marines": LIST + " down:10 w60*2 a:10 w300" + R_PAGE * 4,
-    "submarines": LIST + " down:10 w60*3 a:10 w300" + R_PAGE * 2,
-    "bases": LIST + " down:10 w60*4 a:10 w300" + R_PAGE * 14,
-    "kyoten": LIST + " down:10 w60*5 a:10 w300" + R_PAGE * 11,
+    "marines": LIST + " down:10 w60 down:10 w60 a:10 w300" + R_PAGE * 4,
+    "submarines": LIST + " down:10 w60 down:10 w60 down:10 w60 a:10 w300" + R_PAGE * 2,
+    "bases": LIST + " down:10 w60 down:10 w60 down:10 w60 down:10 w60 a:10 w300" + R_PAGE * 14,
+    "kyoten": LIST + " down:10 w60 down:10 w60 down:10 w60 down:10 w60 down:10 w60 a:10 w300" + R_PAGE * 11,
     "admirals": PERSONNEL + " a:10 w300" + R_PAGE * 5,
     "generals": PERSONNEL + " down:10 w60 a:10 w300" + R_PAGE * 3,
 }
@@ -77,7 +77,7 @@ LIST_NAMES = ("日本", "アメリカ", "その他")
 
 def collect(rom: R.Rom, names: list[str]) -> dict:
     """Run the screens: {run: (calls, WRAM bank $7E image)}; a call has "ftext", the raw format bytes."""
-    lua = printf_trace.lua(rom.off["code"]["vsprintf"]) + """
+    lua = printf_trace.lua(rom.off["code"]["vsprintf"], fmt_at=8, va_at=12, dst_at=4, esc_c=True) + """
 function EXTRA_RESET() PF_RESET() end
 function EXTRA_SHOT() return PF_SHOT() end
 """
