@@ -30,7 +30,7 @@ KOEI，SFC（HiROM 1 MB，只有一個版本）。FC 版 `三國志`（`~/works/
 | `tools/sequences.py` | 按鍵序列（劇本一覽、189 年曹操的指令畫面、情報子選單、全圖、對 5 國開戰）（`*n` 展開與 `end_frame` 用共用的 `tools/replay.py`） |
 | `tools/printf.py` | 用共用的 `tools/printf_trace.py` 攔遊戲的 printf `$C2:16DC`，收集格式位址與引數（數字、`%s` 指標），給驗證腳本用 |
 | `export.py` | 匯出 CSV／XLSX／PNG |
-| `export_kaodata.py` | 匯出 kaodata 統一格式資料集 `san1-sfc`（肖像 128＋男性組合 6 型＋女性組合 52 張） |
+| `export_kaodata.py` | 匯出 kaodata 統一格式資料集 `san1-sfc`（肖像 128；組合臉男性 6 型＋女性 2 型；女性組合 52 張另列為「女性」頭像） |
 | `verify_kaodata_export.py` | 資料集用參考渲染器畫出來，和 ROM 解碼逐 pixel 比對；頭像碼；checksums |
 | `verify_scenarios.py` | 5 個劇本到君主選擇畫面，WRAM 國／勢力／人物區塊與 ROM（複製＋修補）逐 byte 比對；可選君主 |
 | `verify_persons.py` | 人物 1–255 分批換進曹操所在的國，攔武将一覽的 printf |
@@ -83,6 +83,6 @@ KOEI，SFC（HiROM 1 MB，只有一個版本）。FC 版 `三國志`（`~/works/
 | `verify_faces.py` | 曹操的詳細畫面，`$C1:143F` 進入時把頭像碼換成 0–0x132（307 輪），比對 VRAM `0xEC80` 960 bytes、OAM 30 個 sprite、CGRAM `0x120` | 肖像 128/128、男性組合 127/127、女性組合 52/52；sprite 307/307、調色盤 `0x4E711` 307/307，OK（241 秒） |
 | `verify_text.py` | 44 輪把全部名表的 3 個漢字碼換成待測字（每輪 7 人 × 3 字），開武将一覽，在 VRAM 找連續 3 字 × 4 個 2bpp tile | 921/921 字（含跳脫碼的 192、448、704），OK（96 秒） |
 | `verify_maps.py` | 大地圖：在新遊戲最後一次按鍵前存 savestate，7 輪設定支配勢力（劇本 1–5、c mod 15、c // 15），開全圖比對 VRAM `0x9800`、`0xA020`、`0x3800`、`0x4020`（上色層逐 pixel）、CGRAM 調色盤 2、3。戰場：對 5 國開戰前存 savestate，58 輪把 `$2720` 改成 c 國，比對 WRAM `$7F:8000`、`$9499`、VRAM `0x3800`、`0x4C00`、CGRAM 調色盤 5–7；另 1 輪不改（遊戲自己選 5 國） | 大地圖 7/7 輪：BG1 660/660、字元相同、BG2 660/660、上色層 42240/42240 px、調色盤 2 是循環幀之一、調色盤 3 相同（劇本 1 遊戲把 9 國的支配勢力 11 改成 0，以畫面當時的 WRAM 為準）；戰場：遊戲自己選的 5 國相同，58/58 張 tilemap、格子（含 233 個城）、BG2、字元、調色盤 5–7 相同，OK（131 秒） |
-| `verify_kaodata_export.py` | 參考渲染器（`tools/kaodata.py`）與 `Rom.face_pixels` 逐 pixel 比對、頭像碼、調色盤、checksums | 255/255、肖像 180/180、頭像碼 255/255、checksums OK（不到 1 秒） |
+| `verify_kaodata_export.py` | 參考渲染器（`tools/kaodata.py`）與 `Rom.face_pixels` 逐 pixel 比對（人物、頭像，以及用女性組合型畫出的 52 個女性頭像碼）、頭像碼、調色盤、checksums | 255/255、肖像 180/180、女性組合 52/52、頭像碼 255/255、checksums OK（不到 1 秒） |
 
 另外對照遊戲畫面：曹操的武將詳細畫面截圖，頭像以 OBJ 調色盤 1 渲染後與截圖逐 pixel 相同（最初誤用 BG 調色盤 3，靠這張截圖改正）。

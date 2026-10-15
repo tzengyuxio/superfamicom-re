@@ -2,13 +2,15 @@
 """Export SFC スーパー三國志 as a kaodata dataset (san1-sfc, format kaodata/1).
 
 Pixels are colour numbers of the one face palette (16 colours, OBJ palette 1 at ROM 0x4E711).
-Composite faces ($C1:143F): one variant per male composite type (6). The game's build order becomes the slots:
+Composite faces ($C1:143F): one variant per composite type, male 0-5 then female 0-1 (variants 6-7). The game's
+build order becomes the slots:
 part k (0-4) of the type writes its LZ stream as consecutive 8x8 cells of the 40x48 face from a per-type
 position; every item is a 40x48 canvas with 255 outside the cells it writes. A character's face is
 {variant: type, parts: [part variant 0-4], code: face code (4 hex digits)}.
 Portraits 0-127 are the 128 portrait LZ entries (code 0000-007F). The 52 female composite faces (0x0FF-0x132) are
-used by no person; they are added as rendered portraits 128-179 with their code and group 女性 (what the game
-uses them for is unsolved; presumably daughters).
+used by no person: their parts are the female variants, and each of the 52 faces the game defines is also added as
+a rendered portrait 128-179 with its code and group 女性, so the face browser lists them (what the game uses them
+for is unsolved; presumably daughters).
 Characters are persons 1-255 (person 0, a second 曹操 entry the game does not list, is left out). Names are
 the ROM's, except two where the game draws a look-alike glyph (NAME_FIXES, as the FC dataset writes them).
 
@@ -70,12 +72,13 @@ def build(rom_path: str) -> tuple[dict, list[bytes]]:
         blobs[blob].extend(px)
         return len(images) - 1
 
-    counts = rom.composite_slots("male")
     variants = []
-    for t in range(COMPOSITES["male"][6]):
-        parts = {sid: {"items": [add(tiles_image(*rom.composite_part("male", t, k, v))) for v in range(counts[k])]}
-                 for k, (sid, _) in enumerate(SLOTS)}
-        variants.append({"id": str(t), "label": f"男性 第 {t} 型", "parts": parts})
+    for kind, label in (("male", "男性"), ("female", "女性")):
+        counts = rom.composite_slots(kind)
+        for t in range(COMPOSITES[kind][6]):
+            parts = {sid: {"items": [add(tiles_image(*rom.composite_part(kind, t, k, v))) for v in range(counts[k])]}
+                     for k, (sid, _) in enumerate(SLOTS)}
+            variants.append({"id": str(len(variants)), "label": f"{label} 第 {t} 型", "parts": parts})
 
     portraits = [{"img": add(bytes(rom.face_pixels(n)), blob=1), "code": f"{n:04X}"} for n in range(PORTRAIT_COUNT)]
     portraits += [{"img": add(bytes(rom.face_pixels(code)), blob=1), "code": f"{code:04X}", "group": "女性"}
