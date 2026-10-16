@@ -76,6 +76,11 @@ def characters(rom: Rom) -> list[dict]:
     return out
 
 
+def head_label(n: int) -> str:
+    """Head types 0-4 are men, 5-6 women (as in the FC version)."""
+    return f"男 {n}" if n < 5 else f"女 {n - 5}"
+
+
 def build(rom_path: str) -> tuple[dict, list[bytes]]:
     rom = Rom(rom_path)
     images, blobs = [], [bytearray(), bytearray()]
@@ -96,7 +101,8 @@ def build(rom_path: str) -> tuple[dict, list[bytes]]:
         for name, part in zip(PART_NAMES, rom.head_parts(head)):
             parts[name] = {"items": [add(cells_image(tiles, part["tile"] + v * part["count"], part["cells"], pal))
                                      for v in range(2)]}
-        variants.append({"id": str(head), "label": f"{FACE_GROUPS[culture]}(推測) {head % 7}", "parts": parts})
+        label = f"{FACE_GROUPS[culture]}(推測)／{head_label(head % 7)}"
+        variants.append({"id": str(head), "label": label, "parts": parts})
 
     portraits = []
     for n in range(PORTRAIT_COUNT):
