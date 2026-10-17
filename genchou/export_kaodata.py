@@ -9,12 +9,15 @@ canvases, 255 outside the part's cells). Heads of groups 4-6 use palette 2, the 
 0-96 (0-56 men, 57-96 women = woman face code + 57) use palette 3.
 
 Characters: the scenario persons and the family block distinct by (name, face code) get ids 0-; the women of
-the 4 scenarios distinct the same way get ids 1000-.
+the 4 scenarios distinct the same way get ids 1000-. nameZh comes from data/name_zh.json (by character id), taken
+from the kaodata genchou-pc98 / x68 / pc88 / fc datasets (kaodata-re, the Chinese DOS version's names with typos
+fixed) by matching the Japanese names.
 
 Usage: .venv/bin/python genchou/export_kaodata.py --out <dir> [--rom ROM]
 """
 import argparse
 import hashlib
+import json
 import os
 import sys
 
@@ -42,6 +45,7 @@ CANVAS = (FACE_W * 8, FACE_H * 8)
 HEADS = 56
 SLOT_LABELS = {"eyes": "眼", "nose": "鼻", "mouth": "口", "top": "上部", "body": "下部"}
 WOMEN_ID = 1000
+NAME_ZH = os.path.join(HERE, "data", "name_zh.json")
 PALETTE_NUMBERS = sorted(FACE_PALETTES)          # dataset palette k*16.. = CGRAM palette PALETTE_NUMBERS[k]
 
 
@@ -74,6 +78,11 @@ def characters(rom: Rom) -> list[dict]:
                 seen.append(key)
                 out.append({"id": base + len(seen) - 1, "name": r["name"], "code": r["face"], "woman": woman})
     return out
+
+
+def names_zh() -> dict[int, str]:
+    with open(NAME_ZH, encoding="utf-8") as f:
+        return {int(k): v for k, v in json.load(f).items()}
 
 
 def head_label(n: int) -> str:
@@ -110,9 +119,11 @@ def build(rom_path: str) -> tuple[dict, list[bytes]]:
         portraits.append({"img": add(bytes(pal * 16 + v for v in rom.face_pixels(n)), blob=1),
                           "code": f"{n if n < WOMAN_PORTRAIT else n - WOMAN_PORTRAIT:04X}"})
 
-    chars = []
-    for c in characters(rom):
-        ch = {"id": c["id"], "name": c["name"]}
+    chars, zh = [], names_zh()
+    found = characters(rom)
+    assert sorted(zh) == sorted(c["id"] for c in found), "data/name_zh.json does not match the character ids"
+    for c in found:
+        ch = {"id": c["id"], "name": c["name"], "nameZh": zh[c["id"]]}
         if (r := reading(c["name"])) is not None:
             ch["reading"] = r
         code = c["code"]

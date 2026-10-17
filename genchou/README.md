@@ -27,6 +27,7 @@ KOEI，1993，SFC（HiROM 1.5 MB）。4 個劇本（1184／1206／1271／1185 �
 |------|------|
 | `rom.py` | ROM 解碼：文字與字型、劇本（人物、國、王家、女性、家族）、主檔表（兵科、交易品、文化…）、頭像（專屬＋組合）、大地圖、戰場地圖 |
 | `data/charset.txt` | 字型 2046 字 → 字元對照（JIS 順序子集） |
+| `data/name_zh.json` | kaodata 的 `nameZh`（人物 id → 中文名）；外部資料，取自 kaodata 的 genchou-pc98／x68／pc88／fc（kaodata-re 從中文 DOS 版取來、已改正錯字），依日文名對照 |
 | `export.py` | 匯出 CSV／XLSX／PNG |
 | `export_kaodata.py` | 匯出 kaodata 統一格式資料集 `genchou-sfc`（97 張專屬頭像＋56 個組合臉頭） |
 | `verify_kaodata_export.py` | 資料集用參考渲染器畫出來，和 ROM 解碼逐 pixel 比對；checksums |
@@ -81,6 +82,6 @@ KOEI，1993，SFC（HiROM 1.5 MB）。4 個劇本（1184／1206／1271／1185 �
 | `verify_faces.py` | 確認卡（男，`$C4:5EDB`）與后妃畫面（女，`$C4:5F63`）；改寫記錄的頭像碼，比對 VRAM 960 bytes、BG tilemap 的調色盤號、CGRAM 調色盤 | 男專屬 57/57、男組合 201/201、女專屬 40/40、女組合 33/33 |
 | `verify_map.py` | 4 劇本主畫面的 BG2：552 tile（顏色 15 以外逐 pixel）、tilemap、CGRAM 調色盤 6 | 4/4 全部一致 |
 | `verify_battle_maps.py` | 遠征ゴルゴナク河原，把 `$C7:92F4`／`$C7:9395`／`$C7:9527` 讀國編號的指令改成常數、`$7E:5425` 設世界旗標，比對戰場 BG2 tilemap、tile 組、調色盤 | 47/47（tile 組 0–4：20／6／5／6／10 張） |
-| `verify_kaodata_export.py` | 參考渲染器（`tools/kaodata.py`）與 `Rom.face_rgb` 逐 pixel 比對、checksums | 321/321 人（女 73）、97/97 張、OK |
+| `verify_kaodata_export.py` | 參考渲染器（`tools/kaodata.py`）與 `Rom.face_rgb` 逐 pixel 比對、checksums | 321/321 人（女 73）、97/97 張、nameZh 321/321、OK |
 
 另外：戰場記錄 47 筆和 FC 版逐 byte 相同；國的相鄰欄位和戰場出入口格 47/47 一致；人名、王家名、地名的 152 個漢字逐一和字形對照過。
