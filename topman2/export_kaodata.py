@@ -44,7 +44,7 @@ def build(rom_path: str) -> tuple[dict, list[bytes]]:
         "id": "topman2-sfc",
         "game": "TOPMAN2",
         "platform": "SFC",
-        "title": {"ja": "トップマネジメントII"},
+        "title": {"ja": "トップマネジメントII", "zh": "頂尖經營者II"},  # zh: 超任終極聖經
         "source": {"producer": "superfamicom-re", "revision": kaodata.revision(REPO),
                    "inputs": [{"path": os.path.basename(rom_path), "sha1": hashlib.sha1(rom.data).hexdigest()}]},
         "display": {"scale": 6},

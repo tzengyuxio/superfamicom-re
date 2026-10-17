@@ -38,7 +38,7 @@ def build(rom_path: str) -> tuple[dict, list[bytes]]:
         "id": "royal-sfc",
         "game": "ROYAL",
         "platform": "SFC",
-        "title": {"ja": "スーパーロイヤルブラッド", "zh": "魔法皇冠"},
+        "title": {"ja": "スーパーロイヤルブラッド", "zh": "超級魔法皇冠"},
         "source": {"producer": "superfamicom-re", "revision": kaodata.revision(REPO),
                    "inputs": [{"path": os.path.basename(rom_path), "sha1": hashlib.sha1(rom.data).hexdigest()}]},
         "display": {"scale": 6},

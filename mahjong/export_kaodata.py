@@ -22,7 +22,7 @@ import kaodata
 from rom import DEFAULT_ROM, FACE_COUNT, FACE_PAL_SELECT, PERSON_COUNT, Rom, bgr555_rgb
 
 IMAGES = FACE_COUNT + 1
-LABELS = ["普通", "說話 1", "說話 2", "笑", "哭", "驚", "怒"]
+LABELS = ["平常", "說話 1", "說話 2", "笑", "哭", "驚", "怒"]
 
 
 def build(rom_path: str) -> tuple[dict, list[bytes]]:

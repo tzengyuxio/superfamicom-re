@@ -32,7 +32,7 @@ def build(rom_path: str) -> tuple[dict, list[bytes]]:
         "id": "leading-sfc",
         "game": "LEADING",
         "platform": "SFC",
-        "title": {"ja": "リーディングカンパニー", "zh": "リーディングカンパニー"},
+        "title": {"ja": "リーディングカンパニー", "zh": "龍頭企業"},  # zh: 超任終極聖經
         "source": {"producer": "superfamicom-re", "revision": kaodata.revision(REPO),
                    "inputs": [{"path": os.path.basename(rom_path), "sha1": hashlib.sha1(rom.data).hexdigest()}]},
         "display": {"scale": 6},
