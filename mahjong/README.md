@@ -25,7 +25,7 @@ KOEI，SFC（LoROM 512 KB，Rev 0）。四人麻雀，對手是 21 位歷史人�
 |------|------|
 | `rom.py` | ROM 解碼：解壓縮、字型與文字、對手、參數、頭像、名字圖、台詞與情境、役名 |
 | `export.py` | 匯出 CSV／XLSX／PNG |
-| `export_kaodata.py` | 匯出 kaodata 統一格式資料集 `mahjong-sfc`（含 expressions 的 checksums） |
+| `export_kaodata.py` | 匯出 kaodata 統一格式資料集 `mahjong-sfc` |
 | `verify_kaodata_export.py` | 資料集用參考渲染器畫出來，和 ROM 解碼逐 pixel 比對；人物的臉與樣貌；checksums |
 | `verify_faces.py` | 牌桌上換說話的人與表情碼，比對 WRAM 頭像串流、VRAM 表情圖與說話臉、CGRAM 與 OAM 調色盤 |
 | `verify_dialogue.py` | 21 人的台詞串流與 WRAM 比對；212 個字碼寫進台詞窗，比對 tilemap 與字型 tile |

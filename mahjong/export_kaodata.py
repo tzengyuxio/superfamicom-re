@@ -8,13 +8,10 @@ labels. The game draws the faces with one of two 16-colour palettes ($01:8925 se
 dataset palette is both of them (32 colours) and a pixel is `16 * select + colour`. Colour 0 is drawn opaque, as
 in the game's face windows.
 
-tools/kaodata.checksums does not cover expressions (`ch:<id>/<k>`, spec §8), so checksums() here adds them.
-
 Usage: .venv/bin/python mahjong/export_kaodata.py --out <dir> [--rom ROM]
 """
 import argparse
 import hashlib
-import json
 import os
 import sys
 
@@ -26,17 +23,6 @@ from rom import DEFAULT_ROM, FACE_COUNT, FACE_PAL_SELECT, PERSON_COUNT, Rom, bgr
 
 IMAGES = FACE_COUNT + 1
 LABELS = ["普通", "說話 1", "說話 2", "笑", "哭", "驚", "怒"]
-
-
-def checksums(meta: dict, blobs: list[bytes]) -> dict:
-    """kaodata.checksums plus `ch:<id>/<k>` for the k-th expression (k from 1)."""
-    out = kaodata.checksums(meta, blobs)
-    colors = meta["palettes"][0]["colors"]
-    for c in meta["characters"]:
-        for k, face in enumerate(c.get("expressions", []), 1):
-            rgba = kaodata.to_rgba(kaodata.compose_display(meta, blobs, face), colors)
-            out["entries"][f"ch:{c['id']}/{k}"] = hashlib.sha256(rgba).hexdigest()
-    return out
 
 
 def build(rom_path: str) -> tuple[dict, list[bytes]]:
@@ -82,8 +68,6 @@ def main() -> None:
     args = ap.parse_args()
     meta, blobs = build(args.rom)
     kaodata.write_dataset(args.out, meta, blobs)
-    with open(os.path.join(args.out, "checksums.json"), "w", encoding="utf-8") as f:
-        json.dump(checksums(meta, blobs), f, indent=1)
     print(f"mahjong-sfc: {len(meta['characters'])} characters, {len(meta['portraits'])} portraits, "
           f"{len(meta['images'])} images")
     for name in [*meta["blobs"], "dataset.json", "checksums.json"]:

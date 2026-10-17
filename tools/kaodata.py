@@ -74,6 +74,8 @@ def checksums(meta: dict, blobs: list[bytes]) -> dict:
         return hashlib.sha256(to_rgba(compose_display(meta, blobs, face), colors)).hexdigest()
 
     entries = {f"ch:{c['id']}": digest(c["face"]) for c in meta["characters"] if "face" in c}
+    entries.update({f"ch:{c['id']}/{k}": digest(face) for c in meta["characters"]
+                    for k, face in enumerate(c.get("expressions", []), 1)})
     entries.update({f"pt:{n}": digest({"portrait": n}) for n in range(len(meta.get("portraits", [])))})
     return {"algo": "sha256-rgba", "entries": entries}
 
