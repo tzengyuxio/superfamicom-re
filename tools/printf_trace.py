@@ -8,6 +8,13 @@ the stack and hooked once per call site). In va a %d / %u / %x / %c takes 2 byte
 pointer). The format walk skips two-byte characters (0x81-0x9F, 0xE0-) and escapes: ESC + 1 byte, or with
 esc_c ESC C x (x may be a %c argument).
 
+A dispatcher that copies the arguments to the direct page (リーディングカンパニー's $00:8000 services) is traced at
+the service entries instead: entry is then a list, va_at may be one offset per entry, dp=True takes the offsets
+from the D register instead of sp, and fmt_at=None reads the format pointer from the start of va (the arguments
+follow it, 4 bytes on). Hooking the entries, not a busy dispatcher, keeps Mesen fast.
+
+    printf_trace.lua([0x00AE9B, 0x00B62F], fmt_at=None, va_at=[0x54, 0x58], va_size=2, dp=True)
+
     lua = printf_trace.lua(0xC216DC, fmt_at=4, va_at=8, va_size=2) + '''
     function EXTRA_RESET() PF_RESET() end
     function EXTRA_SHOT() return PF_SHOT() end
@@ -40,20 +47,23 @@ end
 local function on_return() finish() end
 function PF_RESET() pf = {}; pending = nil end
 function PF_SHOT() finish(); return table.concat(pf) .. "00" end  -- the 00 keeps the field when nothing was seen
-emu.addMemoryCallback(function()
+local function on_call(va_at)
   finish()
   if #pf >= PF_MAX then return end
-  local sp = emu.getState()["cpu.sp"]
-  local function a24(o) return rd(sp + o) | rd(sp + o + 1) << 8 | rd(sp + o + 2) << 16 end
-  local fmt = a24(@FMT_AT@)
-  local va = @VA_SIZE@ == 3 and a24(@VA_AT@) or (rd(sp + @VA_AT@) | rd(sp + @VA_AT@ + 1) << 8)
+  local s = emu.getState()
+  local sp = s["cpu.sp"]
+  local base = @DP@ and s["cpu.d"] or sp
+  local function a24(a) return rd(a) | rd(a + 1) << 8 | rd(a + 2) << 16 end
+  local va = @VA_SIZE@ == 3 and a24(base + va_at) or (rd(base + va_at) | rd(base + va_at + 1) << 8)
+  local fmt, off = a24(va), 4
+  if @FMT_AT@ >= 0 then fmt, off = a24(base + @FMT_AT@), 0 end
   local dst = nil
   if @DST_AT@ >= 0 then
-    dst = a24(@DST_AT@)
-    local ret = a24(1) + 1
+    dst = a24(base + @DST_AT@)
+    local ret = a24(sp + 1) + 1
     if not hooked[ret] then hooked[ret] = true; emu.addMemoryCallback(on_return, emu.callbackType.exec, ret) end
   end
-  local t, args, off, i = {}, {}, 0, 0
+  local t, args, i = {}, {}, 0
   for k = 0, 2 do hx(t, fmt >> (8 * (2 - k)) & 255) end
   while i < 300 do
     local c = rd(fmt + i)
@@ -91,7 +101,10 @@ emu.addMemoryCallback(function()
   hx(t, #args)
   for _, a in ipairs(args) do t[#t + 1] = a end
   pending = {t = t, dst = dst}
-end, emu.callbackType.exec, @ENTRY@)
+end
+for _, e in ipairs({@ENTRIES@}) do
+  emu.addMemoryCallback(function() on_call(e[2]) end, emu.callbackType.exec, e[1])
+end
 """
 
 
@@ -105,11 +118,14 @@ class Str(bytes):
         return s
 
 
-def lua(entry: int, fmt_at: int, va_at: int, va_size: int = 3, dst_at: int | None = None, esc_c: bool = False,
-        max_calls: int = 3000) -> str:
+def lua(entry: int | list[int], fmt_at: int | None, va_at: int | list[int], va_size: int = 3,
+        dst_at: int | None = None, esc_c: bool = False, max_calls: int = 3000, dp: bool = False) -> str:
     """The trace Lua; call PF_RESET() from EXTRA_RESET and return PF_SHOT() from EXTRA_SHOT."""
-    subst = {"MAX": max_calls, "ENTRY": entry, "FMT_AT": fmt_at, "VA_AT": va_at, "VA_SIZE": va_size,
-             "DST_AT": -1 if dst_at is None else dst_at, "ESC_C": "true" if esc_c else "false"}
+    entries = [entry] if isinstance(entry, int) else entry
+    vas = [va_at] * len(entries) if isinstance(va_at, int) else va_at
+    subst = {"MAX": max_calls, "ENTRIES": ",".join(f"{{{e},{v}}}" for e, v in zip(entries, vas, strict=True)),
+             "FMT_AT": -1 if fmt_at is None else fmt_at, "VA_SIZE": va_size, "DST_AT": -1 if dst_at is None else dst_at,
+             "ESC_C": "true" if esc_c else "false", "DP": "true" if dp else "false"}
     out = LUA
     for k, v in subst.items():
         out = out.replace(f"@{k}@", str(v))
