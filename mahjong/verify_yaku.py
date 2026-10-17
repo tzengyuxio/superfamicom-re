@@ -56,7 +56,7 @@ def main() -> None:
              ("wram", sq.YAKU_COUNT, 1)]
     runs = [{"steps": sq.YAKU_STEPS, "shot": sq.YAKU_SHOT, "read": reads}]
     runs += [{"steps": sq.YAKU_STEPS, "shot": sq.YAKU_SHOT, "read": reads, "wram": params(g)} for g in groups]
-    res = replay(rom.path, sq.YAKU, sq.YAKU_SAVE, runs, extra_lua=sq.HOOK_LUA, nmi=sq.NMI_HOOK, timeout=900)
+    res = replay(rom.path, sq.YAKU, sq.YAKU_SAVE, runs, extra_lua=sq.HOOK_LUA, timeout=900)
 
     natural = list(res[0][2][:res[0][3][0]])
     nat_ok = natural == [1, 51] and all(

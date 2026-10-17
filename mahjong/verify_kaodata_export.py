@@ -18,7 +18,7 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(os.path.dirname(HERE), "tools"))
 import kaodata
-from export_kaodata import IMAGES, LABELS, checksums
+from export_kaodata import IMAGES, LABELS
 from rom import DEFAULT_ROM, PERSON_COUNT, Rom
 
 
@@ -49,7 +49,7 @@ def main() -> None:
           + (f" (NG {bad_ch})" if bad_ch else ""))
     with open(os.path.join(args.dataset, "checksums.json"), encoding="utf-8") as f:
         sums = json.load(f)
-    sums_ok = sums == checksums(meta, blobs)
+    sums_ok = sums == kaodata.checksums(meta, blobs)
     print(f"[checksums] {len(sums['entries'])} entries: " + ("OK" if sums_ok else "NG"))
     errors = len(bad_pt) + len(bad_ch) + (not sums_ok) + (n_pt != want_pt) + (n_ch != PERSON_COUNT)
     print("ALL OK" if not errors else f"{errors} problem(s)")

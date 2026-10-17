@@ -71,7 +71,7 @@ def main() -> None:
     rom = Rom(args.rom)
     reads = [("vram", 0, 0x10000), ("cgram", 32, 96)]
     runs = [{"steps": " ".join(["down:10 w30"] * k), "shot": 40 * k + 60, "read": reads} for k in SCROLLS]
-    res = replay(rom.path, sq.TO_JANSO, end_frame(sq.TO_JANSO), runs, nmi=sq.NMI_HOOK, timeout=600)
+    res = replay(rom.path, sq.TO_JANSO, end_frame(sq.TO_JANSO), runs, timeout=600)
     seen, bad, pal_ok = {}, [], True
     want_pal = rom.data[FACE_PALETTES:FACE_PALETTES + 64] + rom.data[NAME_PALETTE:NAME_PALETTE + 32]
     for k, (vram, cgram) in zip(SCROLLS, res):

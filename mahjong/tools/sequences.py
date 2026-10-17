@@ -20,7 +20,6 @@ DIALOGUE = TO_TABLE + " a:10 w150" * 9       # 9 discards; the 10th (frame 6279)
 DIALOGUE_SAVE = 6200                          # savestate frame, before the 10th press
 DIALOGUE_STEPS = "w79 a:10"                   # each run presses it itself: presses before the savestate are lost
 DIALOGUE_SHOT = 240                           # frames after the savestate: the window is drawn (gone by ~330)
-NMI_HOOK = 0x00E95F                           # NMI handler $00:E95D starts with the 2-byte REP #$30
 
 # 10 more discards, then the press at frame 8270 leads to 織田信長's win: the yaku screen (平和, ドラ) is up by 8450
 YAKU = DIALOGUE + " a:10 w150" * 11

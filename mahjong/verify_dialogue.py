@@ -70,7 +70,7 @@ def main() -> None:
         runs.append({"steps": sq.DIALOGUE_STEPS, "shot": TEXT_SHOT, "wram": params(codes=bytes(g)),
                      "read": reads})
         what.append(("codes", g))
-    res = replay(rom.path, sq.DIALOGUE, sq.DIALOGUE_SAVE, runs, extra_lua=sq.HOOK_LUA, nmi=sq.NMI_HOOK, timeout=900)
+    res = replay(rom.path, sq.DIALOGUE, sq.DIALOGUE_SAVE, runs, extra_lua=sq.HOOK_LUA, timeout=900)
 
     bad_stream, bad_code, bad_glyph, checked = [], [], [], set()
     for (kind, arg), r in zip(what, res):

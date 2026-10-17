@@ -67,7 +67,7 @@ def main() -> None:
             what.append((c, e))
     runs.append({"steps": sq.DIALOGUE_STEPS, "shot": sq.DIALOGUE_SHOT, "read": reads + [("wram", sq.SEAT_PERSON, 4)]})
     what.append((None, None))
-    res = replay(rom.path, sq.DIALOGUE, sq.DIALOGUE_SAVE, runs, extra_lua=sq.HOOK_LUA, nmi=sq.NMI_HOOK, timeout=900)
+    res = replay(rom.path, sq.DIALOGUE, sq.DIALOGUE_SAVE, runs, extra_lua=sq.HOOK_LUA, timeout=900)
 
     palettes = rom.data[FACE_PALETTES:FACE_PALETTES + 64]
     faces = rom.dialogue_faces()

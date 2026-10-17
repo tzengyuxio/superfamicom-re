@@ -13,7 +13,7 @@ KOEI，SFC。檔案 `roms/Super Mahjong Taikai (Japan).zip`（No-Intro 的 Rev 0
 | 向量 | native NMI `$00:E95D`；emulation RESET `$8000` |
 | 操作 | 標題 → START → START（跳到おわり）→ a（名字「あ」）→ 男 → 臉：↑、a（はい）→ 主選單（雀荘／大会／ランク／ルール／終了）→ 雀荘（a）→ 選 3 名對手（a、→ a、→ a）→ しょうぶする → 牌桌；牌桌上每按一次 a 就打出摸到的牌 |
 
-NMI handler `$00:E95D` 的第一個指令是 2 byte 的 `REP #$30`，`tools/replay.py` 預設在 handler + 1 掛 exec callback（假設第一個指令是 1 byte 的 `SEI`／`PHP`），在這裡會掛到指令中間、永遠不會觸發。驗證腳本一律傳 `nmi=0x00E95F`。
+NMI handler `$00:E95D` 的第一個指令是 2 byte 的 `REP #$30`，exec callback 要掛在 handler + 2（`$00:E95F`）；掛在 + 1 會落在指令中間、永遠不會觸發。`tools/replay.py` 會依第一個指令自動選 + 1 或 + 2。
 
 ## 2. 壓縮資料
 

@@ -2,7 +2,8 @@
 patch PRG ROM / WRAM, press more buttons, and read memory back at a given frame.
 
 Savestates only work inside exec callbacks, so they are taken and loaded in the NMI handler, at its second
-instruction (native NMI vector + 1, read from the LoROM or HiROM header; pass nmi= to hook elsewhere). A state
+instruction (native NMI vector from the LoROM or HiROM header, + 2 after a REP / SEP, else + 1; pass nmi= to hook
+elsewhere). A state
 cannot be loaded in the callback that created it, so the first load waits for the next NMI, and the first load
 does not take effect (that run still continues from power-on), so run 0 is done twice.
 extra_lua can add callbacks (e.g. a read trace) and hand their result back through EXTRA_SHOT().
@@ -17,6 +18,8 @@ end_frame() gives the frame after the last step, e.g. replay(rom, boot, end_fram
 the boot presses. PRG patches of a run are undone before the next run.
 Boot presses after save_at are dropped (each run plays its own "steps" from the savestate), so take the
 savestate after the last boot press, or put the whole sequence into every run's steps.
+"wram" patches are written once, right after the load: a game that clears or reuses that WRAM later (at boot, on a
+scene change) loses them, so pick an address the scene leaves alone or read the values into Lua in EXTRA_RESET.
 """
 import os
 import sys
@@ -123,11 +126,14 @@ def load_rom_bytes(path: str) -> bytes:
 
 def nmi_hook(data: bytes) -> int:
     """Second instruction of the native NMI handler: the vector of the LoROM or HiROM header whose checksum and
-    complement add up to 0xFFFF, + 1 (every KOEI SFC handler starts with a one-byte SEI)."""
+    complement add up to 0xFFFF, + 1, or + 2 when the handler starts with REP / SEP # (most KOEI handlers start
+    with a one-byte SEI; スーパー麻雀大会 with REP #$30)."""
     for header in (0x7FC0, 0xFFC0):
         h = data[header:header + 0x40]
         if len(h) == 0x40 and (h[0x1C] | h[0x1D] << 8) + (h[0x1E] | h[0x1F] << 8) == 0xFFFF:
-            return (h[0x2A] | h[0x2B] << 8) + 1
+            vector = h[0x2A] | h[0x2B] << 8
+            first = data[vector - 0x8000 if header == 0x7FC0 else vector]
+            return vector + (2 if first in (0xC2, 0xE2) else 1)
     raise ValueError("no valid LoROM / HiROM header")
 
 
