@@ -80,7 +80,7 @@ def build(rom_path: str) -> tuple[dict, list[bytes]]:
     colors = [f"#{r:02x}{g:02x}{b:02x}" for n in range(PALETTE_COUNT) for r, g, b in map(bgr555_rgb, rom.palette(n))]
     title, ds_id = {"ja": "ウイニングポスト2", "zh": "賽馬大亨2"}, "winning2-sfc"
     if rom.version == "program96":   # separate dataset: '96 drops and moves faces, so it can't merge into winning2-sfc
-        title, ds_id = {"ja": "ウイニングポスト2 プログラム'96", "zh": "賽馬大亨2 Program'96"}, "winning2-96-sfc"
+        title, ds_id = {"ja": "ウイニングポスト2 プログラム'96", "zh": "賽馬大亨2 '96年版"}, "winning2-96-sfc"
     meta = {
         "format": kaodata.FORMAT,
         "id": ds_id,
