@@ -7,4 +7,7 @@
 
 分診結果見 `docs/PLAYBOOK.md` §6。
 
-目前沒有。アンジェリーク、EMIT、Falcom 作品（ブランディッシュ、イースV）、シヴィライゼーション不做（2026-10-17）。
+- [ ] 横山光輝 三国志2 — `roms/Yokoyama Mitsuteru Sangokushi 2 (Japan).zip`，LoROM 1.5 MB；接在第一代（`yokoyama/`）之後，非光榮作品不出 kaodata；開工前先看剩下的 usage limit（2026-10-17）
+- [ ] 三国志正史 天舞スピリッツ — `roms/Sangokushi Seishi - Tenbu Spirits (Japan).zip`，LoROM 1.5 MB；非光榮作品不出 kaodata；開工前先看剩下的 usage limit（2026-10-17）
+
+アンジェリーク、EMIT、Falcom 作品（ブランディッシュ、イースV）、シヴィライゼーション不做（2026-10-17）。

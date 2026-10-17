@@ -98,6 +98,9 @@
 | 國／城數值（WRAM patch） | `genchou/verify_countries.py` |
 | 借畫面當函式驗證器 | `winning2/verify_races.py`：把馬卡片的 JSL 改接到別的存取函式（或 `$7F:FF40` 的 WRAM shim，從 WRAM 讀多個引數），讓遊戲印出比賽、人名的解碼結果 |
 | 整張訊息表 | `mahjong2/verify_messages.py`：PRG patch 改 `LDA #訊息號` 的 immediate，逐則截圖，不用找每則出現的畫面 |
+| 畫面文字（非 printf 的作品） | `yokoyama/verify_persons.py`：攔逐字輸出常式（`$00:8D60`，A = 字碼），把整個畫面的字碼串起來，和期望字串做子字串比對 |
+| 字型位址 | `yokoyama/verify_text.py`：PRG patch 把訊息字串換成待測字碼，攔讀字型那條指令的 X |
+| sprite 組合頭像 | `yokoyama/verify_faces.py`：從 OAM＋VRAM＋CGRAM 自己畫出 sprite，逐 pixel 比對 |
 | kaodata | `kouryuuki/verify_kaodata_export.py`（單一調色盤）、`tenshouki/verify_kaodata_export.py`（組合臉）、`mahjong/verify_kaodata_export.py`（表情差分） |
 | 頭像（不知道 VRAM 位置） | `royal/verify_faces.py`：在 BG tilemap 找 5×6 連續 tile 的區塊，用 VRAM＋CGRAM 重畫後逐 pixel 比對 |
 | 畫面文字（拼回字形） | `inindou/scenes.py` 的 `ScreenReader`：取視窗層 tile 的字色拼回 16×16，和 ROM 字型比對 |
@@ -184,6 +187,11 @@
 - 雀荘、關卡類的固定設定常存成「起點表＋（項目, 值）覆寫配對清單」（麻雀大会II 的規則）
 - write callback 追不到寫入時（麻雀大会II 的 `$0423` 名單），改用 `drive.py --reads` 找讀取方，再回推建立它的程式
 - 文字是圖、ROM 裡沒有的選項名稱：把每項依序設成 0–7 各截一張圖，照圖抄
+- 電腦勢力在玩家回合之前就行動了（花錢、移動武將、改忠誠）：畫面驗證前先用 WRAM patch 寫回開局狀態（横山光輝 三国志）
+- 地圖游標用方向鍵移動有加速、不可靠：直接寫游標的 WRAM（横山光輝 三国志 `$0113`／`$0115`）；開機序列裡也要寫，否則 a 沒反應
+- Rev 1 的表與程式往後移 4–5 bytes：用程式碼的指令樣式（regex）取位址，hook 位址也要從 ROM 算（横山光輝 三国志 `Rom.loader_done`、`lz_entry`）
+- mode 7 地圖的 CGRAM 會被視窗調色盤覆寫、還有閃爍色：在調色盤常式結束時讀 CGRAM 影子比對，畫面上的 CGRAM 另外只比固定的列
+- LoROM 的 `LDA long,X` 跨 bank 時，`$04:0000` 不是 ROM：字碼範圍的上限要照這個算
 
 ## 6. 分診結果（2026-10-13）
 
@@ -211,4 +219,4 @@
 
 只有武將風雲錄、航空霸業 I 沒有這套 LZ（和三國志II 一樣是早期的 LoROM 作品）。
 
-以上 17 款都已解析完成；之後又加了ロイヤルブラッド、伊忍道、トップマネジメントII、リーディングカンパニー、ウイニングポスト、スーパー麻雀大会、ウイニングポスト2、麻雀大会II，未列入上表（各遊戲的資料夾見根目錄 `CLAUDE.md`）。
+以上 17 款都已解析完成；之後又加了ロイヤルブラッド、伊忍道、トップマネジメントII、リーディングカンパニー、ウイニングポスト、スーパー麻雀大会、ウイニングポスト2、麻雀大会II，以及非光榮的横山光輝 三国志，未列入上表（各遊戲的資料夾見根目錄 `CLAUDE.md`）。
