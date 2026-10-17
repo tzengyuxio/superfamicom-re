@@ -13,7 +13,7 @@ superfamicom-re/
 │   └── ARCHITECTURE.md   本檔
 ├── BACKLOG.md            待解析的遊戲
 ├── CLAUDE.md             遊戲一覽與開發慣例
-└── <game>/               每款遊戲一個資料夾（20 款）
+└── <game>/               每款遊戲一個資料夾（26 款）
 ```
 
 ## 每款遊戲的資料夾
@@ -77,6 +77,11 @@ flowchart LR
 | `san2/` | `build_kanji_map.py`、`kanji_sheet.py` | 用外部人名對出自訂漢字碼、核對圖 |
 | `san2/`、`tenshouki/` | `face_capture.py` | 改 ROM 頭像碼截圖 |
 | `kouryuuki/`、`san3/`、`san4/` | `charset_sheet.py`、`ext_chars_sheet.py` | 字型與字碼核對圖 |
+| `mahjong/` | `sequences.py`、`charset_sheet.py` | 按鍵序列與記憶體位址；台詞字型與役名字形核對圖 |
+| `leading/` | `lc.py` | 按鍵序列；printf 服務入口（va 指標在 DP）、memcpy 等追蹤 Lua |
+| `topman2/` | `tm2.py` | 按鍵序列、WRAM 位址；文字繪製、頭像繪製追蹤 Lua |
+| `winning/` | `wp.py` | 開新局的按鍵序列；vprintf 等追蹤 Lua |
+| `inindou/` | `scenes.py`（放在遊戲資料夾根目錄） | 按鍵序列；把畫面視窗的 tile 拼回 16×16 字、和 ROM 字型比對的 `ScreenReader` |
 
 `daikoukai2/`、`eiketsu/` 的重播實作和共用版功能重疊，沒有改寫是因為驗證已通過、重跑時間長；之後動到這兩款時再改用共用版。
 

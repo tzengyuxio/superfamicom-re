@@ -96,7 +96,11 @@
 | 把記錄換進畫面 | `taikou/verify_persons.py`、`europe/verify_cities.py`：顯示前把 WRAM 換成待測記錄，一輪驗多筆 |
 | 原版與 Rev 1 共用 | `teitoku/rom.py` 的 `REVISIONS`（移位的格式字串換算表）、`haouden/`、`airmanage/` |
 | 國／城數值（WRAM patch） | `genchou/verify_countries.py` |
-| kaodata | `kouryuuki/verify_kaodata_export.py`（單一調色盤）、`tenshouki/verify_kaodata_export.py`（組合臉） |
+| kaodata | `kouryuuki/verify_kaodata_export.py`（單一調色盤）、`tenshouki/verify_kaodata_export.py`（組合臉）、`mahjong/verify_kaodata_export.py`（表情差分） |
+| 頭像（不知道 VRAM 位置） | `royal/verify_faces.py`：在 BG tilemap 找 5×6 連續 tile 的區塊，用 VRAM＋CGRAM 重畫後逐 pixel 比對 |
+| 畫面文字（拼回字形） | `inindou/scenes.py` 的 `ScreenReader`：取視窗層 tile 的字色拼回 16×16，和 ROM 字型比對 |
+| 讓遊戲自己解壓每張圖 | `inindou/verify_maps.py`：savestate 在地圖載入前，每輪 patch 地圖指標表 |
+| printf（分派器很熱時） | `leading/tools/lc.py` 的 `PRT_LUA`：掛各 printf 服務的入口、va 指標從 DP 讀，比掛分派器快約 7 倍 |
 
 ## 4. 交付清單
 
@@ -155,6 +159,22 @@
 - 同一組按鍵在 `drive.py` 不同次執行，電腦對戰的事件可能不同；在 `replay.py` 的 savestate 之後則固定
 - `drive.py` 的 `@tag` 會多算 1 幀；`replay.py` 略過 `@tag`
 - 不要用 `until ! pgrep -f <名稱>` 等背景程式：`bash -c` 的指令列本身含那個名稱，pgrep 會比對到自己而永遠等不完
+- NMI handler 的第一個指令不一定是 1 byte 的 SEI：スーパー麻雀大会是 `REP #$30`（2 bytes），掛在向量 + 1 會落在指令中間、永遠不觸發，要傳 `nmi=向量+2`
+- 用 `replay.py` 在 savestate 讀回後，`a` 按住 4 幀會被吃掉，要 `a:10`；但選單按住 10 幀以上可能自動連發、游標多走一格（伊忍道用 6）。savestate 附近的按鍵次數可能和 `drive.py` 不同，存檔點放在觸發按鍵之前、把按鍵放進每輪的 `steps`
+- 遊戲會清掉或覆寫 replay 傳參數用的 WRAM（トップマネジメントII 開機清 `$7E:E000` 一帶、リーディングカンパニー覆寫 `$7F:FFF0`）：在 `EXTRA_RESET` 把參數讀進 Lua，或改用 PRG patch 寫到該場景不讀的資料區
+- 選單游標一移動就載入劇本整塊（ロイヤルブラッド）：在選單上改 ROM／WRAM 已經太晚
+- 未壓縮的頭像可能每個 bank 放 N 張、尾端留填充（ロイヤルブラッド 34 × 960 + 128）；照線性位址算，跨 bank 後會錯位，看圖幾乎看不出來，要靠 VRAM 驗證
+- 頭像程式寫進 VRAM 的位置和動畫顯示的位置可能不同（リーディングカンパニー 0xBC00／0x53C0、麻雀大会的說話臉與表情圖）；同一種頭像也可能有好幾條繪製路徑（ウイニングポスト的調教師頭像不經過一般的頭像程式）：在 VRAM 搜預期的 bytes 找實際位置
+- 調色盤直接從 ROM 用 DMA 送進 CGRAM 時，`--reads` 看不到：在 `$420B` 掛 write callback 記錄 DMA（source、size、B-bus 暫存器）。Mesen state 的鍵名是 `ppu.vramAddress`，沒有 `snes.` 前綴
+- 沒有指標表的 KOEI LZ 串流：掃程式碼找 `A9 bb F4 lo hi F4 .. .. 22 <解壓入口>`（LDA #bank、PEA src、PEA dst、JSL），或在解壓入口掛 exec callback 記錄來源
+- 檔案表欄位順序因作品而異（トップマネジメントII 是 name、addr、bank、size，航空霸業II 先 bank 後 addr）
+- 開局時遊戲可能改值（トップマネジメントII 把開始年減 1）：用寫入 callback 追，不要只看最後的值
+- 半形假名的濁點要做 NFC 合成（`ﾀﾞ` 會解成た＋U+3099），否則字串比對會失敗
+- C 編譯的 vprintf 若多次共用同一個格式字串，在 hook 點加一筆標記，從標記之後按順序取值；要抓函式的回傳值，就 hook 它所有的 RTL 再讀 DP `$00–$02`
+- 文字逐字打出時，截圖幀要等夠（麻雀大会 240 幀還少 5 個字，要 290）
+- 戰鬥中地形會變（ロイヤルブラッド出現柵）：戰場驗證要在開戰後不久就讀
+- 截圖多時，`Mesen.screenshots()` 預設 4 MB 的 log 會被截斷而變成 0 張；改用 `m.log(1 << 26)` 解析
+- 欄位命名法：在畫面畫出前的 savestate，一次只改一個 WRAM 欄位，比對 printf 印出的值，一輪就能分出「直接顯示」和「影響計算」的欄位（リーディングカンパニー）
 
 ## 6. 分診結果（2026-10-13）
 
@@ -182,4 +202,4 @@
 
 只有武將風雲錄、航空霸業 I 沒有這套 LZ（和三國志II 一樣是早期的 LoROM 作品）。
 
-以上 17 款都已解析完成（各遊戲的資料夾見根目錄 `CLAUDE.md`）。
+以上 17 款都已解析完成；之後又加了ロイヤルブラッド、伊忍道、トップマネジメントII、リーディングカンパニー、ウイニングポスト、スーパー麻雀大会，未列入上表（各遊戲的資料夾見根目錄 `CLAUDE.md`）。

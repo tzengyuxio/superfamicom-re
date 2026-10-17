@@ -7,3 +7,5 @@
 
 分診結果見 `docs/PLAYBOOK.md` §6。
 
+- [ ] ウイニングポスト2 — `roms/Winning Post 2 (Japan).zip`，Program '96 版（含 Rev 1）格式相同就用 `--rom` 支援；可沿用 `winning/` 的心得（2026-10-17）
+- [ ] 麻雀大会II — `roms/Mahjong Taikai II (Japan).zip`；可沿用 `mahjong/` 的心得（2026-10-17）
