@@ -17,9 +17,9 @@
 | 工具 | 用途 |
 |------|------|
 | `tools/mesen.py` | ctypes 呼叫 MesenCore，無頭執行 Lua |
-| `tools/drive.py` | 用按鍵序列操作遊戲，截圖（`@tag`）、dump WRAM／VRAM／CGRAM／OAM／SRAM；`--reads` 追蹤某段位址被哪個 PC 讀了 |
-| `tools/replay.py` | savestate 重播：照按鍵序列玩到某一幀存檔，之後每輪改 PRG ROM／WRAM、按鍵、在指定幀讀記憶體；NMI 掛勾位置從 LoROM／HiROM 表頭的向量算。按鍵序列和 `drive.py` 同語法（含 `*n`），`expand()` 展開、`end_frame()` 算序列結束幀 |
-| `tools/printf_trace.py` | 給 `replay.py` 用的 printf／vsprintf 追蹤 Lua：記錄每次呼叫的格式位址、依格式讀出的引數（數字、`%s` 字串與指標）、vsprintf 的輸出；引數在 stack 上的位置由呼叫端指定 |
+| `tools/drive.py` | 用按鍵序列操作遊戲，截圖（`@tag`）、dump WRAM／VRAM／CGRAM／OAM／SRAM；`--reads` 追蹤某段位址被哪個 PC 讀了；`--dma` 記錄 `$420B` 啟動的 DMA；`--lua` 接檔案或 Lua 原文 |
+| `tools/replay.py` | savestate 重播：照按鍵序列玩到某一幀存檔，之後每輪改 PRG ROM／WRAM、按鍵、在指定幀讀記憶體；NMI 掛勾位置從 LoROM／HiROM 表頭的向量算（handler 開頭是 REP／SEP 時 + 2，否則 + 1）。按鍵序列和 `drive.py` 同語法（含 `*n`），`expand()` 展開、`end_frame()` 算序列結束幀 |
+| `tools/printf_trace.py` | 給 `replay.py` 用的 printf／vsprintf 追蹤 Lua：記錄每次呼叫的格式位址、依格式讀出的引數（數字、`%s` 字串與指標）、vsprintf 的輸出；引數在 stack 上的位置由呼叫端指定；分派器把引數抄到 direct page 的作品，用 `dp=True` 掛在各服務入口 |
 | `tools/koei_lz.py` | KOEI LZ 解壓（`decompress`），`find_tables` 用內容找解壓表，`find_pointer_tables` 找串流指標表 |
 | `tools/triage.py` | 所有 ROM 的標頭、LZ、Shift-JIS 字數一覽 |
 | `tools/kaodata.py` | kaodata/1 的寫入、讀取、參考渲染、checksums |
@@ -78,7 +78,7 @@
 每項解碼都要有一支用 Mesen 跑遊戲本身程式的驗證腳本。共通寫法：
 
 - 一個 process 只能開一次 Mesen；多輪比對用 savestate 重播（`tools/replay.py`）
-- savestate 只能在 exec callback 裡建立／讀回，掛在 NMI handler 的第二個指令上（光榮的 NMI handler 第一個指令都是 1 byte 的 SEI，所以是向量 + 1）
+- savestate 只能在 exec callback 裡建立／讀回，掛在 NMI handler 的第二個指令上（光榮的 NMI handler 第一個指令多半是 1 byte 的 SEI，所以是向量 + 1；スーパー麻雀大会是 2 byte 的 `REP #$30`，`replay.py` 會自動改成 + 2）
 - 讀回後第一輪不生效，第一項要重複一次再丟掉
 - Mesen 的 log 有大約 500 行的上限，大量資料要在 Lua 裡先彙總，或分輪 `breakExecution()` 後由 Python 讀
 
@@ -91,7 +91,7 @@
 | 外部能力值 | `san4/verify_persons.py`：和 kaodata-re 的 ROTK 能力表比對 |
 | 頭像（換 ROM） | `tenshouki/tools/face_capture.py`：改 ROM 裡某人的頭像碼 |
 | 地圖 | `tenshouki/verify_maps.py`、`san2/verify_maps.py` |
-| 畫面數值（C 寫的作品） | `tools/printf_trace.py`：`teitoku2/verify_tables.py`（vsprintf，22 個畫面）、`sangokushi/verify_persons.py`（printf）；較早的寫法 `dokuritsu/verify_persons.py` |
+| 畫面數值（C 寫的作品） | `tools/printf_trace.py`：`teitoku2/verify_tables.py`（vsprintf，22 個畫面）、`sangokushi/verify_persons.py`（printf）；較早的寫法 `dokuritsu/verify_persons.py`；引數在 direct page 時用 `dp=True`（寫法同 `leading/tools/lc.py` 的 `PRT_LUA`） |
 | 畫面文字（逐 tile 比對） | `zenkoku/scenes.py`：用 ROM 字型把畫面 tilemap 轉回文字 |
 | 把記錄換進畫面 | `taikou/verify_persons.py`、`europe/verify_cities.py`：顯示前把 WRAM 換成待測記錄，一輪驗多筆 |
 | 原版與 Rev 1 共用 | `teitoku/rom.py` 的 `REVISIONS`（移位的格式字串換算表）、`haouden/`、`airmanage/` |
@@ -100,7 +100,6 @@
 | 頭像（不知道 VRAM 位置） | `royal/verify_faces.py`：在 BG tilemap 找 5×6 連續 tile 的區塊，用 VRAM＋CGRAM 重畫後逐 pixel 比對 |
 | 畫面文字（拼回字形） | `inindou/scenes.py` 的 `ScreenReader`：取視窗層 tile 的字色拼回 16×16，和 ROM 字型比對 |
 | 讓遊戲自己解壓每張圖 | `inindou/verify_maps.py`：savestate 在地圖載入前，每輪 patch 地圖指標表 |
-| printf（分派器很熱時） | `leading/tools/lc.py` 的 `PRT_LUA`：掛各 printf 服務的入口、va 指標從 DP 讀，比掛分派器快約 7 倍 |
 
 ## 4. 交付清單
 
@@ -117,7 +116,7 @@
 - 按鍵時機受亂數影響：三國志III 選劉備時差 1 幀就會進 AI 戰鬥。序列固定下來後，用截圖確認每一步
 - savestate 不能掛在 NMI handler 的第一個指令上（三國志III 要用 `$00:8392`，不能用 `$8391`）；讀回要延到下一次 NMI
 - Mesen state 的 `tilemapAddress`、`chrAddress` 是 word 位址，乘 2 才是 byte；mode 7 的矩陣即使在 bgMode 1 也看得到
-- `drive.py --reads` 對整個 ROM 追蹤會超過 10 分鐘：先只追蹤指標表本身，或在 `$420B` 下 write callback 記錄 DMA（source、size、VRAM 位址）
+- `drive.py --reads` 對整個 ROM 追蹤會超過 10 分鐘：先只追蹤指標表本身，或用 `drive.py --dma` 記錄 DMA（source、size、VRAM 位址）
 - 平常難以觸發的畫面：找到切換用的旗標強制改值（三國志IV 的攻城戰 `$3DAE`）
 - C 編譯的遊戲通常有一張共用服務跳轉表（三國志III `$C0:9024`：解壓、DMA、memset），適合下 exec 斷點
 - MesenCore 會在 stderr 印大量 `Uninitialized memory read`，用 `grep -v Uninit` 過濾；這訊息也可能黏在 log 的同一行，解析時用包含字串比對，不要只看行首
@@ -159,13 +158,12 @@
 - 同一組按鍵在 `drive.py` 不同次執行，電腦對戰的事件可能不同；在 `replay.py` 的 savestate 之後則固定
 - `drive.py` 的 `@tag` 會多算 1 幀；`replay.py` 略過 `@tag`
 - 不要用 `until ! pgrep -f <名稱>` 等背景程式：`bash -c` 的指令列本身含那個名稱，pgrep 會比對到自己而永遠等不完
-- NMI handler 的第一個指令不一定是 1 byte 的 SEI：スーパー麻雀大会是 `REP #$30`（2 bytes），掛在向量 + 1 會落在指令中間、永遠不觸發，要傳 `nmi=向量+2`
 - 用 `replay.py` 在 savestate 讀回後，`a` 按住 4 幀會被吃掉，要 `a:10`；但選單按住 10 幀以上可能自動連發、游標多走一格（伊忍道用 6）。savestate 附近的按鍵次數可能和 `drive.py` 不同，存檔點放在觸發按鍵之前、把按鍵放進每輪的 `steps`
 - 遊戲會清掉或覆寫 replay 傳參數用的 WRAM（トップマネジメントII 開機清 `$7E:E000` 一帶、リーディングカンパニー覆寫 `$7F:FFF0`）：在 `EXTRA_RESET` 把參數讀進 Lua，或改用 PRG patch 寫到該場景不讀的資料區
 - 選單游標一移動就載入劇本整塊（ロイヤルブラッド）：在選單上改 ROM／WRAM 已經太晚
 - 未壓縮的頭像可能每個 bank 放 N 張、尾端留填充（ロイヤルブラッド 34 × 960 + 128）；照線性位址算，跨 bank 後會錯位，看圖幾乎看不出來，要靠 VRAM 驗證
 - 頭像程式寫進 VRAM 的位置和動畫顯示的位置可能不同（リーディングカンパニー 0xBC00／0x53C0、麻雀大会的說話臉與表情圖）；同一種頭像也可能有好幾條繪製路徑（ウイニングポスト的調教師頭像不經過一般的頭像程式）：在 VRAM 搜預期的 bytes 找實際位置
-- 調色盤直接從 ROM 用 DMA 送進 CGRAM 時，`--reads` 看不到：在 `$420B` 掛 write callback 記錄 DMA（source、size、B-bus 暫存器）。Mesen state 的鍵名是 `ppu.vramAddress`，沒有 `snes.` 前綴
+- 調色盤直接從 ROM 用 DMA 送進 CGRAM 時，`--reads` 看不到：用 `drive.py --dma`。自己寫 `$420B` 的 write callback 時，要掛在每個鏡像 bank（`$00–$3F`、`$80–$BF`）：callback 比對的是 CPU 位址，DB 不是 0 的寫入（スーパー麻雀大会 DB = `$01`）掛 `$00:420B` 收不到。Mesen state 的鍵名是 `ppu.vramAddress`，沒有 `snes.` 前綴
 - 沒有指標表的 KOEI LZ 串流：掃程式碼找 `A9 bb F4 lo hi F4 .. .. 22 <解壓入口>`（LDA #bank、PEA src、PEA dst、JSL），或在解壓入口掛 exec callback 記錄來源
 - 檔案表欄位順序因作品而異（トップマネジメントII 是 name、addr、bank、size，航空霸業II 先 bank 後 addr）
 - 開局時遊戲可能改值（トップマネジメントII 把開始年減 1）：用寫入 callback 追，不要只看最後的值
@@ -173,7 +171,7 @@
 - C 編譯的 vprintf 若多次共用同一個格式字串，在 hook 點加一筆標記，從標記之後按順序取值；要抓函式的回傳值，就 hook 它所有的 RTL 再讀 DP `$00–$02`
 - 文字逐字打出時，截圖幀要等夠（麻雀大会 240 幀還少 5 個字，要 290）
 - 戰鬥中地形會變（ロイヤルブラッド出現柵）：戰場驗證要在開戰後不久就讀
-- 截圖多時，`Mesen.screenshots()` 預設 4 MB 的 log 會被截斷而變成 0 張；改用 `m.log(1 << 26)` 解析
+- 自己讀 Mesen log 時，`Mesen.log()` 預設只取 4 MB，截圖多時會被截斷；`screenshots()`、`drive.py`、`replay.py` 已改用 64 MB
 - 欄位命名法：在畫面畫出前的 savestate，一次只改一個 WRAM 欄位，比對 printf 印出的值，一輪就能分出「直接顯示」和「影響計算」的欄位（リーディングカンパニー）
 
 ## 6. 分診結果（2026-10-13）

@@ -51,9 +51,9 @@ flowchart LR
 | 檔案 | 用途 | 用到的地方 |
 |------|------|------------|
 | `mesen.py` | ctypes 呼叫 MesenCore（無頭、跑 Lua）；一個 process 只能開一次 | 所有驗證 |
-| `drive.py` | 按鍵序列操作遊戲：截圖、dump 記憶體、`--reads` 追蹤 ROM 讀取 | 分析階段 |
+| `drive.py` | 按鍵序列操作遊戲：截圖、dump 記憶體、`--reads` 追蹤 ROM 讀取、`--dma` 記錄 DMA | 分析階段 |
 | `replay.py` | savestate 重播：存一次檔，之後每輪改 ROM／WRAM、按鍵、在指定幀讀記憶體；`expand()`、`end_frame()` 處理按鍵序列 | 多數 `verify_*.py` |
-| `printf_trace.py` | 給 `replay.py` 用的 printf／vsprintf 追蹤 Lua 與解析器 | `teitoku2/`、`sangokushi/` |
+| `printf_trace.py` | 給 `replay.py` 用的 printf／vsprintf 追蹤 Lua 與解析器（引數在 stack 或 direct page） | `teitoku2/`、`sangokushi/` |
 | `koei_lz.py` | KOEI LZ 解壓、找解壓表與指標表 | 三國志II、武將風雲錄、航空霸業以外的作品 |
 | `kaodata.py` | kaodata/1 的寫入、讀取、參考渲染、checksums | 所有 `export_kaodata.py` |
 | `parts_sheet.py` | 組合臉零件總覽圖 | 有組合臉的遊戲 |
