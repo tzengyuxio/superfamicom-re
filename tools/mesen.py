@@ -131,8 +131,9 @@ class Mesen:
         return buf.value.decode("utf-8", errors="replace")
 
     def screenshots(self) -> dict[str, bytes]:
-        """PNG files logged by shot(tag), by tag."""
-        return {m[1]: bytes.fromhex(m[2]) for m in re.finditer(r"^PNG (\S+) ([0-9a-f]+)$", self.log(), re.MULTILINE)}
+        """PNG files logged by shot(tag), by tag (read with a 64 MB log: the 4 MB default cuts off a few shots)."""
+        return {m[1]: bytes.fromhex(m[2])
+                for m in re.finditer(r"^PNG (\S+) ([0-9a-f]+)$", self.log(1 << 26), re.MULTILINE)}
 
     def memory(self, mem_type: int) -> bytes:
         size = self.core.GetMemorySize(mem_type)

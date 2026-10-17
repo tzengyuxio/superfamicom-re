@@ -12,10 +12,13 @@ only about the last 500 log lines, so log summaries rather than one line per eve
 
 --reads LO-HI traces CPU reads of that address range (hex, e.g. C00000-FFFFFF) during --window START-END
 (frames) and logs one line per (PC, 256-byte page): count and address range, most frequent first. That
-finds where data comes from (a table read by some routine) without hitting Mesen's log cap. --lua adds
-your own Lua (FRAME() gives the current frame).
+finds where data comes from (a table read by some routine) without hitting Mesen's log cap. --dma logs every
+DMA started through $420B during --window: frame, channel, source, size, B-bus register (+ the VRAM word address
+for $2118/$2119), which shows what goes to VRAM / CGRAM straight from ROM (--reads does not see DMA reads).
+--lua adds your own Lua, a file or the Lua text itself (FRAME() gives the current frame).
 
-Usage: .venv/bin/python tools/drive.py ROM OUT "w900 start w200 a @menu" [--reads C00000-FFFFFF --window 900-1200]
+Usage: .venv/bin/python tools/drive.py ROM OUT "w900 start w200 a @menu" [--reads C00000-FFFFFF] [--dma]
+       [--window 900-1200]
 """
 import argparse
 import io
@@ -54,6 +57,27 @@ emu.addEventCallback(function()
 end, emu.eventType.endFrame)
 """
 
+DMA_LUA = """
+local function dma(addr, value)
+  local f=FRAME()
+  if f<%(start)d or f>%(end)d then return end
+  local function rd(a) return emu.read(a, emu.memType.snesMemory, false) end
+  for ch=0,7 do
+    if (value>>ch)&1==1 then
+      local b=0x4300+ch*16
+      local bb=rd(b+1)
+      local s=string.format("DMA f=%%d ch=%%d src=%%06X size=%%d bbus=21%%02X", f, ch,
+        rd(b+2)|rd(b+3)<<8|rd(b+4)<<16, rd(b+5)|rd(b+6)<<8, bb)
+      if bb==0x18 or bb==0x19 then s=s..string.format(" vram=%%04X", emu.getState()["ppu.vramAddress"]) end
+      emu.log(s)
+    end
+  end
+end
+for _,bank in ipairs({0x00,0x80}) do  -- callbacks match CPU addresses: every bank that mirrors $420B (DB varies)
+  for k=0,0x3F do local a=(bank+k)*65536+0x420B; emu.addMemoryCallback(dma, emu.callbackType.write, a, a) end
+end
+"""
+
 
 def schedule(steps: list[str]) -> tuple[list[tuple[int, str, str]], int]:
     """([(frame, press|release|shot, button or tag)], last frame)."""
@@ -79,8 +103,9 @@ def main() -> None:
     ap.add_argument("rom")
     ap.add_argument("out", help="輸出檔名前綴")
     ap.add_argument("steps")
-    ap.add_argument("--lua", help="額外的 Lua 檔")
+    ap.add_argument("--lua", help="額外的 Lua：檔案路徑或 Lua 原文")
     ap.add_argument("--reads", help="追蹤 CPU 讀取的位址範圍，如 C00000-FFFFFF")
+    ap.add_argument("--dma", action="store_true", help="記錄 $420B 啟動的 DMA")
     ap.add_argument("--window", help="追蹤的幀範圍，如 900-1200（預設整段）")
     ap.add_argument("--timeout", type=float, default=1800)
     args = ap.parse_args()
@@ -88,12 +113,17 @@ def main() -> None:
     events, end = schedule(args.steps.split())
     extra = ""
     if args.lua:
-        with open(args.lua) as fh:
-            extra = fh.read()
+        if os.path.isfile(args.lua):
+            with open(args.lua) as fh:
+                extra = fh.read()
+        else:
+            extra = args.lua
+    start, stop = (int(x) for x in args.window.split("-")) if args.window else (10, end - 1)
     if args.reads:
         lo, hi = (int(x, 16) for x in args.reads.split("-"))
-        start, stop = (int(x) for x in args.window.split("-")) if args.window else (10, end - 1)
         extra += READS_LUA % {"lo": lo, "hi": hi, "start": start, "end": stop}
+    if args.dma:
+        extra += DMA_LUA % {"start": start, "end": stop}
     lua_events = ",".join(f'{{{fr},"{k}","{v}"}}' for fr, k, v in events)
     lua = f"""
 local ev={{{lua_events}}}
@@ -123,7 +153,7 @@ end, emu.eventType.endFrame)
         try:
             m.run(lua, args.timeout)
         finally:
-            log = m.log()
+            log = m.log(1 << 26)
             with open(f"{args.out}.log", "w") as fh:  # screenshots are logged as hex: they go to the PNGs only
                 fh.write("".join(line for line in log.splitlines(True) if not line.startswith("PNG ")))
         shots = m.screenshots()
@@ -144,8 +174,10 @@ end, emu.eventType.endFrame)
             x += im.width
         sheet.save(f"{args.out}_all.png")
     reads = [line for line in log.splitlines() if line.startswith("READ")]
-    print(f"frames {end}, shots {len(shots)}" + (f", {len(reads)} read groups" if args.reads else ""))
-    for line in reads[:40]:
+    dmas = [line for line in log.splitlines() if line.startswith("DMA")]
+    print(f"frames {end}, shots {len(shots)}" + (f", {len(reads)} read groups" if args.reads else "")
+          + (f", {len(dmas)} DMAs" if args.dma else ""))
+    for line in reads[:40] + dmas[:40]:
         print(line)
 
 
