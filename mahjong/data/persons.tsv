@@ -1,0 +1,25 @@
+# Opponents 0-20. The game has no text names: 名前 is transcribed from the name graphics (data stream 06:D29B,
+# output/names.png). 読み and [EXT]出典 are not from the ROM (読み: common readings; 出典: KOEI titles in which a person
+# of that name appears, from the kaodata datasets ~/works/kaodata/data/*; empty = none found).
+id	名前	読み	[EXT]出典
+0	織田信長	おだ のぶなが	信長の野望
+1	豊臣秀吉	とよとみ ひでよし	信長の野望
+2	徳川家康	とくがわ いえやす	信長の野望
+3	クレオパトラ	くれおぱとら
+4	楊貴妃	ようきひ
+5	小野小町	おのの こまち
+6	坂本龍馬	さかもと りょうま	維新の嵐
+7	源義経	みなもとの よしつね	源平合戦
+8	宮本武蔵	みやもと むさし	信長の野望・太閤立志伝
+9	諸葛孔明	しょかつ こうめい	三國志（諸葛亮）
+10	ノストラダムス	のすとらだむす
+11	シブサワ・コウ	しぶさわ こう
+12	ジンギスカン	じんぎすかん	蒼き狼と白き牝鹿
+13	ナポレオン	なぽれおん	ランペルール
+14	シーザー	しーざー
+15	朝香えり	あさか えり
+16	ジェニー柏木	じぇにー かしわぎ
+17	山田春代	やまだ はるよ
+18	平野忠男	ひらの ただお
+19	小宮圭一	こみや けいいち
+20	大森大
