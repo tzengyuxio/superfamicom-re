@@ -17,7 +17,7 @@ KOEI，1995，SFC（HiROM 3 MB）。賽馬經營模擬：玩家當馬主，買�
 ```
 
 - ROM 預設直接讀 `roms/Winning Post 2 (Japan).zip`；`--rom` 也接受 `roms/Winning Post 2 - Program '96 (Japan).zip`、`… (Rev 1).zip` 或 .sfc。全部腳本（匯出與驗證）都能跑 '96；'96 的表位址在 `rom.PROGRAM96`，Rev 1 位址相同。'96 匯出到 `output/program96/`（Rev 1：`output/program96_rev1/`）。
-- '96 的 kaodata 匯出用 id `winning2-96-sfc`（只是為了檢查，kaodata 沒有登錄）。
+- '96 的 kaodata 是另一個資料集 `winning2-96-sfc`：和原版比，174 張頭像同碼相同、8 張換碼、26 張拿掉、33 張新增，21 個人物不同，無法併進 `winning2-sfc`。'96 原版與 Rev 1 匯出的資料集相同。
 - 解壓縮用共用的 `tools/koei_lz.py`。
 - 依賴：Pillow；openpyxl（可選，匯出 .xlsx）。頭像總覽的標註用 macOS 的ヒラギノ角ゴシック。
 - 驗證腳本需要 Mesen 2（`tools/mesen.py`），savestate 重播用共用的 `tools/replay.py`，printf 追蹤用 `tools/printf_trace.py`。Mesen 會在 stderr 印大量 `Uninitialized memory read`，可用 `2>&1 | rg -v Uninitialized` 濾掉。

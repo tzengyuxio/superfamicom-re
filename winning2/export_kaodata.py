@@ -11,8 +11,9 @@ Characters (face at the start of a game, year 0): trainers 1000-1019, jockeys 20
 new-game table and jockey 60, エドリー, the only jockey from ROM with a face of his own), owners 3000-3027 (owner
 28, the player, has no face), secretaries 4000-4005.
 
-With --rom Program '96 the dataset is winning2-96-sfc (not registered in kaodata): 235 portraits (codes 208-234 are
-its new faces) and the same characters by its own records.
+With --rom Program '96 the dataset is winning2-96-sfc, a separate kaodata dataset (a standalone cartridge with its own
+season: 174 faces kept at the same code, 8 moved, 26 dropped, 33 new): its 235 portraits and the same character ids by
+its own records. The '96 original and Rev 1 give the same dataset.
 
 Usage: .venv/bin/python winning2/export_kaodata.py --out <dir> [--rom ROM]
 """
@@ -78,7 +79,7 @@ def build(rom_path: str) -> tuple[dict, list[bytes]]:
         portraits.append(p)
     colors = [f"#{r:02x}{g:02x}{b:02x}" for n in range(PALETTE_COUNT) for r, g, b in map(bgr555_rgb, rom.palette(n))]
     title, ds_id = {"ja": "ウイニングポスト2", "zh": "賽馬大亨2"}, "winning2-sfc"
-    if rom.version == "program96":   # not a registered kaodata id; only for checking the Program '96 faces
+    if rom.version == "program96":   # separate dataset: '96 drops and moves faces, so it can't merge into winning2-sfc
         title, ds_id = {"ja": "ウイニングポスト2 プログラム'96", "zh": "賽馬大亨2 Program'96"}, "winning2-96-sfc"
     meta = {
         "format": kaodata.FORMAT,
