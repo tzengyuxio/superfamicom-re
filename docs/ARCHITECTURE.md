@@ -81,6 +81,8 @@ flowchart LR
 | `leading/` | `lc.py` | 按鍵序列；printf 服務入口（va 指標在 DP）、memcpy 等追蹤 Lua |
 | `topman2/` | `tm2.py` | 按鍵序列、WRAM 位址；文字繪製、頭像繪製追蹤 Lua |
 | `winning/` | `wp.py` | 開新局的按鍵序列；vprintf 等追蹤 Lua |
+| `winning2/` | `w2.py` | 兩版（原版、プログラム'96）的按鍵序列與位址；Lua、printf 追蹤 |
+| `mahjong2/` | `sequences.py`、`charset_sheet.py` | 按鍵序列與記憶體位址；台詞字型與役名字形核對圖 |
 | `inindou/` | `scenes.py`（放在遊戲資料夾根目錄） | 按鍵序列；把畫面視窗的 tile 拼回 16×16 字、和 ROM 字型比對的 `ScreenReader` |
 
 `daikoukai2/`、`eiketsu/` 的重播實作和共用版功能重疊，沒有改寫是因為驗證已通過、重跑時間長；之後動到這兩款時再改用共用版。

@@ -1,0 +1,49 @@
+# Rule items 0-43 in the order of the ルール screen (page 1 left, page 1 right, page 2 left, page 2 right) and of the
+# nibbles of a rule set ($01:D382, WRAM $192F + 22k, expanded to $0E02 + item). 名前 and 選項 (value 0, 1, ... separated by |)
+# are transcribed from the screen (the game draws them from its own 16x16 glyphs; not decoded): screenshots with every
+# nibble set to 0-7 (docs/ROM_FORMAT.md §7). The number of values of each item is in the ROM ($01:D356).
+id	名前	選項
+0	ナキ断	無|有
+1	ナキ平和	20符|30符
+2	自摸平和	無|有
+3	不聴罰	無|有
+4	連荘	和了|聴牌|南場
+5	裏ドラ	無|有
+6	槓ドラ	無|有
+7	槓裏	無|有
+8	一発	無|有
+9	ドボン	無|0|10|20|30
+10	持ち点	24,000|25,000|26,000|27,000|28,000|29,000|30,000
+11	場風	東風|東東|東南
+12	西入	無|30,000|30,100|33,100|35,100
+13	馬	無|0-5|0-10|0-20|0-30|5-10|10-20|10-30
+14	和了終了	無|有
+15	途中流局	無|輪|連
+16	二飜縛り	無|有
+17	国士搶槓	無|有
+18	立直暗槓	無|有
+19	立直棒戻	無|有
+20	焼き鳥	無|10|15|20|裏10|裏15|裏20
+21	ワレ目	無|有
+22	八連荘	無|有
+23	チップ	無|有
+24	一発賞	無|有
+25	裏ドラ賞	無|有
+26	役満賞	無|有
+27	鳥撃ち	無|有
+28	アリス	無|有
+29	完全麻雀	無|有
+30	金雞独立	無|有
+31	二索搶槓	無|有
+32	三連刻	無|有
+33	一色三順	無|有
+34	么九振切	無|有
+35	十三不搭	無|満|倍|役
+36	人和	無|有
+37	大車輪	無|有
+38	百万石	無|有
+39	紅孔雀	無|有
+40	青の洞門	無|有
+41	ダブル	無|有
+42	二家和	無|有
+43	三家和	無|有

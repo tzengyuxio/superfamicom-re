@@ -96,6 +96,8 @@
 | 把記錄換進畫面 | `taikou/verify_persons.py`、`europe/verify_cities.py`：顯示前把 WRAM 換成待測記錄，一輪驗多筆 |
 | 原版與 Rev 1 共用 | `teitoku/rom.py` 的 `REVISIONS`（移位的格式字串換算表）、`haouden/`、`airmanage/` |
 | 國／城數值（WRAM patch） | `genchou/verify_countries.py` |
+| 借畫面當函式驗證器 | `winning2/verify_races.py`：把馬卡片的 JSL 改接到別的存取函式（或 `$7F:FF40` 的 WRAM shim，從 WRAM 讀多個引數），讓遊戲印出比賽、人名的解碼結果 |
+| 整張訊息表 | `mahjong2/verify_messages.py`：PRG patch 改 `LDA #訊息號` 的 immediate，逐則截圖，不用找每則出現的畫面 |
 | kaodata | `kouryuuki/verify_kaodata_export.py`（單一調色盤）、`tenshouki/verify_kaodata_export.py`（組合臉）、`mahjong/verify_kaodata_export.py`（表情差分） |
 | 頭像（不知道 VRAM 位置） | `royal/verify_faces.py`：在 BG tilemap 找 5×6 連續 tile 的區塊，用 VRAM＋CGRAM 重畫後逐 pixel 比對 |
 | 畫面文字（拼回字形） | `inindou/scenes.py` 的 `ScreenReader`：取視窗層 tile 的字色拼回 16×16，和 ROM 字型比對 |
@@ -173,6 +175,15 @@
 - 戰鬥中地形會變（ロイヤルブラッド出現柵）：戰場驗證要在開戰後不久就讀
 - 自己讀 Mesen log 時，`Mesen.log()` 預設只取 4 MB，截圖多時會被截斷；`screenshots()`、`drive.py`、`replay.py` 已改用 64 MB
 - 欄位命名法：在畫面畫出前的 savestate，一次只改一個 WRAM 欄位，比對 printf 印出的值，一輪就能分出「直接顯示」和「影響計算」的欄位（リーディングカンパニー）
+- 重新組建的版本（プログラム'96）插入一個字後全部字碼移位，拿 bytes 搜不到表：改用存取函式的程式碼找（regex 把 JSL 運算元當萬用字元，取出 LDA／ADC 的表位址），再確認兩版函式的語意相同
+- WRAM shim 不能和放引數的 WRAM 重疊，否則畫面直接當掉（ウイニングポスト2）
+- `replay.py` 的 extra Lua 有語法錯誤時會卡住、不報錯（例如 `%` 格式化後殘留 `%d`）；卡住時先單獨檢查 Lua
+- 同一款遊戲的不同版本，標題畫面接受按鍵的時機可能不同（プログラム'96 約第 8000 幀後才收 START，而且要按久一點）
+- 表情圖與它的調色盤可能等台詞打完才換上：驗證時把台詞換成一個字，截圖就落在表情出現之後（麻雀大会II）
+- 空白字碼畫出的 tile 不一定是它自己字形的 tile（麻雀大会II 的 `D4` 是 `0x06E`），比對 tilemap 時要另外處理
+- 雀荘、關卡類的固定設定常存成「起點表＋（項目, 值）覆寫配對清單」（麻雀大会II 的規則）
+- write callback 追不到寫入時（麻雀大会II 的 `$0423` 名單），改用 `drive.py --reads` 找讀取方，再回推建立它的程式
+- 文字是圖、ROM 裡沒有的選項名稱：把每項依序設成 0–7 各截一張圖，照圖抄
 
 ## 6. 分診結果（2026-10-13）
 
@@ -200,4 +211,4 @@
 
 只有武將風雲錄、航空霸業 I 沒有這套 LZ（和三國志II 一樣是早期的 LoROM 作品）。
 
-以上 17 款都已解析完成；之後又加了ロイヤルブラッド、伊忍道、トップマネジメントII、リーディングカンパニー、ウイニングポスト、スーパー麻雀大会，未列入上表（各遊戲的資料夾見根目錄 `CLAUDE.md`）。
+以上 17 款都已解析完成；之後又加了ロイヤルブラッド、伊忍道、トップマネジメントII、リーディングカンパニー、ウイニングポスト、スーパー麻雀大会、ウイニングポスト2、麻雀大会II，未列入上表（各遊戲的資料夾見根目錄 `CLAUDE.md`）。

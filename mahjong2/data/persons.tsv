@@ -1,0 +1,31 @@
+# Opponents 1-26 (the game numbers them from 1; 0 is the player). The game has no text names: 名前 is transcribed
+# from the name graphics (data stream 04:C951, output/names.png). 読み and [EXT]出典 are not from the ROM (読み: common
+# readings; 出典: KOEI titles in which a person of that name appears, from the kaodata datasets ~/works/kaodata/data/*,
+# スーパー麻雀大会 = also an opponent of the previous game (mahjong-sfc); empty = none found).
+id	名前	読み	[EXT]出典
+1	孔子	こうし
+2	リンカーン	りんかーん
+3	ノストラダムス	のすとらだむす	スーパー麻雀大会
+4	水戸黄門	みと こうもん
+5	松尾芭蕉	まつお ばしょう
+6	関羽	かんう	三國志
+7	雷電	らいでん
+8	ナポレオン	なぽれおん	ランペルール・スーパー麻雀大会
+9	豊臣秀吉	とよとみ ひでよし	信長の野望・スーパー麻雀大会
+10	ヘラクレス	へらくれす
+11	一休	いっきゅう
+12	ホームズ	ほーむず
+13	沖田総司	おきた そうじ	維新の嵐
+14	モーツァルト	もーつぁると
+15	坂本竜馬	さかもと りょうま	維新の嵐（坂本龍馬）・スーパー麻雀大会（坂本龍馬）
+16	平賀源内	ひらが げんない
+17	シンドバッド	しんどばっど
+18	赤ずきんちゃん	あかずきんちゃん
+19	清少納言	せい しょうなごん
+20	卑弥呼	ひみこ
+21	ジャンヌ・ダルク	じゃんぬ だるく
+22	シンデレラ	しんでれら
+23	クレオパトラ	くれおぱとら	スーパー麻雀大会
+24	織田信長	おだ のぶなが	信長の野望・スーパー麻雀大会
+25	諸葛孔明	しょかつ こうめい	三國志（諸葛亮）・スーパー麻雀大会
+26	シブサワ・コウ	しぶさわ こう	スーパー麻雀大会
