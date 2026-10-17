@@ -101,8 +101,8 @@ def build(rom_path: str) -> tuple[dict, list[bytes]]:
 
 
 def main() -> None:
-    ap = argparse.ArgumentParser(description="匯出 kaodata 統一格式資料集 winning2-sfc")
-    ap.add_argument("--rom", default=DEFAULT_ROM, help="roms/ 的 zip 或 .sfc")
+    ap = argparse.ArgumentParser(description="匯出 kaodata 統一格式資料集 winning2-sfc（--rom 給 Program '96 時是 winning2-96-sfc）")
+    ap.add_argument("--rom", default=DEFAULT_ROM, help="roms/ 的 zip 或 .sfc；Program '96（原版或 Rev 1）輸出 winning2-96-sfc")
     ap.add_argument("--out", required=True, help="輸出目錄")
     args = ap.parse_args()
     meta, blobs = build(args.rom)

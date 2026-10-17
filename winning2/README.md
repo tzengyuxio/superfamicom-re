@@ -28,7 +28,7 @@ KOEI，1995，SFC（HiROM 3 MB）。賽馬經營模擬：玩家當馬主，買�
 |------|------|
 | `rom.py` | ROM 解碼：版本判別與兩版位址、字型與文字、人名／馬名零件、現役馬／種牡馬／繁殖牝馬／幼駒、騎手／調教師／馬主／秘書、牧場、比賽與日程、名稱表、頭像（選臉規則）、開新局的初始資料區塊 |
 | `export.py` | 匯出 CSV／XLSX／PNG |
-| `export_kaodata.py` | 匯出 kaodata 資料集 `winning2-sfc`（208 張肖像、115 人；沒有組合臉） |
+| `export_kaodata.py` | 匯出 kaodata 資料集 `winning2-sfc`（208 張肖像、115 人；沒有組合臉）；`--rom` 給 '96 時匯出 `winning2-96-sfc`（235 張肖像、115 人），輸出目錄要用這個 id |
 | `verify_kaodata_export.py` | 資料集用參考渲染器畫出來，和 ROM 解碼逐 pixel 比對（肖像、每個人物）；checksums |
 | `verify_init.py` | 開新局時 9 個 WRAM 區塊與 ROM 逐 byte 比對；馬、人的名字零件與父母對 WRAM |
 | `verify_horses.py` | 馬卡片：現役馬的年齡、性別、毛色、牧場、父、母、母父；種牡馬／牝馬／現役馬名 |
