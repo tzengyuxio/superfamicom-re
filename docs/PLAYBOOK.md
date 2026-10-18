@@ -101,6 +101,8 @@
 | 畫面文字（非 printf 的作品） | `yokoyama/verify_persons.py`：攔逐字輸出常式（`$00:8D60`，A = 字碼），把整個畫面的字碼串起來，和期望字串做子字串比對 |
 | 字型位址 | `yokoyama/verify_text.py`：PRG patch 把訊息字串換成待測字碼，攔讀字型那條指令的 X |
 | sprite 組合頭像 | `yokoyama/verify_faces.py`：從 OAM＋VRAM＋CGRAM 自己畫出 sprite，逐 pixel 比對 |
+| 字型位址（找不到合適的訊息時） | `yokoyama2/verify_text.py`：把待測字碼寫進 ROM 空白處（全 FF），PRG patch 把某個讀音指標指過去，再開會印出它的畫面 |
+| 地圖上的動態物件 | `yokoyama2/verify_maps.py`：在地圖畫面用 Lua 的 endFrame 計數，到指定幀寫入 WRAM（部隊），開一個子畫面再返回讓地圖重建，然後讀 VRAM |
 | kaodata | `kouryuuki/verify_kaodata_export.py`（單一調色盤）、`tenshouki/verify_kaodata_export.py`（組合臉）、`mahjong/verify_kaodata_export.py`（表情差分） |
 | 頭像（不知道 VRAM 位置） | `royal/verify_faces.py`：在 BG tilemap 找 5×6 連續 tile 的區塊，用 VRAM＋CGRAM 重畫後逐 pixel 比對 |
 | 畫面文字（拼回字形） | `inindou/scenes.py` 的 `ScreenReader`：取視窗層 tile 的字色拼回 16×16，和 ROM 字型比對 |
@@ -192,6 +194,9 @@
 - Rev 1 的表與程式往後移 4–5 bytes：用程式碼的指令樣式（regex）取位址，hook 位址也要從 ROM 算（横山光輝 三国志 `Rom.loader_done`、`lz_entry`）
 - mode 7 地圖的 CGRAM 會被視窗調色盤覆寫、還有閃爍色：在調色盤常式結束時讀 CGRAM 影子比對，畫面上的 CGRAM 另外只比固定的列
 - LoROM 的 `LDA long,X` 跨 bank 時，`$04:0000` 不是 ROM：字碼範圍的上限要照這個算
+- 選單剛出現時立刻按方向鍵會被吃掉，要先等 30–60 幀（横山光輝 三国志2）
+- 列表類畫面可能在上一層打開時就建立（横山光輝 三国志2 的武將列表在國的面板打開時建立）：用 WRAM patch 換資料時，savestate 要存在那之前
+- 開局事件和「○○軍戦略中」每個都要等一次按鍵，次數隨時機（亂數）變：暴力搜出來，寫成每個劇本的常數（横山光輝 三国志2 的 `TURN_PRESSES`）
 
 ## 6. 分診結果（2026-10-13）
 
@@ -219,4 +224,4 @@
 
 只有武將風雲錄、航空霸業 I 沒有這套 LZ（和三國志II 一樣是早期的 LoROM 作品）。
 
-以上 17 款都已解析完成；之後又加了ロイヤルブラッド、伊忍道、トップマネジメントII、リーディングカンパニー、ウイニングポスト、スーパー麻雀大会、ウイニングポスト2、麻雀大会II，以及非光榮的横山光輝 三国志，未列入上表（各遊戲的資料夾見根目錄 `CLAUDE.md`）。
+以上 17 款都已解析完成；之後又加了ロイヤルブラッド、伊忍道、トップマネジメントII、リーディングカンパニー、ウイニングポスト、スーパー麻雀大会、ウイニングポスト2、麻雀大会II，以及非光榮的横山光輝 三国志、三国志2，未列入上表（各遊戲的資料夾見根目錄 `CLAUDE.md`）。

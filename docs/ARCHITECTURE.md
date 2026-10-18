@@ -84,6 +84,7 @@ flowchart LR
 | `winning2/` | `w2.py` | 兩版（原版、プログラム'96）的按鍵序列與位址；Lua、printf 追蹤 |
 | `mahjong2/` | `sequences.py`、`charset_sheet.py` | 按鍵序列與記憶體位址；台詞字型與役名字形核對圖 |
 | `yokoyama/` | `sequences.py`、`charset_sheet.py` | 按鍵序列、游標寫入、攔 `$00:8D60` 字碼／劇本載入／地圖調色盤的 Lua；字型核對圖 |
+| `yokoyama2/` | `sequences.py`、`charset_sheet.py` | 按鍵序列（三劇本到玩家第一個月、人事→人材→詳細畫面）、攔 `$80:8C2E` 字碼／劇本載入的 Lua；字型核對圖 |
 | `inindou/` | `scenes.py`（放在遊戲資料夾根目錄） | 按鍵序列；把畫面視窗的 tile 拼回 16×16 字、和 ROM 字型比對的 `ScreenReader` |
 
 `daikoukai2/`、`eiketsu/` 的重播實作和共用版功能重疊，沒有改寫是因為驗證已通過、重跑時間長；之後動到這兩款時再改用共用版。
