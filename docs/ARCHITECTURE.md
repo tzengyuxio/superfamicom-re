@@ -85,6 +85,7 @@ flowchart LR
 | `mahjong2/` | `sequences.py`、`charset_sheet.py` | 按鍵序列與記憶體位址；台詞字型與役名字形核對圖 |
 | `yokoyama/` | `sequences.py`、`charset_sheet.py` | 按鍵序列、游標寫入、攔 `$00:8D60` 字碼／劇本載入／地圖調色盤的 Lua；字型核對圖 |
 | `yokoyama2/` | `sequences.py`、`charset_sheet.py` | 按鍵序列（三劇本到玩家第一個月、人事→人材→詳細畫面）、攔 `$80:8C2E` 字碼／劇本載入的 Lua；字型核對圖 |
+| `tenbu/` | `sequences.py` | 游標式操作的按鍵序列（開機→劇本→君主卡→主地圖、武将情報検索）、在 Lua endFrame 寫游標 `$0200/$0201` 的排程與 WRAM 信箱 `$7F:7E00`、攔 `$00:A0CA` 字碼的 Lua；`FRAME_HOOK`（選單畫面 vblank 輪詢）／`MAP_HOOK` |
 | `inindou/` | `scenes.py`（放在遊戲資料夾根目錄） | 按鍵序列；把畫面視窗的 tile 拼回 16×16 字、和 ROM 字型比對的 `ScreenReader` |
 
 `daikoukai2/`、`eiketsu/` 的重播實作和共用版功能重疊，沒有改寫是因為驗證已通過、重跑時間長；之後動到這兩款時再改用共用版。
