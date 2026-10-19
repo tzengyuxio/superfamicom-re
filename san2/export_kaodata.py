@@ -5,8 +5,9 @@ Pixels are `palette * 16 + colour`: the dataset palette is the game's 4 face pal
 Portrait codes 1-208 use the palette the game looks up per code; composite faces carry the palette
 in bits 13-14, so each composite variant is one head with one palette (8 heads x 4 = 32 variants).
 Every slot has 4 items, the head's records 0-3, each a 40x48 canvas with 255 outside the slot's cells.
-Head names (HEAD_NAMES) are ours, read off the parts; the ROM has no names for them. 朝左／朝右 means the face
-turns toward the left / right of the picture (the person's own right / left).
+Head names (HEAD_NAMES, read off the parts) and palette names (PALETTE_NAMES, by background colour) are ours; the
+ROM has no names for them. 朝左／朝右 means the face turns toward the left / right of the picture (the person's own
+right / left).
 
 Usage: .venv/bin/python san2/export_kaodata.py --out <dir> [--rom ROM]
 """
@@ -38,6 +39,8 @@ CANVAS = (40, 48)
 # composite heads 0-7 by their parts: 0/1 official caps, 2 topknot / headscarf / cloth cap (no official cap),
 # 3-5 helmets, 6 beardless young faces, 7 white hair
 HEAD_NAMES = ["文官正面", "文官朝左", "布衣", "武官正面", "武官朝左", "武官朝右", "青年", "老人"]
+# face palettes 0-3 named by their background colour (index 2): #ce8cef, #7b8cff, #00bdff, #6bde9c
+PALETTE_NAMES = ["紫底", "藍底", "水藍底", "綠底"]
 SURNAMES = os.path.join(HERE, "data", "surnames.tsv")
 # The ROM writes some names with a stand-in kanji (or cut to 3 kanji); the dataset uses the historical spelling.
 NAME_FIXES = {
@@ -99,7 +102,7 @@ def build(rom_path: str) -> tuple[dict, list[bytes]]:
                 parts[sid] = {"items": [
                     add(cells_image(rom, {c: COMPOSITE_TILES + head * HEAD_SIZE + rec * FACE_BYTES + 32 * c
                                           for c in areas[sid]}, pal)) for rec in range(4)]}
-            variants.append({"id": f"{head}-{pal}", "label": f"{HEAD_NAMES[head]}／色 {pal}", "parts": parts})
+            variants.append({"id": f"{head}-{pal}", "label": f"{HEAD_NAMES[head]}／{PALETTE_NAMES[pal]}", "parts": parts})
 
     portraits = []
     for code in range(1, PORTRAIT_COUNT + 1):
