@@ -42,16 +42,31 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | `yokoyama2/` | 横山光輝 三国志2 (Angel, 1993, LoROM FastROM 1.5 MB，非光榮，不出 kaodata)：前作引擎重新組譯、自訂 16-bit 字碼 1280 字、人物 229（名表 239）、3 劇本（189／200／215）人物／配置／國 35／勢力、難易度金米表、頭像 229 張（sprite 組合，5 人有專用 metasprite）、大地圖（mode 7，LZ＋交錯，砦與行軍部隊），全部有 Mesen 驗證；戰鬥與地形表未找到，配置種類 1–5、訊息表、國標記圖形未解 |
 | `tenbu/` | 三国志正史 天舞スピリッツ (WOLF TEAM／TELENET JAPAN, LoROM SlowROM 1.5 MB，非光榮，不出 kaodata；游標操作)：SJIS＋字表 1113 字（自訂 92）、LZSS、4 劇本人物 600／勢力 15／郡国 126、郡国欄位（人口 兵 金 糧 士 規模 太）、官職 48、頭像 250、地域拡大図 270×230 chip、中国全土図，全部有 Mesen 驗證；勢力上色、相鄰、戰鬥、人物／郡国多個欄位未解 |
 
-- ROM 都放 `roms/`（zip，不進版控），程式預設直接讀 zip。分析時可暫時把 ROM 解出來，做完要刪掉，只留 zip 作為來源
-
 ## 開發慣例
 
 - Python 一律用 `.venv/bin/python`；lint 用 `uvx ruff check --line-length 120`
 - 新遊戲：開新資料夾，`README.md` 寫指令／檔案／進度，`docs/` 寫 ROM 格式（含尚未解開的部分）；步驟、範本與分診結果見 `docs/PLAYBOOK.md`；資料夾結構與共用／專用工具一覽見 `docs/ARCHITECTURE.md`
 - 共用工具在 `tools/`：`drive.py`（按鍵序列、截圖、dump、ROM 讀取追蹤、DMA 記錄）、`replay.py`（savestate 重播，驗證腳本共用；按鍵序列的 `*n`、`expand`、`end_frame`）、`printf_trace.py`（printf／vsprintf 追蹤）、`koei_lz.py`（KOEI LZ 解壓與找表，三國志II、武將風雲錄、航空霸業以外的作品都用它）、`triage.py`（ROM 分診）、`kaodata.py`
 - 每款遊戲提供：人物資料、頭像（含 kaodata 資料集與驗證）、地點資料、大地圖、戰術地圖，以及分析或攻略用得到的表
-- 外部資料（不是 ROM 解析出來的）欄位名加 `[EXT]` 前綴，並註明出處
-- 輸出 CSV 用 UTF-8-BOM（Excel 相容）；匯出結果放各遊戲的 `output/`（不進版控）
-- 解碼要有獨立驗證（模擬器跑遊戲本身的程式、截圖或 Mesen 紀錄）
+- 外部資料（不是 ROM 解析出來的）欄位名加 `[EXT]` 前綴
+- 輸出 CSV 用 UTF-8-BOM（Excel 相容）
 - 模擬器：`tools/mesen.py` 用 ctypes 呼叫 Mesen 2 的 MesenCore（無頭、跑 Lua）。一個 process 只能開一次 Mesen，多輪比對用 savestate 重播；savestate 只能在 exec callback 裡建立／讀回（用 NMI handler），讀回後第一輪不生效，要多跑一輪丟掉
 - 光榮的移植版先比對 FC 版（`~/works/famicom-re`）的已知資料表：SFC 三國志II 的劇本、州、戰場等表和 FC 版逐 byte 相同，直接拿 FC ROM 的表去 SFC ROM 裡搜尋就能定位
+
+## RE 共通語言
+
+@~/.claude/re-common.md
+
+本 repo 路徑 ↔ 共通層名：
+
+| 層名 | 本 repo 路徑 |
+|------|--------------|
+| original | `roms/`（No-Intro 命名的 zip，不進版控），程式預設直接讀 zip；分析時暫時解出的 .sfc 用完即刪 |
+| references | 沒有固定位置；外部資料抄錄成 `<遊戲>/data/` 的對照表（如 `genchou/data/name_zh.json`），欄位加 `[EXT]` 並註明出處 |
+| captures | 沒有固定位置；`tools/drive.py` 的截圖、傾印寫到命令列指定的前綴，savestate 只在 Mesen process 內（`tools/replay.py`），用按鍵序列（各遊戲的 `tools/sequences.py` 等）重建，不留檔 |
+| extracted | `<遊戲>/output/` 裡的 CSV、XLSX、單張頭像（`faces/`）、字型圖等（不進版控） |
+| generated | `<遊戲>/output/` 裡的總覽與拼圖（`faces.png`、`map*.png`、拼好的戰場總圖等，不進版控） |
+| runtime | 沒有固定位置；`tools/mesen.py` 每個 process 用暫存資料夾當 Mesen home，MesenCore 在 `~/Library/Application Support/Mesen2/` |
+| export | 交給 kaodata 的資料集：`<遊戲>/export_kaodata.py --out ~/works/kaodata/data-local/<dataset id>`（`output/` 不放 export）；非光榮作品沒有 export |
+| docs | `docs/`（共用：PLAYBOOK、ARCHITECTURE）、`<遊戲>/README.md` 與 `<遊戲>/docs/`、人工校對的對照表 `<遊戲>/data/` |
+| tools | `tools/`（共用）、`<遊戲>/*.py`（解碼、匯出、驗證）、`<遊戲>/tools/`（遊戲專用） |
