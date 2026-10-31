@@ -6,7 +6,7 @@ then:  .venv/bin/python -I ~/.claude/skills/portrait-sheet/render.py \
 
 Every face is put together from 11 parts (rom.FACE_SLOTS). One cell per part number the 224 persons use, by kind
 then number: the part alone, drawn where it sits in the 48 x 64 face by the face layout (metasprite 0), in the
-palette of its first user; `sub` = how many persons use it. The last kind (飾物) is drawn only by the extra sprites
+palette of its first user; `sub` = how many persons use it, or the name of its only user. The last kind (飾物) is drawn only by the extra sprites
 of 4 persons (rom.FACE_EXTRA): those cells show the extra sprites of their one user, tagged 專屬.
 yokoyama2/parts_manifest.py reuses build().
 """
@@ -63,7 +63,7 @@ def build(src: str, slug: str, slot_kind: list[int], parts, part_rgb, extra_rgb,
                     ch["unseen"] = True
             else:
                 rgb = part_rgb(p, k, n)
-                ch.update(sub=f"{len(users[n])}人", tags=[tag])
+                ch.update(sub=names[p] if len(users[n]) == 1 else f"{len(users[n])}人", tags=[tag])
                 if not users[n]:
                     ch["unseen"] = True
             image(rgb, *size).save(os.path.join(out, face))

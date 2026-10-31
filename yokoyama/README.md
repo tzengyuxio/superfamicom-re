@@ -29,7 +29,7 @@
 | `tools/sequences.py` | 按鍵序列（劇本選擇、兩劇本第一個月的地圖、情報→武将／国）、游標寫入、攔 `$00:8D60` 字碼與攔劇本載入的 Lua |
 | `tools/charset_sheet.py` | 字型核對圖：每個字碼的 ROM 字形與字表的字元並排 |
 | `export.py` | 匯出 CSV／XLSX／PNG |
-| `parts_manifest.py` | portrait-sheet/1 manifest：頭像零件 407 個（11 種，畫在臉框原位置，副名是使用人數），交給 simagame |
+| `parts_manifest.py` | portrait-sheet/1 manifest：頭像零件 407 個（11 種，畫在臉框原位置，副名是使用人數，只有 1 人用的寫那個人），交給 simagame |
 | `sheet_manifest.py` | portrait-sheet/1 manifest（武將頭像 224 張，兩劇本都不在的任双標 unseen，交給 simagame 做頭像 sheet） |
 | `verify_scenarios.py` | 2 劇本 × 3 難易度：劇本載入後 WRAM 人物／國／勢力區塊與 `Rom.scenario_wram` 逐 byte 比對 |
 | `verify_persons.py` | 人物 224 × 2 劇本：逐一移進玩家的國，開武將詳細畫面，攔 `$00:8D60` 的字碼 |
