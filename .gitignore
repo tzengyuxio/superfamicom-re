@@ -5,6 +5,7 @@ roms/
 
 # Output files
 output/
+captures/
 *.xlsx
 *.csv
 

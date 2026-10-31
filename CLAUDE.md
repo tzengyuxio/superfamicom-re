@@ -63,7 +63,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 |------|--------------|
 | original | `roms/`（No-Intro 命名的 zip，不進版控），程式預設直接讀 zip；分析時暫時解出的 .sfc 用完即刪 |
 | references | 沒有固定位置；外部資料抄錄成 `<遊戲>/data/` 的對照表（如 `genchou/data/name_zh.json`），欄位加 `[EXT]` 並註明出處 |
-| captures | 沒有固定位置；`tools/drive.py` 的截圖、傾印寫到命令列指定的前綴，savestate 只在 Mesen process 內（`tools/replay.py`），用按鍵序列（各遊戲的 `tools/sequences.py` 等）重建，不留檔 |
+| captures | `<遊戲>/captures/screenshots/`（不進版控；例：横山光輝 三国志各代的標題畫面 `title*.png`，Claude 用 `tools/drive.py` 擷取）；`tools/drive.py` 其他的截圖、傾印寫到命令列指定的前綴，savestate 只在 Mesen process 內（`tools/replay.py`），用按鍵序列（各遊戲的 `tools/sequences.py` 等）重建，不留檔 |
 | extracted | `<遊戲>/output/` 裡的 CSV、XLSX、單張頭像（`faces/`）、字型圖等（不進版控） |
 | generated | `<遊戲>/output/` 裡的總覽與拼圖（`faces.png`、`map*.png`、拼好的戰場總圖等，不進版控） |
 | runtime | 沒有固定位置；`tools/mesen.py` 每個 process 用暫存資料夾當 Mesen home，MesenCore 在 `~/Library/Application Support/Mesen2/` |
