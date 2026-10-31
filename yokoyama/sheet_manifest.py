@@ -4,8 +4,8 @@ Usage: .venv/bin/python yokoyama/sheet_manifest.py
 then:  .venv/bin/python -I ~/.claude/skills/portrait-sheet/render.py yokoyama/output/portrait-sheet/yokoyama/sheet.json \
            yokoyama/output/portrait-sheet/yokoyama/out
 
-The 224 persons each have their own face (output/faces/NNN_名前.png, 48x64); 任双, absent from both scenarios
-(placement 不在), is left out.
+The 224 persons each have their own face (output/faces/NNN_名前.png, 48x64). 任双 is absent from both scenarios
+(placement 不在), so his cell is marked unseen.
 Cells follow the name table (gojūon order), with the reading as `sub`.
 """
 import csv
@@ -27,11 +27,12 @@ def main() -> None:
     files = {f[:3]: f for f in os.listdir(os.path.join(src, "faces")) if f.endswith(".png")}
     chars = []
     for p in persons:
-        if all(p[c] == "不在" for c in PLACEMENTS):
-            continue
         face = f"faces/{int(p['Id']):03d}.png"
         shutil.copy(os.path.join(src, "faces", files[f"{int(p['Id']):03d}"]), os.path.join(out, face))
-        chars.append({"face": face, "name": p["名前"], "sub": p["読み"]})
+        ch = {"face": face, "name": p["名前"], "sub": p["読み"]}
+        if all(p[c] == "不在" for c in PLACEMENTS):
+            ch["unseen"] = True
+        chars.append(ch)
     manifest = {"format": "portrait-sheet/1", "slug": SLUG, "game": "橫山光輝三國志", "original": "横山光輝 三国志",
                 "title_font": "lanyang-semibold", "title": "武將頭像", "platform": "ANGEL　1992　SFC",
                 "theme": {"base": "ink", "name_font": "sourcehan-serif"}, "characters": chars}

@@ -27,7 +27,7 @@ SFC（LoROM SlowROM 1.5 MB，一版）。標題畫面「© WOLF TEAM © TELENET 
 |------|------|
 | `rom.py` | ROM 解碼：LZSS、劇本串流（人物／勢力／郡国 → WRAM 區塊）、人物／勢力／郡国欄位、郡国名／讀音／位置、官職、州、異民族、王号、劇本名、字表與字型（16×16 glyph、半形）、文字 → tile code、頭像、地域拡大図、格子表、中国全土図 |
 | `export.py` | 匯出 CSV（UTF-8-BOM）、XLSX、PNG |
-| `sheet_manifest.py` | portrait-sheet/1 manifest：專屬頭像 148 張（`tenbu`）與共用頭像 100 張（`tenbu-shared`），交給 simagame 做頭像 sheet |
+| `sheet_manifest.py` | portrait-sheet/1 manifest，一人一格（姓名＋頭像）照遊戲順序：用專屬頭像的 150 人（`tenbu`）與用大眾臉的 787 人（`tenbu-shared`）；沒人用的臉 71、135 無名、標 unseen 放在 `tenbu` 最後，交給 simagame 做頭像 sheet |
 | `data/charset.txt` | 字表中 92 個自訂 SJIS 碼 `EB9F–EC58` → 字元（其餘用 cp932） |
 | `tools/sequences.py` | 驗證共用：開機到劇本清單／君主清單／君主卡／主地圖的按鍵序列、游標寫入排程（`replay.py` 不能在指定幀寫 WRAM，改在 Lua 的 endFrame 裡寫 `$0200`／`$0201`，每輪的編號經 WRAM 信箱 `$7F:7E00` 傳）、`$00:A0CA` 字碼攔截 Lua |
 | `verify_scenarios.py` | 劇本載入結果與 `Rom.scenario_wram` 比對 |
