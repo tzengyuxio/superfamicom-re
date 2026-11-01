@@ -7,7 +7,7 @@ then:  .venv/bin/python -I ~/.claude/skills/portrait-sheet/render.py \
 Every face is put together from 11 parts (rom.FACE_SLOTS). One cell per part number the 224 persons use, by kind
 then number: the part alone, drawn where it sits in the 48 x 64 face by the face layout (metasprite 0), in the
 palette of its first user; `sub` = how many persons use it, or the name of its only user. The last kind (飾物) is drawn only by the extra sprites
-of 4 persons (rom.FACE_EXTRA): those cells show the extra sprites of their one user, tagged 專屬.
+of 4 persons (rom.FACE_EXTRA): those cells show the extra sprites of their one user. Each kind is a section.
 yokoyama2/parts_manifest.py reuses build().
 """
 import csv
@@ -18,8 +18,6 @@ from PIL import Image
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 KINDS = ["頭頂", "臉", "眼", "鬍鬚", "口", "冠側", "垂飾", "冠頂", "肩", "衣領", "飾物"]
-COLORS = ["#8C6D46", "#D9A066", "#3F7FBF", "#6B4C9A", "#C8475A", "#2E9E8F", "#B8860B", "#D4A017", "#5E8C31",
-          "#4A6FA5", "#A23B72"]
 OPTIONAL = 0xFF
 
 
@@ -47,29 +45,28 @@ def build(src: str, slug: str, slot_kind: list[int], parts, part_rgb, extra_rgb,
                 if slot_kind[k] == ki:
                     users.setdefault(n, []).append((p, k))
         users.pop(OPTIONAL, None)
-        tag = {"text": kind, "color": COLORS[ki]}
         if kind != "飾物":  # numbers below the highest used one that no one uses: in the table, never shown
             for n in set(range(max(users))) - set(users):
                 users[n] = []
         for n in sorted(users):
             p, k = (users[n] or next(u for u in users.values() if u))[0]
             face = f"parts/{ki:02d}_{n:02d}.png"
-            ch = {"face": face, "name": f"{kind} {n:02d}"}
+            ch = {"face": face, "name": f"{kind} {n:02d}", "section": kind}
             if kind == "飾物":
                 rgb = extra_rgb(p, k)
-                ch.update(sub=names[p], tags=[tag, "專屬"])
+                ch["sub"] = names[p]
                 if rgb is None:  # loaded with the face but drawn by no sprite
                     rgb = part_rgb(p, k)
                     ch["unseen"] = True
             else:
                 rgb = part_rgb(p, k, n)
-                ch.update(sub=names[p] if len(users[n]) == 1 else f"{len(users[n])}人", tags=[tag])
+                ch["sub"] = names[p] if len(users[n]) == 1 else f"{len(users[n])}人"
                 if not users[n]:
                     ch["unseen"] = True
             image(rgb, *size).save(os.path.join(out, face))
             chars.append(ch)
     manifest = {"format": "portrait-sheet/1", "slug": slug, **head, "title_font": "lanyang-semibold",
-                "title": "頭像零件", "characters": chars}
+                "title": "頭像零件", "section_split": True, "characters": chars}
     with open(os.path.join(out, "sheet.json"), "w", encoding="utf-8") as f:
         json.dump(manifest, f, ensure_ascii=False, indent=1)
     print(f"{slug}: {len(chars)} parts ({sum(bool(c.get('unseen')) for c in chars)} unseen) -> {out}")
