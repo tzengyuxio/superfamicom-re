@@ -7,6 +7,7 @@
 ```bash
 .venv/bin/python yokoyama/export.py [--rom ROM] [--out DIR]       # → yokoyama/output/（CSV、XLSX、PNG）
 .venv/bin/python yokoyama/tools/charset_sheet.py                  # → yokoyama/output/charset_sheet.png
+.venv/bin/python yokoyama/tools/music.py                          # → yokoyama/output/music/（SPC、OGG，約 20 秒）
 .venv/bin/python yokoyama/verify_scenarios.py                     # 約 35 秒
 .venv/bin/python yokoyama/verify_persons.py                       # 約 8 分鐘（兩個劇本平行）
 .venv/bin/python yokoyama/verify_countries.py                     # 約 1 分鐘
@@ -17,7 +18,7 @@
 ```
 
 - ROM 預設直接讀 `roms/Yokoyama Mitsuteru Sangokushi (Japan).zip`（Rev 0）；`--rom "roms/Yokoyama Mitsuteru Sangokushi (Japan) (Rev 1).zip"` 讀 Rev 1，`--rom` 也接受 .sfc。兩版共用同一份解碼（Rev 1 往後移的表由 `Rom._find` 從程式碼找）。
-- 依賴：Pillow；openpyxl（可選，匯出 .xlsx）。字型核對圖用 macOS 的ヒラギノ角ゴシック，找不到時退回 PIL 預設字型。
+- 依賴：Pillow；openpyxl（可選，匯出 .xlsx）。音樂另需 Homebrew 的 `game-music-emu`（libgme）與 ffmpeg。字型核對圖用 macOS 的ヒラギノ角ゴシック，找不到時退回 PIL 預設字型。
 - 驗證腳本需要 Mesen 2（`tools/mesen.py`），savestate 重播用共用的 `tools/replay.py`。Mesen 會在 stderr 印大量 `Uninitialized memory read`，可以用 `2>&1 | rg -v Uninitialized` 濾掉。一個 process 只能開一次 Mesen，兩個劇本開機序列不同的腳本（`verify_persons.py`、`verify_countries.py`）會自己開兩個子程序平行跑（`--scenario 0|1` 只跑一個）。
 
 ## 檔案
@@ -28,6 +29,7 @@
 | `data/charset.txt` | 字表：字碼 0x100–0x63F → 字元（16 字一行，`#` 開頭是註解） |
 | `tools/sequences.py` | 按鍵序列（劇本選擇、兩劇本第一個月的地圖、情報→武将／国）、游標寫入、攔 `$00:8D60` 字碼與攔劇本載入的 Lua |
 | `tools/charset_sheet.py` | 字型核對圖：每個字碼的 ROM 字形與字表的字元並排 |
+| `tools/music.py` | 音樂：ROM patch 強迫載入音樂組 `$1A`／`$1C`／`$1E`，每組在 Mesen 傾印一次 SPC700 狀態，埠 0 填曲號做出每首的 SPC；從 N-SPC 樂譜算前奏與循環長度，libgme 轉 OGG |
 | `export.py` | 匯出 CSV／XLSX／PNG |
 | `parts_manifest.py` | portrait-sheet/1 manifest：頭像零件 407 個（11 種各一區，畫在臉框原位置，副名是使用人數，只有 1 人用的寫那個人），交給 simagame |
 | `sheet_manifest.py` | portrait-sheet/1 manifest（武將頭像 224 張，兩劇本都不在的任双標 unseen，交給 simagame 做頭像 sheet） |
@@ -55,6 +57,7 @@
 | `map_189.png`、`map_219.png` | 兩劇本開局的城標記與城框 |
 | `terrain.png` | 64 × 64 地形格依種類上色疊在地圖上 |
 | `charset_sheet.png` | 字型核對圖（`tools/charset_sheet.py`） |
+| `music/` | 33 首：`BB-NN.spc`（ID666 填長度與淡出）、`BB-NN.ogg`（BB 音樂組、NN 曲號；前奏＋循環 2 次＋淡出 10 秒，不循環的曲子播完為止）與 `music.csv`（樂段清單位址、前奏秒、循環秒） |
 
 ## 進度
 
@@ -68,6 +71,8 @@
 - ✓ LZSS（`$01:F8FE`）
 - ✓ 大地圖：mode 7 bank `$19`、城標記與城框、月份調色盤、視窗調色盤
 - △ 地形格 64 × 64、名稱、移動等級：從程式碼與地圖對照解出，沒有模擬器驗證
+- ✓ 音樂：3 個音樂組（`$10:F39C` 經 IPL 整組上傳）、TOSE 的 N-SPC 變體（曲目表、樂段清單、指令參數長度、速度換算）、曲號 01–18（41–58 是同一份樂譜）；SPC ✅ emu+modified（ROM patch 換音樂組、埠 0 換曲號），前奏與循環長度 ✅ code＋emu（libgme 播放的波形在算出的循環點重複，誤差多在 4 ms 內）
+- △ 音樂組的用途（log `$2140` 得到）：`$1E` 開機與標題（02 標題曲）、`$1A` ゲームスタート後的劇本選單（02）、`$1C` 本篇（0C 片頭、02 戰略地圖，場景表 `$00:A696`）；其餘曲目的場景、bit 6（`$0637`）的作用、曲名、1A-04 等 3 首循環點有 7–18 ms 誤差的原因未解
 - ✗ 沒有獨立的戰術地圖（部隊在放大的大地圖上交戰）；沒有相鄰表（行軍走地形格）
 - … 未解：配置種類 1–5 的觸發條件與 +4、難易度 3 的君主升級、WRAM 執行期欄位（同盟、政策、控）、訊息字串表與事件、可選君主表、戰鬥規則（ROM_FORMAT.md §10）
 
