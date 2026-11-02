@@ -18,7 +18,8 @@ with the parameter lengths at $114D; EF = subroutine) and a block ends with trac
 循環秒 come from that; the SPC's ID666 length and the OGG are intro + --loops loops (once for a song that ends), then
 --fade seconds of fade-out. Trying 00-7F in every set found songs only at 01-18 and 41-58; 41-58 start the same block
 lists as 01-18 (bit 6 goes to $0637), so only 01-18 are made. Numbers sharing a block list are listed once, and a song
-with less than 3 seconds of sound is dropped.
+with less than 3 seconds of sound is dropped. music.csv adds the [EXT] columns of data/music_zophar.tsv (Zophar's
+Domain SPC set matched to set and song number).
 """
 import argparse
 import array
@@ -201,6 +202,9 @@ def main() -> None:
 
     with ThreadPoolExecutor(len(SETS)) as pool:
         list(pool.map(child, SETS))
+    with open(os.path.join(GAME, "data", "music_zophar.tsv"), encoding="utf-8") as f:
+        ext = {(r.pop("音樂組"), r.pop("曲號")): r for r in csv.DictReader(f, delimiter="\t")}
+    blank = dict.fromkeys(next(iter(ext.values())), "")
     rows = []
     for bank in SETS:
         raw_path = os.path.join(out, f"{bank:02X}.raw")
@@ -238,7 +242,8 @@ def main() -> None:
                 subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", w.name, "-q:a", "5",
                                 os.path.join(out, f"{name}.ogg")], check=True)
             rows.append({"音樂組": f"{bank:02X}", "曲號": f"{n:02X}", "樂段清單": f"{blocks:04X}",
-                         "前奏秒": f"{intro:.2f}", "循環秒": "" if loop is None else f"{loop:.2f}"})
+                         "前奏秒": f"{intro:.2f}", "循環秒": "" if loop is None else f"{loop:.2f}",
+                         **ext.get((f"{bank:02X}", f"{n:02X}"), blank)})
             print(f"{name}: intro {intro:.2f} s, loop {'-' if loop is None else f'{loop:.2f} s'}")
     with open(os.path.join(out, "music.csv"), "w", newline="", encoding="utf-8-sig") as f:
         w = csv.DictWriter(f, fieldnames=list(rows[0]))
