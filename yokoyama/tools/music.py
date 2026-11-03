@@ -1,7 +1,7 @@
-"""Dump the music as SPC files and render them to OGG, with the lengths read from the song data.
+"""Dump the music as SPC files and render them to OGG and MP3, with the lengths read from the song data.
 
 Usage: .venv/bin/python yokoyama/tools/music.py [--rom ROM] [--loops 2] [--fade 10]
-       → yokoyama/output/music/BB-NN.spc, BB-NN.ogg (BB = sound set bank, NN = song number), music.csv
+       → yokoyama/output/music/BB-NN.spc, BB-NN.ogg, BB-NN.mp3 (BB = sound set bank, NN = song number), music.csv
 
 The 65816 sends sound commands through $2140: $00:9729 sends 83 (wait for $80 back), then $00:9742 sends 02 right
 after the title (LDA #$02 ; STA $2140). Songs live in 3 sound sets that $10:F39C uploads whole (see SET_OPERANDS):
@@ -15,7 +15,7 @@ $0B35), a song is a block list (word >= $100 = block of 8 track pointers; 0000 =
 forever, else nn more times), tracks use the N-SPC bytes (01-7F length, 80-DF note/tie/rest/percussion, E0-FE commands
 with the parameter lengths at $114D; EF = subroutine) and a block ends with track 0. A tick passes when the tempo
 ($63, set by E7) added at every 2 ms timer step carries out of 8 bits: 500 x tempo / 256 ticks a second. 前奏秒 and
-循環秒 come from that; the SPC's ID666 length and the OGG are intro + --loops loops (once for a song that ends), then
+循環秒 come from that; the SPC's ID666 length and the OGG / MP3 are intro + --loops loops (once for a song that ends), then
 --fade seconds of fade-out. Trying 00-7F in every set found songs only at 01-18 and 41-58; 41-58 start the same block
 lists as 01-18 (bit 6 goes to $0637), so only 01-18 are made. Numbers sharing a block list are listed once, and a song
 with less than 3 seconds of sound is dropped. music.csv adds the [EXT] columns of data/music_zophar.tsv (Zophar's
@@ -239,8 +239,9 @@ def main() -> None:
                     wav.setsampwidth(2)
                     wav.setframerate(RATE)
                     wav.writeframes(pcm.tobytes())
-                subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", w.name, "-q:a", "5",
-                                os.path.join(out, f"{name}.ogg")], check=True)
+                for ext_, q in (("ogg", "5"), ("mp3", "2")):  # both from the WAV, VBR
+                    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", w.name, "-q:a", q,
+                                    os.path.join(out, f"{name}.{ext_}")], check=True)
             rows.append({"音樂組": f"{bank:02X}", "曲號": f"{n:02X}", "樂段清單": f"{blocks:04X}",
                          "前奏秒": f"{intro:.2f}", "循環秒": "" if loop is None else f"{loop:.2f}",
                          **ext.get((f"{bank:02X}", f"{n:02X}"), blank)})

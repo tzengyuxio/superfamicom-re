@@ -7,7 +7,7 @@
 ```bash
 .venv/bin/python yokoyama/export.py [--rom ROM] [--out DIR]       # → yokoyama/output/（CSV、XLSX、PNG）
 .venv/bin/python yokoyama/tools/charset_sheet.py                  # → yokoyama/output/charset_sheet.png
-.venv/bin/python yokoyama/tools/music.py                          # → yokoyama/output/music/（SPC、OGG，約 20 秒）
+.venv/bin/python yokoyama/tools/music.py                          # → yokoyama/output/music/（SPC、OGG、MP3，約 30 秒）
 .venv/bin/python yokoyama/verify_scenarios.py                     # 約 35 秒
 .venv/bin/python yokoyama/verify_persons.py                       # 約 8 分鐘（兩個劇本平行）
 .venv/bin/python yokoyama/verify_countries.py                     # 約 1 分鐘
@@ -30,7 +30,7 @@
 | `data/music_zophar.tsv` | Zophar's Domain 的 SPC 合集 28 首 → 音樂組與曲號（`[EXT]` 檔名、曲名；出處見 `docs/ROM_FORMAT.md` §11），`tools/music.py` 併進 `music.csv` |
 | `tools/sequences.py` | 按鍵序列（劇本選擇、兩劇本第一個月的地圖、情報→武将／国）、游標寫入、攔 `$00:8D60` 字碼與攔劇本載入的 Lua |
 | `tools/charset_sheet.py` | 字型核對圖：每個字碼的 ROM 字形與字表的字元並排 |
-| `tools/music.py` | 音樂：ROM patch 強迫載入音樂組 `$1A`／`$1C`／`$1E`，每組在 Mesen 傾印一次 SPC700 狀態，埠 0 填曲號做出每首的 SPC；從 N-SPC 樂譜算前奏與循環長度，libgme 轉 OGG |
+| `tools/music.py` | 音樂：ROM patch 強迫載入音樂組 `$1A`／`$1C`／`$1E`，每組在 Mesen 傾印一次 SPC700 狀態，埠 0 填曲號做出每首的 SPC；從 N-SPC 樂譜算前奏與循環長度，libgme 轉 OGG 與 MP3 |
 | `export.py` | 匯出 CSV／XLSX／PNG |
 | `parts_manifest.py` | portrait-sheet/1 manifest：頭像零件 407 個（11 種各一區，畫在臉框原位置，副名是使用人數，只有 1 人用的寫那個人），交給 simagame |
 | `sheet_manifest.py` | portrait-sheet/1 manifest（武將頭像 224 張，兩劇本都不在的任双標 unseen，交給 simagame 做頭像 sheet） |
@@ -58,7 +58,7 @@
 | `map_189.png`、`map_219.png` | 兩劇本開局的城標記與城框 |
 | `terrain.png` | 64 × 64 地形格依種類上色疊在地圖上 |
 | `charset_sheet.png` | 字型核對圖（`tools/charset_sheet.py`） |
-| `music/` | 33 首：`BB-NN.spc`（ID666 填長度與淡出）、`BB-NN.ogg`（BB 音樂組、NN 曲號；前奏＋循環 2 次＋淡出 10 秒，不循環的曲子播完為止）與 `music.csv`（樂段清單位址、前奏秒、循環秒、`[EXT]` Zophar 檔名與曲名） |
+| `music/` | 33 首：`BB-NN.spc`（ID666 填長度與淡出）、`BB-NN.ogg`／`BB-NN.mp3`（BB 音樂組、NN 曲號；前奏＋循環 2 次＋淡出 10 秒，不循環的曲子播完為止）與 `music.csv`（樂段清單位址、前奏秒、循環秒、`[EXT]` Zophar 檔名與曲名） |
 
 ## 進度
 
