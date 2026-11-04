@@ -1,7 +1,9 @@
 """Dump the music as SPC files and render them to OGG and MP3, with the lengths read from the song data.
 
 Usage: .venv/bin/python yokoyama/tools/music.py [--rom ROM] [--loops 2] [--fade 10]
-       → yokoyama/output/music/BB-NN.spc, BB-NN.ogg, BB-NN.mp3 (BB = sound set bank, NN = song number), music.csv
+       → yokoyama/output/music/BB-NN_<kind>_<use>.spc / .ogg (Opus 96k) / .mp3 (LAME VBR -q:a 2), music.csv
+       (BB = sound set bank, NN = song number; kind bgm = loops, jingle = ends; use unknown when not known; see
+       ~/.claude/re-common.md §10)
 
 The 65816 sends sound commands through $2140: $00:9729 sends 83 (wait for $80 back), then $00:9742 sends 02 right
 after the title (LDA #$02 ; STA $2140). Songs live in 3 sound sets that $10:F39C uploads whole (see SET_OPERANDS):
@@ -50,6 +52,16 @@ STEPS = "w84 a:10"      # from the savestate: 83 at frame 2034, the song command
 SHOT = 330              # frames after the savestate: song 01 is playing (the upload is over)
 LIBGME = "/opt/homebrew/opt/game-music-emu/lib/libgme.dylib"
 RATE = 32000
+# Songs whose scene is known: "BB-NN" -> (use, basis). The emu ones come from logging $2140 and the set uploads
+# (docs/ROM_FORMAT.md §11); the 🟡 ones only from the Zophar titles (data/music_zophar.tsv).
+USES = {
+    "1E-02": ("title", "用途 ✅ emu（$2140 log）"),
+    "1A-02": ("scenario-menu", "用途 ✅ emu（$2140 log）"),
+    "1C-0C": ("opening", "用途 ✅ emu（$2140 log）"),
+    "1C-02": ("strategy-map", "用途 ✅ emu（$2140 log）"),
+    "1C-0E": ("bad-event-player", "用途 🟡 Zophar 曲名"),
+    "1C-18": ("bad-event", "用途 🟡 Zophar 曲名"),
+}
 
 SPC_LUA = """
 function EXTRA_SHOT()
@@ -221,7 +233,10 @@ def main() -> None:
             if blocks in seen:  # another number for a song already listed
                 continue
             seen[blocks] = n
-            name = f"{bank:02X}-{n:02X}"
+            key = f"{bank:02X}-{n:02X}"
+            use, basis = USES.get(key, ("unknown", ""))
+            kind = "bgm" if loop is not None else "jingle"
+            name = f"{key}_{kind}_{use}"
             seconds = intro + args.loops * loop if loop is not None else intro + 1
             spc = os.path.join(out, f"{name}.spc")
             fade = args.fade if loop is not None else 0
@@ -239,12 +254,14 @@ def main() -> None:
                     wav.setsampwidth(2)
                     wav.setframerate(RATE)
                     wav.writeframes(pcm.tobytes())
-                for ext_, q in (("ogg", "5"), ("mp3", "2")):  # both from the WAV, VBR
-                    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", w.name, "-q:a", q,
+                for ext_, codec in (("ogg", ["-c:a", "libopus", "-b:a", "96k"]),
+                                    ("mp3", ["-c:a", "libmp3lame", "-q:a", "2"])):  # both from the WAV
+                    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", w.name, *codec,
                                     os.path.join(out, f"{name}.{ext_}")], check=True)
-            rows.append({"音樂組": f"{bank:02X}", "曲號": f"{n:02X}", "樂段清單": f"{blocks:04X}",
-                         "前奏秒": f"{intro:.2f}", "循環秒": "" if loop is None else f"{loop:.2f}",
-                         **ext.get((f"{bank:02X}", f"{n:02X}"), blank)})
+            ends = "循環 ✅ code+emu（樂段清單的跳躍）" if loop is not None else "結束 ✅ code（樂段清單 0000）"
+            rows.append({"編號": key, "種類": kind, "檔名": name, "用途": use, "前奏秒": f"{intro:.2f}",
+                         "循環秒": "" if loop is None else f"{loop:.2f}", "依據": "；".join(filter(None, [ends, basis])),
+                         "樂段清單": f"{blocks:04X}", **ext.get((f"{bank:02X}", f"{n:02X}"), blank)})
             print(f"{name}: intro {intro:.2f} s, loop {'-' if loop is None else f'{loop:.2f} s'}")
     with open(os.path.join(out, "music.csv"), "w", newline="", encoding="utf-8-sig") as f:
         w = csv.DictWriter(f, fieldnames=list(rows[0]))
