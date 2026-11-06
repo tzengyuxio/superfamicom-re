@@ -25,7 +25,7 @@
 | `tools/kaodata.py` | kaodata/1 的寫入、讀取、參考渲染、checksums |
 | `tools/parts_sheet.py` | 組合臉零件總覽圖 |
 
-分析中的暫存檔（dump、截圖、追蹤用 Lua）放 scratchpad，不進 repo。
+分析中的探測腳本與暫存檔（試假設、找位址、dump、追蹤用 Lua）放 repo 根目錄的 `scratch/<遊戲>/`（不進版控）。不要放 `/tmp` 或 session 暫存區，換 session 就沒了。每輪收尾時整理：變成重現步驟的搬進 `<遊戲>/tools/`，沒用的刪掉，試過不通的把結論寫進該遊戲 docs 的負面結論（`~/.claude/re-common.md` §4）。
 
 ## 2. 步驟
 

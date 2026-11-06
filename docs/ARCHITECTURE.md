@@ -8,6 +8,8 @@
 superfamicom-re/
 ├── roms/                 ROM zip（不進版控）；程式預設直接讀 zip
 ├── tools/                共用工具（見下）
+├── scripts/rebuild.py    重跑各遊戲的 output/（見下）
+├── scratch/<game>/       探測腳本與暫存檔（不進版控，見 PLAYBOOK）
 ├── docs/
 │   ├── PLAYBOOK.md       新遊戲的解析流程、驗證範本、踩過的坑、分診結果
 │   └── ARCHITECTURE.md   本檔
@@ -45,6 +47,14 @@ flowchart LR
 ```
 
 驗證腳本把 `rom.py` 的解碼結果和遊戲執行中的記憶體、畫面或函式引數比對；`rom.py` 本身不依賴模擬器。
+
+## 重跑 `output/`
+
+`output/` 都能從 ROM 重建，不必保留：`.venv/bin/python scripts/rebuild.py <game> ...`（或 `--all`，`--dry-run` 只列步驟）。步驟照檔名找：`export.py`（winning2 另外用 '96 原版與 Rev 1 各跑一次）→ `tools/*_sheet.py` → `tools/music.py` → `*_manifest.py`，再用 portrait-sheet skill 的 `render.py` 畫 `output/portrait-sheet/*/sheet.json`。新加的產出程式照這些名字取，就會自動納入。
+
+不跑的：`verify_*.py`（只驗證；eiketsu 的 `verify_tables_status.png` 只有它會寫）、`export_kaodata.py`（寫到 kaodata）、需要 repo 外輸入的 `san2/tools/build_kanji_map.py`、探測用的工具。
+
+全部約 2.7 分鐘（2026-11-07 量），較久的是 yokoyama 51 秒（音樂要跑 Mesen）、tenbu 32 秒、yokoyama2 16 秒、haouden 11 秒，其餘都在 6 秒內。和重跑前的 `output/` 逐檔比對過：除了舊版程式產生的過期檔，內容都相同；每次都會不同的是 xlsx（內含時間戳）和 OGG（Opus 的串流序號），portrait-sheet 的頁面圖這次也不同（skill 的 `render.py` 在 2026-11-02 更新過，舊圖是更新前畫的）。重跑只會覆寫，不刪舊檔：程式改了檔名後，舊名的檔案會留在 `output/`。
 
 ## 共用工具 `tools/`
 

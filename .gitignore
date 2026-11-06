@@ -3,11 +3,12 @@ roms/
 *.sfc
 *.smc
 
-# Output files
+# Output files (CSV / XLSX outside output/, e.g. <game>/data/, are tracked)
 output/
 captures/
-*.xlsx
-*.csv
+
+# Scratch probes (docs/PLAYBOOK.md)
+scratch/
 
 # Python
 __pycache__/

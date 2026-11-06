@@ -48,6 +48,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - 新遊戲：開新資料夾，`README.md` 寫指令／檔案／進度，`docs/` 寫 ROM 格式（含尚未解開的部分）；步驟、範本與分診結果見 `docs/PLAYBOOK.md`；資料夾結構與共用／專用工具一覽見 `docs/ARCHITECTURE.md`
 - 共用工具在 `tools/`：`drive.py`（按鍵序列、截圖、dump、ROM 讀取追蹤、DMA 記錄）、`replay.py`（savestate 重播，驗證腳本共用；按鍵序列的 `*n`、`expand`、`end_frame`）、`printf_trace.py`（printf／vsprintf 追蹤）、`koei_lz.py`（KOEI LZ 解壓與找表，三國志II、武將風雲錄、航空霸業以外的作品都用它）、`triage.py`（ROM 分診）、`kaodata.py`
 - 每款遊戲提供：人物資料、頭像（含 kaodata 資料集與驗證）、地點資料、大地圖、戰術地圖，以及分析或攻略用得到的表
+- `output/` 用 `scripts/rebuild.py <遊戲>`（或 `--all`，約 3 分鐘）重建，步驟見 `docs/ARCHITECTURE.md`「重跑 `output/`」
 - 外部資料（不是 ROM 解析出來的）欄位名加 `[EXT]` 前綴
 - 輸出 CSV 用 UTF-8-BOM（Excel 相容）
 - 模擬器：`tools/mesen.py` 用 ctypes 呼叫 Mesen 2 的 MesenCore（無頭、跑 Lua）。一個 process 只能開一次 Mesen，多輪比對用 savestate 重播；savestate 只能在 exec callback 裡建立／讀回（用 NMI handler），讀回後第一輪不生效，要多跑一輪丟掉
@@ -69,4 +70,4 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | runtime | 沒有固定位置；`tools/mesen.py` 每個 process 用暫存資料夾當 Mesen home，MesenCore 在 `~/Library/Application Support/Mesen2/` |
 | export | 交給 kaodata 的資料集：`<遊戲>/export_kaodata.py --out ~/works/kaodata/data-local/<dataset id>`（`output/` 不放 export）；非光榮作品沒有 export |
 | docs | `docs/`（共用：PLAYBOOK、ARCHITECTURE）、`<遊戲>/README.md` 與 `<遊戲>/docs/`、人工校對的對照表 `<遊戲>/data/` |
-| tools | `tools/`（共用）、`<遊戲>/*.py`（解碼、匯出、驗證）、`<遊戲>/tools/`（遊戲專用） |
+| tools | `tools/`（共用）、`<遊戲>/*.py`（解碼、匯出、驗證）、`<遊戲>/tools/`（遊戲專用）；scratch 級的探測腳本放 `scratch/<遊戲>/`（不進版控，每輪收尾整理，見 `docs/PLAYBOOK.md`） |
