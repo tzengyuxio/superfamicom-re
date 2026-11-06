@@ -59,7 +59,46 @@ class _SnesConfig(ctypes.Structure):
     ]
 
 
-SNES_CONTROLLER, RAM_ALL_ZEROS = 1, 1
+SNES_CONTROLLER, NES_CONTROLLER, RAM_ALL_ZEROS = 1, 7, 1
+
+# UI/Config/NesConfig.cs default palette; without it Mesen renders NES games all black
+NES_PALETTE = [
+    0x666666, 0x002A88, 0x1412A7, 0x3B00A4, 0x5C007E, 0x6E0040, 0x6C0600, 0x561D00,
+    0x333500, 0x0B4800, 0x005200, 0x004F08, 0x00404D, 0x000000, 0x000000, 0x000000,
+    0xADADAD, 0x155FD9, 0x4240FF, 0x7527FE, 0xA01ACC, 0xB71E7B, 0xB53120, 0x994E00,
+    0x6B6D00, 0x388700, 0x0C9300, 0x008F32, 0x007C8D, 0x000000, 0x000000, 0x000000,
+    0xFFFEFF, 0x64B0FF, 0x9290FF, 0xC676FF, 0xF36AFF, 0xFE6ECC, 0xFE8170, 0xEA9E22,
+    0xBCBE00, 0x88D800, 0x5CE430, 0x45E082, 0x48CDDE, 0x4F4F4F, 0x000000, 0x000000,
+    0xFFFEFF, 0xC0DFFF, 0xD3D2FF, 0xE8C8FF, 0xFBC2FF, 0xFEC4EA, 0xFECCC5, 0xF7D8A5,
+    0xE4E594, 0xCFEF96, 0xBDF4AB, 0xB3F3CC, 0xB5EBF2, 0xB8B8B8, 0x000000, 0x000000,
+]
+
+
+# Core/Shared/SettingTypes.h, passed by value to SetNesConfig
+class _NesConfig(ctypes.Structure):
+    _fields_ = [
+        ("port1", _ControllerConfig), ("port2", _ControllerConfig), ("exp_port", _ControllerConfig),
+        ("port1_sub", _ControllerConfig * 4), ("exp_port_sub", _ControllerConfig * 4),
+        ("mapper_input", _ControllerConfig),
+        ("light_detection_radius", ctypes.c_uint32), ("auto_configure_input", ctypes.c_bool),
+        ("region", ctypes.c_int32),
+        ("flags1", ctypes.c_bool * 5),  # EnableHdPacks ... FdsAutoInsertDisk
+        ("vs_dual_output", ctypes.c_int32 * 2),
+        ("sprites_enabled", ctypes.c_bool), ("background_enabled", ctypes.c_bool),
+        ("flags2", ctypes.c_bool * 6),  # ForceBackgroundFirstColumn ... UseCustomVsPalette
+        ("overscan", ctypes.c_uint32 * 8),
+        ("console_type", ctypes.c_int32),
+        ("flags3", ctypes.c_bool * 18),  # DisablePpuReset ... RandomizeCpuPpuAlignment
+        ("ram_power_on", ctypes.c_int32),
+        ("extra_scanlines", ctypes.c_uint32 * 2),
+        ("flags4", ctypes.c_bool * 6),  # DisableNoiseModeFlag ... BreakOnCrash
+        ("input_scanline", ctypes.c_int32),
+        ("full_color_palette", ctypes.c_bool),
+        ("user_palette", ctypes.c_uint32 * 512),
+        ("channel_volumes", ctypes.c_uint32 * 11), ("epsm_volume", ctypes.c_uint32),
+        ("channel_panning", ctypes.c_uint32 * 11),
+        ("stereo", ctypes.c_int32 * 5),
+    ]
 
 
 class Mesen:
@@ -93,6 +132,15 @@ class Mesen:
         cfg.gsu_clock = 100
         cfg.bsx_date = -1
         c.SetSnesConfig(cfg)
+        nes = _NesConfig()  # the same for NES games: controller 1, power-on RAM, palette, layers on
+        nes.port1.type = NES_CONTROLLER
+        nes.sprites_enabled = nes.background_enabled = True
+        nes.ram_power_on = RAM_ALL_ZEROS
+        nes.input_scanline = 241
+        nes.user_palette[:64] = [0xFF000000 | c for c in NES_PALETTE]
+        nes.channel_volumes[:] = [100] * 11
+        nes.epsm_volume = 100
+        c.SetNesConfig(nes)
         c.Pause()
         c.SetEmulationFlag(CONSOLE_MODE, True)
         if not c.LoadRom(rom_path.encode(), b""):
