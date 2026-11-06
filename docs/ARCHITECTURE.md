@@ -9,6 +9,7 @@ superfamicom-re/
 ├── roms/                 ROM zip（不進版控）；程式預設直接讀 zip
 ├── tools/                共用工具（見下）
 ├── scripts/rebuild.py    重跑各遊戲的 output/（見下）
+├── scripts/archive.py    把一款的成果複製進素材庫 ~/game-library/（見 docs/backlog/game-archiving.md）
 ├── scratch/<game>/       探測腳本與暫存檔（不進版控，見 PLAYBOOK）
 ├── docs/
 │   ├── PLAYBOOK.md       新遊戲的解析流程、驗證範本、踩過的坑、分診結果
