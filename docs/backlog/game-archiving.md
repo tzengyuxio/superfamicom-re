@@ -176,10 +176,22 @@ repo 裡不留原始檔，但要確保「拿得回來，而且是同一份」。
 
 - 驗證：san2、yokoyama 輸出到暫存素材庫，和手動試做的逐檔比對 sha1，157 個檔案相同（`SHA1SUMS.txt` 原本行序不同，改成依路徑排序後一致）。之後用它重寫了正式素材庫的檔案。
 - 不處理的：素材庫各款的 `README.md` 和狀態表（`koei.md`、`sfc.md`）要手寫，缺少時腳本會提示；素材庫裡已有的檔案會覆寫，但不刪。
-- `output/` 裡遇到不是單張圖片的子資料夾（例如 winning2 的 `program96/` 整份版本輸出）會停下來，要先在 `GAMES` 裡加規則。
+- `output/` 裡不是單張圖片的子資料夾（winning2 的 `program96/` 整份版本輸出、bushou 的 `battle_maps/{castle,field}/`、san3 的 `tactical/`）用同一套規則往下一層處理。
+
+## 光榮 27 款（2026-11-07）
+
+san2 以外的 26 款光榮遊戲加上伊忍道，用 `rebuild.py` 重建後跑 `archive.py`，全部進了素材庫（`koei/<dataset id>/`，伊忍道沒有 kaodata，用 `inindou-sfc`）。
+
+- ROM：每款的日版（含 Rev 1、香港版）和 `roms/` 裡的美版一起進 `_original/sfc/`，共 59 個 zip；`SHA1SUMS.txt` 和 `shasum` 逐一比對過。
+- 碎片：只有 bushou、daikoukai、tenshouki（和 san2）的 `mob_parts/`，都有 `mob_parts.png` 總覽，所以不必另做型錄。
+- 素材庫 README：由各款 repo README 的「輸出」表轉成（`faces/` 寫成 `faces.cbz` 等），再比對素材庫的檔案；europe 拿掉已移走的 `kaodata/`，winning2 補 `program96/`。轉換腳本是 scratch 級，沒有留在 repo。
+- captures：這 27 款都沒有，來源表不必寫。
+- 狀態表 `koei.md` 依系列分節，狀態寫「封存（repo 未清）」：使用者決定 repo 的 `roms/`、`output/` 等素材庫備份到 dongzhi 之後再刪。
 
 ## 下一步
 
 1. 使用者確認試做結果與草案方向。
 2. 改寫共通語言（新增「素材庫」「封存狀態」兩節）與 `repos.md`（下游改從素材庫取用、megadrive-re 改讀 `_original/`），通知其他 `*-re` repo。
 3. 之後要封存的遊戲：先 `rebuild.py`，再 `archive.py`，手寫素材庫 README 與狀態表一行；確認後才刪 repo 裡的 `roms/`、`output/`。
+4. 素材庫備份到 dongzhi（與 iCloud，不含 `_original/`）；備份確認後刪光榮 28 款在 repo 裡的 `roms/`、`output/`，狀態改成「封存」。
+5. 非光榮作品（yokoyama2、tenbu、chrono）的封存；yokoyama2 有 captures，要寫來源表。
