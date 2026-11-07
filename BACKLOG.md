@@ -13,8 +13,12 @@
 
 過程與規則見 `docs/backlog/game-archiving.md`。
 
-- [ ] 素材庫備份到 dongzhi — 先定 rsync 指令與頻率（正本 → dongzhi Personal；iCloud 那份不含 `_original/`）。完成前 `_original/` 只有本機一份（2026-11-07）
-- [ ] 刪光榮 28 款的 `roms/`、`output/` — 等 dongzhi 備份確認後才刪，`koei.md` 的狀態從「封存（repo 未清）」改成「封存」；若緊接著要做光榮作品的音樂，可以等那批做完再刪（2026-11-07）
+- [ ] 素材庫備份到 dongzhi（預定 2026-11-09）— 先定 rsync 指令與頻率（正本 → dongzhi Personal；iCloud 那份不含 `_original/`）。完成前 `_original/` 只有本機一份。要一併設計的：
+  - **本機可能因空間不足刪掉部分素材庫**，之後要繼續研究時再從 dongzhi 取回。所以推送不能用 `--delete`，否則本機刪掉的會連 dongzhi 一起刪；要真的刪除某份時另外處理
+  - **取回**：依遊戲取回 `koei/<id>/` 與它的 `_original/` 檔，取回後用 `SHA1SUMS.txt` 核對；`archive.py` 的 ROM 清單可以直接當取回清單
+  - **狀態表要記本機有沒有這份**（例如加一欄「本機」），否則分不清是被刪掉騰空間，還是本來就沒有
+  - 共通語言 §11 現在寫「備份單向，不從備份端回寫」：取回應寫成例外（取回是複製回來，不是雙向同步），改 re-common 要使用者確認（2026-11-07）
+- [ ] 刪 `roms/` 與光榮 28 款的 `output/` — 程式已改讀 `_original/sfc/`（103 個 ROM 都在，sha1 核對過），`roms/` 只剩備份前的保險；等 dongzhi 備份確認後才刪，`koei.md` 的狀態從「封存（repo 未清）」改成「封存」（2026-11-07）
 - [ ] 非光榮作品封存 — yokoyama2、tenbu、chrono（chrono 只有音樂）；yokoyama2 有 captures，要先補來源表（2026-11-07）
 - [ ] yokoyama-bangi 的 captures 來源表 — 目前只有一張標題截圖；開始研究或封存時補（2026-11-07）
 - [ ] 「封存（repo 未清）」是否寫進共通語言 §11 — 素材庫已齊但 repo 還沒刪的中間狀態，這次 28 款都在這個狀態；改 re-common 要使用者確認（2026-11-07）
@@ -34,7 +38,7 @@
 
 ## 跨 repo（由各自的 session 處理）
 
-- [ ] megadrive-re：`tools/repos.py` 改讀 `_original/sfc/` — 需要的 ROM 已經放好（2026-11-07）
+- [x] megadrive-re：`tools/repos.py` 改讀 `_original/sfc/` — megadrive-re@bb56991 完成（2026-11-07）
 - [ ] famicom-re：把 `sangokushi/tools` 拆到根目錄、決定進了版控的 `output/` 怎麼處理 — 要使用者同意；`rebuild.py` 已移植（2026-11-07）
 
 ## Repo 整理
