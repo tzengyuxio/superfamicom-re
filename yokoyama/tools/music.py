@@ -52,15 +52,33 @@ STEPS = "w84 a:10"      # from the savestate: 83 at frame 2034, the song command
 SHOT = 330              # frames after the savestate: song 01 is playing (the upload is over)
 LIBGME = "/opt/homebrew/opt/game-music-emu/lib/libgme.dylib"
 RATE = 32000
-# Songs whose scene is known: "BB-NN" -> (use, basis). The emu ones come from logging $2140 and the set uploads
-# (docs/ROM_FORMAT.md §11); the 🟡 ones only from the Zophar titles (data/music_zophar.tsv).
+# Songs whose scene is known: "BB-NN" -> (use, basis) (docs/ROM_FORMAT.md §11). emu = logging $2140 in natural
+# play; code = the handler sends the song (LDX #nn ; STX $2140) right before the command's picture ($00:C58F) and
+# its result message (message table $1F:BD88). A command jingle is shared by several commands: the use names the
+# first one, the basis lists all.
 USES = {
     "1E-02": ("title", "用途 ✅ emu（$2140 log）"),
     "1A-02": ("scenario-menu", "用途 ✅ emu（$2140 log）"),
     "1C-0C": ("opening", "用途 ✅ emu（$2140 log）"),
-    "1C-02": ("strategy-map", "用途 ✅ emu（$2140 log）"),
-    "1C-0E": ("bad-event-player", "用途 🟡 Zophar 曲名"),
-    "1C-18": ("bad-event", "用途 🟡 Zophar 曲名"),
+    "1C-02": ("policy-phase", "用途 ✅ emu（$2140 log：政略フェイズ，場景表 $00:A696）"),
+    "1C-03": ("military-phase", "用途 ✅ emu（$2140 log：軍略フェイズ）"),
+    "1C-04": ("march-phase", "用途 ✅ emu（$2140 log：行軍フェイズ）"),
+    "1C-05": ("disaster-prevention", "用途 ✅ code（防災 $00:AA16、同盟 $00:ACCA、訓練 $00:AE2B）"),
+    "1C-06": ("develop", "用途 ✅ code（開発 農業 $00:A900、産業 $00:A936；$00:B535）"),
+    "1C-07": ("tax", "用途 ✅ code（租税 徴収 $00:A9F3、徴兵 $00:ADB6、兵移動 $00:ADF8）"),
+    "1C-08": ("reward", "用途 ✅ code（褒美 忠誠度 $00:A9A6）"),
+    "1C-09": ("scheme", "用途 ✅ code（同盟破棄 $00:ACFB／$00:AEAB、引き抜き $00:AF2A／$00:AF57；$00:AEE5）"),
+    "1C-0A": ("plot", "用途 ✅ code（計略 $00:B1E0／$00:B1FE、伏兵 $00:B243、奇襲 $00:B294）"),
+    "1C-0B": ("transport", "用途 ✅ code（輸送 $00:ABF5；$00:B4FC）"),
+    "1C-0D": ("appoint", "用途 ✅ code（太守任命 $00:AB02、軍師任命 $00:AB1E；$00:A426／$00:A473）"),
+    "1C-0E": ("revolt", "用途 ✅ emu（$2140 log：自國住民反乱，$01:DFC1）；也給 $00:AB3A；Zophar 曲名 Bad Event for Player"),
+    "1C-0F": ("sortie", "用途 ✅ code（出陣 $00:B4AD、城塞 $00:AE4D、武器強化 $00:AFF7；$00:B54B）"),
+    "1C-10": ("govern", "用途 ✅ code（統治 $00:A987、戰術 火計 $00:D091）"),
+    "1C-11": ("land", "用途 ✅ code（國土開発 人口 $00:A955、戰術 落石 $00:D0F8、罵声 $00:D1B9）"),
+    "1C-12": ("search", "用途 ✅ code（人材探索 $00:AB4D、戰術 酒盛り $00:D124）"),
+    "1C-13": ("move", "用途 ✅ code（武將移動 $00:AA7B）"),
+    "1C-17": ("kongming-visit", "用途 ✅ code（$00:AB8E：劉備親自探索、找到孔明時，訊息 0x155／0x156）"),
+    "1C-18": ("bad-event", "用途 🟡 code（$01:EA11 災害動畫，送 18）；Zophar 曲名 Bad Event"),
 }
 
 SPC_LUA = """
