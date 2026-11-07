@@ -8,7 +8,7 @@
 .venv/bin/python chrono/tools/music.py [--songs 01,18] [--loops 2] [--fade 10]   # → chrono/output/music/（約 2 分鐘）
 ```
 
-- ROM 預設直接讀 `roms/Chrono Trigger (Japan).zip`（`--rom` 可換）。
+- ROM 預設直接讀 `_original/sfc/Chrono Trigger (Japan).zip`（`--rom` 可換）。
 - 依賴：Mesen 2（`tools/mesen.py`，savestate 重播用 `tools/replay.py`）、Homebrew 的 `game-music-emu`（libgme）與 ffmpeg；SPC、渲染、轉檔用共用的 `tools/spc.py`。Mesen 會在 stderr 印大量 `Uninitialized memory read`，可以用 `2>&1 | rg -v Uninitialized` 濾掉。
 
 ## 檔案

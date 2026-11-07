@@ -15,7 +15,7 @@ KOEI，SFC（LoROM 1 MB，SRAM 8 KB）；北美版 *Gemfire*。FC 版（`~/works
 .venv/bin/python royal/verify_battle_maps.py    # 約 2 分鐘
 ```
 
-- ROM 預設讀 `roms/Super Royal Blood (Japan).zip`（`--rom` 也接受 .sfc）；英語名讀 `roms/Gemfire (USA).zip`，沒有就留空。
+- ROM 預設讀 `_original/sfc/Super Royal Blood (Japan).zip`（`--rom` 也接受 .sfc）；英語名讀 `_original/sfc/Gemfire (USA).zip`，沒有就留空。
 - 依賴：Pillow；openpyxl（可選，匯出 .xlsx）。驗證腳本需要 Mesen 2（`tools/mesen.py`）。
 
 ## 檔案

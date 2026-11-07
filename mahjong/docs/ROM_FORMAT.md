@@ -1,6 +1,6 @@
 # SFC スーパー麻雀大会 ROM 格式
 
-KOEI，SFC。檔案 `roms/Super Mahjong Taikai (Japan).zip`（No-Intro 的 Rev 0；Rev 1–5 沒有測過）。
+KOEI，SFC。檔案 `_original/sfc/Super Mahjong Taikai (Japan).zip`（No-Intro 的 Rev 0；Rev 1–5 沒有測過）。
 
 本文的偏移一律是**檔案偏移**（無 copier header 的 512 KB 映像）。CPU 位址寫成 `$bb:aaaa`，LoROM：檔案偏移 = `(bb & 0x7F) × 0x8000 + (aaaa & 0x7FFF)`。資料串流的位址寫成 `bb:aaaa`（例如 `03:CA8E`），意思相同。
 

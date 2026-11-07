@@ -13,8 +13,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(HERE)
 sys.path.insert(0, os.path.join(REPO, "tools"))
 import koei_lz
+from paths import ORIGINAL
 
-DEFAULT_ROM = os.path.join(REPO, "roms", "Leading Company (Japan).zip")
+DEFAULT_ROM = os.path.join(ORIGINAL, "Leading Company (Japan).zip")
 
 FILE_TABLE = 0x6000             # 16-byte entries: name[8], bank LE16, addr LE16, size LE32; name[0] = 0 ends
 

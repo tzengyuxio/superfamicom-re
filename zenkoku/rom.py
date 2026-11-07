@@ -13,8 +13,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(HERE)
 sys.path.insert(0, os.path.join(REPO, "tools"))
 import koei_lz
+from paths import ORIGINAL
 
-DEFAULT_ROM = os.path.join(REPO, "roms", "Super Nobunaga no Yabou - Zenkoku Ban (Japan).zip")
+DEFAULT_ROM = os.path.join(ORIGINAL, "Super Nobunaga no Yabou - Zenkoku Ban (Japan).zip")
 CHARSET = os.path.join(HERE, "data", "charset.txt")
 LZ_TABLES = 0x9ECE                      # decompressor tables ($C0:9ECE), routine at $C0:A02B
 LZ_POINTERS, LZ_COUNT = 0x3D133, 193    # 3-byte pointers ($C3:D133)

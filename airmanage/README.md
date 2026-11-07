@@ -17,7 +17,7 @@ KOEI，SFC（LoROM 1 MB，SRAM 8 KB，無壓縮）。航空公司經營模擬：
 .venv/bin/python airmanage/verify_text.py [--rom ROM]             # 約 45 秒
 ```
 
-- ROM 預設直接讀 `roms/Air Management - Oozora ni Kakeru (Japan).zip`；Rev 1 用 `--rom "roms/Air Management - Oozora ni Kakeru (Japan) (Rev 1).zip"`，也接受 .sfc。
+- ROM 預設直接讀 `_original/sfc/Air Management - Oozora ni Kakeru (Japan).zip`；Rev 1 用 `--rom "_original/sfc/Air Management - Oozora ni Kakeru (Japan) (Rev 1).zip"`，也接受 .sfc。
 - 本作沒有 KOEI LZ，不用 `tools/koei_lz.py`。
 - 依賴：Pillow；openpyxl（匯出 .xlsx）。圖上的文字用 macOS 的ヒラギノ角ゴシック，找不到時退回 PIL 預設字型。
 - 驗證腳本需要 Mesen 2（`tools/mesen.py`），savestate 重播用共用的 `tools/replay.py`。Mesen 會在 stderr 印大量 `Uninitialized memory read`，可以用 `2>&1 | rg -v Uninitialized` 濾掉。

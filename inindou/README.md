@@ -1,7 +1,7 @@
 # スーパー伊忍道 打倒信長（SFC，中文名超級伊忍道）
 
 KOEI，LoROM 1.25 MB（標頭 `SUPER ININDOU`，SRAM 8 KB），p-code 引擎、無壓縮（地圖用簡單 RLE）。
-ROM：`roms/Super Inindou - Datou Nobunaga (Japan).zip`；美版 `roms/Inindo - Way of the Ninja (USA).zip` 只用來對照英文名稱。
+ROM：`_original/sfc/Super Inindou - Datou Nobunaga (Japan).zip`；美版 `_original/sfc/Inindo - Way of the Ninja (USA).zip` 只用來對照英文名稱。
 格式細節見 [docs/ROM_FORMAT.md](docs/ROM_FORMAT.md)。
 
 光榮的 RPG：人物（主角、同伴候選、忍者／僧／陰陽師／武士）、16 大名與 103 武將、30 國、術、物品、敵人。

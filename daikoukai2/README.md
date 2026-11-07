@@ -15,7 +15,7 @@ KOEI，1993，SFC（HiROM 2 MB，無 header）。沒有劇本，遊戲開始時�
 .venv/bin/python daikoukai2/tools/session.py ROM OUT "steps" [--state IN.mss] [--save]   # 手動操作／截圖／dump
 ```
 
-- ROM 預設直接讀 `roms/Daikoukai Jidai II (Japan).zip`，`--rom` 也接受 .sfc。
+- ROM 預設直接讀 `_original/sfc/Daikoukai Jidai II (Japan).zip`，`--rom` 也接受 .sfc。
 - 解壓縮用共用的 `tools/koei_lz.py`（表在 `0xA0EF`，派遣服務 0x4C）。
 - 依賴：Pillow；openpyxl（可選，匯出 .xlsx）。地圖標註用 macOS 的ヒラギノ角ゴシック，找不到時退回 PIL 預設字型。
 - 驗證腳本需要 Mesen 2（`tools/mesen.py`）。Mesen 會在 stderr 印大量 `Uninitialized memory read`，可以用 `2>&1 | rg -v Uninitialized` 濾掉。

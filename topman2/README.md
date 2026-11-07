@@ -14,7 +14,7 @@ KOEI，SFC（LoROM 1.5 MB）。電腦公司經營模擬：3 家公司（ＮＥ�
 .venv/bin/python topman2/verify_maps.py                      # 約 35 秒
 ```
 
-- ROM 預設直接讀 `roms/Top Management II (Japan).zip`，`--rom` 也接受 .sfc。
+- ROM 預設直接讀 `_original/sfc/Top Management II (Japan).zip`，`--rom` 也接受 .sfc。
 - 解壓縮用共用的 `tools/koei_lz.py`。
 - 依賴：Pillow；openpyxl（可選，匯出 .xlsx）。圖上的標註用 macOS 的ヒラギノ角ゴシック。
 - 驗證腳本需要 Mesen 2（`tools/mesen.py`），savestate 重播用共用的 `tools/replay.py`；一個 process 只開一次 Mesen，多段的腳本用子程序（`--part`）。Mesen 會在 stderr 印大量 `Uninitialized memory read`，可用 `2>&1 | rg -v Uninitialized` 濾掉。

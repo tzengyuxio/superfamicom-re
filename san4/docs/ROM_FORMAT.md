@@ -1,6 +1,6 @@
 # SFC 三國志IV ROM 格式
 
-KOEI，1994，SFC。檔案 `roms/Sangokushi IV (Japan).zip`。
+KOEI，1994，SFC。檔案 `_original/sfc/Sangokushi IV (Japan).zip`。
 
 本文的偏移一律是**檔案偏移**（無 copier header 的 3 MB 映像）。CPU 位址寫成 `$bb:aaaa`，HiROM：檔案偏移 = `位址 & 0x3FFFFF`（`$C0:0000` = 檔案 0）。「推測」表示沒有獨立驗證過。
 

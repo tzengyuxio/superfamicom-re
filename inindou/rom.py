@@ -7,12 +7,16 @@ docs/ROM_FORMAT.md. The US version (Inindo - Way of the Ninja) has the same file
 attach English names (persons, enemies), never as a source of data.
 """
 import os
+import sys
 import zipfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(HERE)
-DEFAULT_ROM = os.path.join(REPO, "roms", "Super Inindou - Datou Nobunaga (Japan).zip")
-US_ROM = os.path.join(REPO, "roms", "Inindo - Way of the Ninja (USA).zip")
+sys.path.insert(0, os.path.join(REPO, "tools"))
+from paths import ORIGINAL
+
+DEFAULT_ROM = os.path.join(ORIGINAL, "Super Inindou - Datou Nobunaga (Japan).zip")
+US_ROM = os.path.join(ORIGINAL, "Inindo - Way of the Ninja (USA).zip")
 CHARSET = os.path.join(HERE, "data", "charset.txt")
 
 # File table: 16-byte records [name 8][bank LE16][addr LE16][size LE32], a name starting with 0 ends it.

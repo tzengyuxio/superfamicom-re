@@ -16,7 +16,7 @@
 .venv/bin/python yokoyama2/verify_lz.py                           # 約 1 分鐘
 ```
 
-- ROM 預設直接讀 `roms/Yokoyama Mitsuteru Sangokushi 2 (Japan).zip`；`--rom` 也接受 .sfc。
+- ROM 預設直接讀 `_original/sfc/Yokoyama Mitsuteru Sangokushi 2 (Japan).zip`；`--rom` 也接受 .sfc。
 - 依賴：Pillow；openpyxl（可選，匯出 .xlsx）。字型核對圖用 macOS 的ヒラギノ角ゴシック，找不到時退回 PIL 預設字型。
 - 驗證腳本需要 Mesen 2（`tools/mesen.py`），savestate 重播用共用的 `tools/replay.py`。Mesen 會在 stderr 印大量 `Uninitialized memory read`，可以用 `2>&1 | rg -v Uninitialized` 濾掉。一個 process 只能開一次 Mesen，三個劇本 savestate 不同的腳本（`verify_persons.py`、`verify_countries.py`）會自己開三個子程序平行跑（`--scenario 0|1|2` 只跑一個；`verify_persons.py` 另有 `--persons 0-228`）。
 

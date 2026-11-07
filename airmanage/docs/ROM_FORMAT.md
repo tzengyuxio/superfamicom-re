@@ -1,6 +1,6 @@
 # SFC エアーマネージメント 大空に賭ける ROM 格式
 
-KOEI，SFC。檔案 `roms/Air Management - Oozora ni Kakeru (Japan).zip`（原版）與 `… (Japan) (Rev 1).zip`。
+KOEI，SFC。檔案 `_original/sfc/Air Management - Oozora ni Kakeru (Japan).zip`（原版）與 `… (Japan) (Rev 1).zip`。
 
 本文的「檔案偏移」是無 copier header 的 1 MB 映像。LoROM：檔案偏移 = `(bank & 0x7F) × 0x8000 + (位址 & 0x7FFF)`。CPU 位址寫成 `$bb:aaaa`；只寫 `$aaaa` 時是**模組的 p-code 位址**（模組載入到 WRAM bank `$7E` 後的位址，見 §2）。位址都是原版的，Rev 1 的差異見 §11。「推測」表示沒有獨立驗證過。
 

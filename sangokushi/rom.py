@@ -12,8 +12,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(HERE)
 sys.path.insert(0, os.path.join(REPO, "tools"))
 import koei_lz
+from paths import ORIGINAL
 
-DEFAULT_ROM = os.path.join(REPO, "roms", "Super Sangokushi (Japan).zip")
+DEFAULT_ROM = os.path.join(ORIGINAL, "Super Sangokushi (Japan).zip")
 CHARSET = os.path.join(HERE, "data", "charset.txt")
 
 LZ_TABLES = 0xF037                       # decoder lookup tables (koei_lz.find_tables)

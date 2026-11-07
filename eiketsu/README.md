@@ -15,7 +15,7 @@ KOEI 1995 年的 SFC 遊戲，HiROM，檔案 3 MB。遊戲內容是劉備一方�
 .venv/bin/python eiketsu/verify_maps.py [--quick]           # 約 3–4 分鐘（--quick 約 2 分鐘）
 ```
 
-- ROM 預設直接讀 `roms/Sangokushi Eiketsuden (Japan).zip`，`--rom` 也可以給 .sfc。
+- ROM 預設直接讀 `_original/sfc/Sangokushi Eiketsuden (Japan).zip`，`--rom` 也可以給 .sfc。
 - 解壓縮用共用的 `tools/koei_lz.py`（表在 `0xF037`）。
 - 依賴：Pillow；openpyxl 可選，用來匯出 .xlsx。地圖標註用 macOS 的ヒラギノ角ゴシック，找不到就退回 PIL 的預設字型。
 - 驗證腳本需要 Mesen 2，由 `tools/mesen.py` 透過 ctypes 呼叫 MesenCore。MesenCore 自己印出的 `Uninitialized memory read` 已經在 `tools/replay.py` 裡濾掉。一個 process 只能開一次 Mesen，所以 `verify_maps.py` 會把大地圖和戰場分成兩個子 process 跑。

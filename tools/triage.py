@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """First look at SFC ROMs: header, mapping, KOEI LZ tables and pointer table, Shift-JIS game words.
 
-Usage: .venv/bin/python tools/triage.py [ROM ...]     # default: every Japanese ROM in roms/
-       .venv/bin/python tools/triage.py --all         # every ROM in roms/
+Usage: .venv/bin/python tools/triage.py [ROM ...]     # default: every Japanese ROM in _original/sfc/
+       .venv/bin/python tools/triage.py --all         # every ROM in _original/sfc/
 Prints a Markdown table.
 """
 import argparse
@@ -13,6 +13,7 @@ import zipfile
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from koei_lz import find_pointer_tables, find_tables
+from paths import ORIGINAL
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Words most KOEI strategy games show; plenty of Shift-JIS hits means the game text is (at least partly) SJIS
@@ -64,7 +65,7 @@ def main() -> None:
     ap.add_argument("roms", nargs="*")
     ap.add_argument("--all", action="store_true", help="包含非日版")
     args = ap.parse_args()
-    paths = args.roms or sorted(p for p in glob.glob(os.path.join(REPO, "roms", "*.zip"))
+    paths = args.roms or sorted(p for p in glob.glob(os.path.join(ORIGINAL, "*.zip"))
                                 if args.all or "(Japan)" in p or "(Hong Kong)" in p)
     print("| ROM | size | map | title | type | SRAM | KOEI LZ | SJIS words |")
     print("|-----|------|-----|-------|------|------|---------|------------|")

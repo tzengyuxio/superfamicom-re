@@ -1,6 +1,6 @@
 # SFC 横山光輝 三国志 ROM 格式
 
-エンジェル（バンダイ），1992，SFC。檔案 `roms/Yokoyama Mitsuteru Sangokushi (Japan).zip`（Rev 0）與 `roms/Yokoyama Mitsuteru Sangokushi (Japan) (Rev 1).zip`（Rev 1），都是 1 MB LoROM。不是光榮的作品：沒有 KOEI LZ、沒有 Shift-JIS，資料格式全部自成一套；只有「國＋武將＋勢力、每月政略／軍略／行軍三階段」的遊戲結構像光榮的三國志。
+エンジェル（バンダイ），1992，SFC。檔案 `_original/sfc/Yokoyama Mitsuteru Sangokushi (Japan).zip`（Rev 0）與 `_original/sfc/Yokoyama Mitsuteru Sangokushi (Japan) (Rev 1).zip`（Rev 1），都是 1 MB LoROM。不是光榮的作品：沒有 KOEI LZ、沒有 Shift-JIS，資料格式全部自成一套；只有「國＋武將＋勢力、每月政略／軍略／行軍三階段」的遊戲結構像光榮的三國志。
 
 本文的位址一律寫成 CPU 位址 `$bb:aaaa`，LoROM：檔案偏移 = `(bb & 0x7F) × 0x8000 + (aaaa − 0x8000)`（`rom.off()`）。WRAM 寫成 `$xxxx`（bank `$7E`）或 `$7E:xxxx`。「推測」表示沒有獨立驗證過；「未解」表示意義不明，匯出時只輸出原始值。
 

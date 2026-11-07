@@ -32,10 +32,11 @@ import zipfile
 HERE = os.path.dirname(os.path.abspath(__file__))
 GAME = os.path.dirname(HERE)
 sys.path.insert(0, os.path.join(os.path.dirname(GAME), "tools"))
+from paths import ORIGINAL
 from replay import replay
 from spc import RAM, RATE, STATE_LUA, encode, loud_seconds, render, spc_file
 
-ROM = os.path.join(os.path.dirname(GAME), "roms", "Chrono Trigger (Japan).zip")
+ROM = os.path.join(ORIGINAL, "Chrono Trigger (Japan).zip")
 SONG_TABLE = 0x070D18      # ROM offset of $C7:0D18
 SONGS = range(0x01, 0x51)  # 00 is an empty song
 NMI = 0x000500

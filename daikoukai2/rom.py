@@ -12,8 +12,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(HERE)
 sys.path.insert(0, os.path.join(REPO, "tools"))
 import koei_lz
+from paths import ORIGINAL
 
-DEFAULT_ROM = os.path.join(REPO, "roms", "Daikoukai Jidai II (Japan).zip")
+DEFAULT_ROM = os.path.join(ORIGINAL, "Daikoukai Jidai II (Japan).zip")
 LZ_TABLES = 0xA0EF                      # decompressor table block ($C0:A0EF), routine at $C0:A24C
 
 # Text: half-width kana (JIS X 0201) drawn as hiragana, ESC K (1B 4B) switches to katakana, ESC H (1B 48) back;

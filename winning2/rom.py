@@ -19,9 +19,10 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(HERE)
 sys.path.insert(0, os.path.join(REPO, "tools"))
 import koei_lz
+from paths import ORIGINAL
 
-DEFAULT_ROM = os.path.join(REPO, "roms", "Winning Post 2 (Japan).zip")
-PROGRAM96_ROM = os.path.join(REPO, "roms", "Winning Post 2 - Program '96 (Japan).zip")
+DEFAULT_ROM = os.path.join(ORIGINAL, "Winning Post 2 (Japan).zip")
+PROGRAM96_ROM = os.path.join(ORIGINAL, "Winning Post 2 - Program '96 (Japan).zip")
 
 # File offsets. INIT_* are the ROM sources of the new-game copies ($C3:0F12, memcpy $C1:1D60).
 ORIGINAL = {

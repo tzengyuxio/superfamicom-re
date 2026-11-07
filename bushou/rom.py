@@ -5,10 +5,14 @@ No compression. The data tables are the FC version's (famicom-re/bushou) with a 
 bushou/docs/ROM_FORMAT.md.
 """
 import os
+import sys
 import zipfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-DEFAULT_ROM = os.path.join(os.path.dirname(HERE), "roms", "Super Nobunaga no Yabou - Bushou Fuuunroku (Japan).zip")
+sys.path.insert(0, os.path.join(os.path.dirname(HERE), "tools"))
+from paths import ORIGINAL
+
+DEFAULT_ROM = os.path.join(ORIGINAL, "Super Nobunaga no Yabou - Bushou Fuuunroku (Japan).zip")
 CHARSET = os.path.join(HERE, "data", "charset.txt")
 
 FILE_TABLE = 0x7800             # 16-byte entries: name[8], bank LE16, addr LE16, size LE32 (as in san2)

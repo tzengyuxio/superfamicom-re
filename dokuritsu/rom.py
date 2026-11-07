@@ -13,8 +13,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(HERE)
 sys.path.insert(0, os.path.join(REPO, "tools"))
 import koei_lz
+from paths import ORIGINAL
 
-DEFAULT_ROM = os.path.join(REPO, "roms", "Dokuritsu Sensou - Liberty or Death (Japan).zip")
+DEFAULT_ROM = os.path.join(ORIGINAL, "Dokuritsu Sensou - Liberty or Death (Japan).zip")
 LZ_TABLES = 0xA0D9
 LZ_POINTERS = 0x39649
 LZ_COUNT = 419

@@ -1,6 +1,6 @@
 # SFC 三國志英傑伝 ROM 格式
 
-KOEI，1995，SFC。檔案 `roms/Sangokushi Eiketsuden (Japan).zip`。
+KOEI，1995，SFC。檔案 `_original/sfc/Sangokushi Eiketsuden (Japan).zip`。
 
 本文的偏移一律是**檔案偏移**（沒有 copier header 的 3 MB 映像）。CPU 位址寫成 `$bb:aaaa`。HiROM 的換算是：檔案偏移 = `位址 & 0x3FFFFF`（`$C0:0000` = 檔案 0）。標「推測」的地方沒有經過獨立驗證。
 

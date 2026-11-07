@@ -15,7 +15,7 @@ KOEI，SFC（HiROM 1.5 MB，1992）。6 個劇本（189–235 年），532 人�
 .venv/bin/python san3/tools/charset_sheet.py                 # 字型對照圖 → output/charset_sheet.png
 ```
 
-- ROM 預設直接讀 `roms/Sangokushi III (Japan).zip`，`--rom` 也接受 .sfc。只支援原版；Rev 1 的 bank `$C1` 資料與壓縮指標表位置不同（ROM_FORMAT.md §1）。
+- ROM 預設直接讀 `_original/sfc/Sangokushi III (Japan).zip`，`--rom` 也接受 .sfc。只支援原版；Rev 1 的 bank `$C1` 資料與壓縮指標表位置不同（ROM_FORMAT.md §1）。
 - 依賴：Pillow；openpyxl（可選，匯出 .xlsx）。地圖標註用 macOS 的ヒラギノ角ゴシック，找不到時退回 PIL 預設字型。
 - 驗證腳本需要 Mesen 2（`tools/mesen.py` 用 ctypes 呼叫 MesenCore）。
 

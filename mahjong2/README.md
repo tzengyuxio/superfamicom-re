@@ -17,7 +17,7 @@ KOEI，SFC（LoROM 1 MB）。四人麻雀，對手是 26 位歷史人物與故�
 .venv/bin/python mahjong2/tools/charset_sheet.py                # 字型對照圖 → output/charset_sheet.png、glyph16_sheet.png
 ```
 
-- ROM 預設直接讀 `roms/Mahjong Taikai II (Japan).zip`，`--rom` 也接受 .sfc。
+- ROM 預設直接讀 `_original/sfc/Mahjong Taikai II (Japan).zip`，`--rom` 也接受 .sfc。
 - 依賴：Pillow；openpyxl（可選，匯出 .xlsx）。字型對照圖用 macOS 的ヒラギノ角ゴシック。
 - 驗證腳本需要 Mesen 2（`tools/mesen.py` 用 ctypes 呼叫 MesenCore）。
 

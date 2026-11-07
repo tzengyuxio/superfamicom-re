@@ -8,11 +8,15 @@ their addresses are read from the program (Rom._find). See docs/ROM_FORMAT.md.
 import os
 import re
 import struct
+import sys
 import zipfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(HERE)
-DEFAULT_ROM = os.path.join(REPO, "roms", "Yokoyama Mitsuteru Sangokushi (Japan).zip")
+sys.path.insert(0, os.path.join(REPO, "tools"))
+from paths import ORIGINAL
+
+DEFAULT_ROM = os.path.join(ORIGINAL, "Yokoyama Mitsuteru Sangokushi (Japan).zip")
 CHARSET = os.path.join(HERE, "data", "charset.txt")
 REV1_CHARS = {0x342: "褚"}  # Rev 1 redrew glyph 0x342 (緒 -> 褚: 許緒 -> 許褚)
 

@@ -7,11 +7,15 @@ README.md.
 """
 import os
 import struct
+import sys
 import zipfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(HERE)
-DEFAULT_ROM = os.path.join(REPO, "roms", "Sangokushi Seishi - Tenbu Spirits (Japan).zip")
+sys.path.insert(0, os.path.join(REPO, "tools"))
+from paths import ORIGINAL
+
+DEFAULT_ROM = os.path.join(ORIGINAL, "Sangokushi Seishi - Tenbu Spirits (Japan).zip")
 CHARSET = os.path.join(HERE, "data", "charset.txt")
 
 # LZSS ($00:A527, A = bank, Y = address, output to WMDATA $2180): LE32 compressed length, LE32 output size, then

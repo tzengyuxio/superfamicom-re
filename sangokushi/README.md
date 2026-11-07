@@ -16,7 +16,7 @@ KOEI，SFC（HiROM 1 MB，只有一個版本）。FC 版 `三國志`（`~/works/
 .venv/bin/python sangokushi/verify_maps.py                      # 約 2 分鐘
 ```
 
-- ROM 預設直接讀 `roms/Super Sangokushi (Japan).zip`，`--rom` 也接受 .sfc。
+- ROM 預設直接讀 `_original/sfc/Super Sangokushi (Japan).zip`，`--rom` 也接受 .sfc。
 - 解壓縮用共用的 `tools/koei_lz.py`（表在 `0xF037`），savestate 重播用共用的 `tools/replay.py`。
 - 依賴：Pillow；openpyxl（可選，匯出 .xlsx）。地圖國號用 macOS 的ヒラギノ角ゴシック，找不到時退回 PIL 預設字型。
 - 驗證腳本需要 Mesen 2（`tools/mesen.py`）。Mesen 會在 stderr 印大量 `Uninitialized memory read`，可以用 `2>&1 | rg -v Uninitialized` 濾掉。一個 process 只能開一次 Mesen，需要兩個 savestate 的腳本（`verify_countries.py`、`verify_maps.py`）會自己開子程序。

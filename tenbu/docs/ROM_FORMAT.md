@@ -1,6 +1,6 @@
 # SFC 三国志正史 天舞スピリッツ ROM 格式
 
-檔案 `roms/Sangokushi Seishi - Tenbu Spirits (Japan).zip`（只有一版）。不是光榮的作品：標題畫面顯示「© WOLF TEAM © TELENET JAPAN」，標頭 maker code `A0`。ROM 裡沒有找到年份字串，本文不寫發售年。
+檔案 `_original/sfc/Sangokushi Seishi - Tenbu Spirits (Japan).zip`（只有一版）。不是光榮的作品：標題畫面顯示「© WOLF TEAM © TELENET JAPAN」，標頭 maker code `A0`。ROM 裡沒有找到年份字串，本文不寫發售年。
 
 本文的位址寫成 CPU 位址 `$bb:aaaa`（程式在 `$00–$3F` bank 執行，SlowROM），LoROM：檔案偏移 = `bb × 0x8000 + (aaaa − 0x8000)`；WRAM 寫成 `$7E:xxxx`／`$7F:xxxx`。標記：
 

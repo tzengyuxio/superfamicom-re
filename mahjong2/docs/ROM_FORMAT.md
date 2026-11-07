@@ -1,6 +1,6 @@
 # SFC 麻雀大会II ROM 格式
 
-KOEI，SFC。檔案 `roms/Mahjong Taikai II (Japan).zip`（No-Intro；其他版本沒有測過）。前作スーパー麻雀大会的格式見 `mahjong/docs/ROM_FORMAT.md`，本作多數機制相同，差異在各節註明。
+KOEI，SFC。檔案 `_original/sfc/Mahjong Taikai II (Japan).zip`（No-Intro；其他版本沒有測過）。前作スーパー麻雀大会的格式見 `mahjong/docs/ROM_FORMAT.md`，本作多數機制相同，差異在各節註明。
 
 本文的偏移一律是**檔案偏移**（無 copier header 的 1 MB 映像）。CPU 位址寫成 `$bb:aaaa`，LoROM：檔案偏移 = `(bb & 0x7F) × 0x8000 + (aaaa & 0x7FFF)`。資料串流的位址寫成 `bb:aaaa`（例如 `04:C951`），意思相同。表格幾乎都在 bank `$01`。
 

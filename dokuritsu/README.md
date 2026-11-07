@@ -15,7 +15,7 @@ KOEI，1994，SFC（HiROM 1.25 MB）。美國獨立戰爭，劇本只有 1775 �
 .venv/bin/python dokuritsu/verify_battle_maps.py [--quick]        # 約 7 分鐘（--quick 約 1.5 分鐘）
 ```
 
-- ROM 預設直接讀 `roms/Dokuritsu Sensou - Liberty or Death (Japan).zip`，`--rom` 也接受 .sfc。
+- ROM 預設直接讀 `_original/sfc/Dokuritsu Sensou - Liberty or Death (Japan).zip`，`--rom` 也接受 .sfc。
 - 解壓縮用共用的 `tools/koei_lz.py`（表在 `0xA0D9`，和覇王伝同一套；指標表 `0x39649`，419 筆）。
 - 依賴：Pillow；openpyxl（可選，匯出 .xlsx）。
 - 驗證腳本需要 Mesen 2（`tools/mesen.py`）。stderr 的 `Uninitialized memory read` 可以用 `2>&1 | rg -v Uninit` 濾掉。

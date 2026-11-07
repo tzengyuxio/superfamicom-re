@@ -12,8 +12,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(HERE)
 sys.path.insert(0, os.path.join(REPO, "tools"))
 import koei_lz
+from paths import ORIGINAL
 
-DEFAULT_ROM = os.path.join(REPO, "roms", "Taikou Risshiden (Japan).zip")
+DEFAULT_ROM = os.path.join(ORIGINAL, "Taikou Risshiden (Japan).zip")
 CHARSET = os.path.join(HERE, "data", "charset.txt")
 
 ENTRIES, ENTRY_COUNT = 0x1F2C1, 448     # 3-byte pointers to LZ streams ("entries" below)

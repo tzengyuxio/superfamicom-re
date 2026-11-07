@@ -1,6 +1,6 @@
 # SFC 太閤立志伝 ROM 格式
 
-KOEI，1993，SFC。檔案 `roms/Taikou Risshiden (Japan).zip`（1.5 MB）。
+KOEI，1993，SFC。檔案 `_original/sfc/Taikou Risshiden (Japan).zip`（1.5 MB）。
 
 本文的偏移一律是**檔案偏移**（無 copier header 的映像）。CPU 位址寫成 `$bb:aaaa`，HiROM：檔案偏移 = `位址 & 0x3FFFFF`（`$C0:0000` = 檔案 0）。「推測」表示沒有獨立驗證過；「未解」表示意義不明，匯出時只輸出原始值。
 

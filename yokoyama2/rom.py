@@ -7,11 +7,15 @@ tables are new: 239 names (229 persons), 35 countries, 16 factions, 3 scenarios.
 """
 import os
 import struct
+import sys
 import zipfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(HERE)
-DEFAULT_ROM = os.path.join(REPO, "roms", "Yokoyama Mitsuteru Sangokushi 2 (Japan).zip")
+sys.path.insert(0, os.path.join(REPO, "tools"))
+from paths import ORIGINAL
+
+DEFAULT_ROM = os.path.join(ORIGINAL, "Yokoyama Mitsuteru Sangokushi 2 (Japan).zip")
 CHARSET = os.path.join(HERE, "data", "charset.txt")
 
 # Text ($80:8C2E, A = one code): 0x200-0x5FF = 16x16 glyph at FONT16 + 32 (code - 0x200) (8x8 tiles TL BL TR BR,

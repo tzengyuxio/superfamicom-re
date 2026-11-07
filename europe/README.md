@@ -1,6 +1,6 @@
 # ヨーロッパ戦線 Europe Sensen（SFC，中文名歐陸戰線）
 
-KOEI，1992，HiROM 1.5 MB（標頭 `EUROPE SENSEN`，SRAM 32 KB），只做日版。ROM：`roms/Europe Sensen (Japan).zip`。
+KOEI，1992，HiROM 1.5 MB（標頭 `EUROPE SENSEN`，SRAM 32 KB），只做日版。ROM：`_original/sfc/Europe Sensen (Japan).zip`。
 格式細節見 [docs/ROM_FORMAT.md](docs/ROM_FORMAT.md)。
 
 ## 指令

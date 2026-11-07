@@ -37,9 +37,10 @@ from concurrent.futures import ThreadPoolExecutor
 HERE = os.path.dirname(os.path.abspath(__file__))
 GAME = os.path.dirname(HERE)
 sys.path.insert(0, os.path.join(os.path.dirname(GAME), "tools"))
+from paths import ORIGINAL
 from replay import replay
 
-ROM = os.path.join(os.path.dirname(GAME), "roms", "Yokoyama Mitsuteru Sangokushi (Japan).zip")
+ROM = os.path.join(ORIGINAL, "Yokoyama Mitsuteru Sangokushi (Japan).zip")
 # $10:F39C uploads a whole sound set (driver + songs) through the IPL: argument 1 -> $1C:8000, 2 -> $1E:8000,
 # else $1A:8000. A run patches the three bank operands (LDA #$1C / #$1E / #$1A) to one set, so the upload that
 # follows the 83 loads it.

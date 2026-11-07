@@ -4,12 +4,14 @@
 
 ## 目錄
 
+ROM 不放在 repo 裡：No-Intro 命名的 zip 只有一份，放在素材庫的 `_original/sfc/`（預設 `~/game-library/_original/sfc/`，環境變數 `GAME_LIBRARY` 可以換素材庫的位置），程式預設直接讀那裡的 zip，路徑由 `tools/paths.py` 決定。文件裡寫的 `_original/sfc/…` 都是指這裡；`--rom` 要給完整路徑。
+
 ```
 superfamicom-re/
-├── roms/                 ROM zip（不進版控）；程式預設直接讀 zip
 ├── tools/                共用工具（見下）
 ├── scripts/rebuild.py    重跑各遊戲的 output/（見下）
 ├── scripts/archive.py    把一款的成果複製進素材庫 ~/game-library/（見 docs/backlog/game-archiving.md）
+├── scripts/add_rom.py    把新的 ROM zip 放進 _original/sfc/，並在 SHA1SUMS.txt 記 sha1
 ├── scratch/<game>/       探測腳本與暫存檔（不進版控，見 PLAYBOOK）
 ├── docs/
 │   ├── PLAYBOOK.md       新遊戲的解析流程、驗證範本、踩過的坑、分診結果
@@ -39,7 +41,7 @@ superfamicom-re/
 
 ```mermaid
 flowchart LR
-  zip[roms/*.zip] --> rom[rom.py]
+  zip[_original/sfc/*.zip] --> rom[rom.py]
   rom --> exp[export.py] --> out[output/ CSV・xlsx・PNG]
   rom --> kao[export_kaodata.py] --> ds[kaodata/data-local/&lt;id&gt;]
   ds --> vk[verify_kaodata_export.py]
@@ -68,6 +70,7 @@ flowchart LR
 | `koei_lz.py` | KOEI LZ 解壓、找解壓表與指標表 | 三國志II、武將風雲錄、航空霸業以外的作品 |
 | `kaodata.py` | kaodata/1 的寫入、讀取、參考渲染、checksums | 所有 `export_kaodata.py` |
 | `parts_sheet.py` | 組合臉零件總覽圖 | 有組合臉的遊戲 |
+| `paths.py` | ROM 的位置 `ORIGINAL`（素材庫的 `_original/sfc/`，`GAME_LIBRARY` 可換）；讀不到 ROM 時提示從備份取回 | 全部的 `rom.py`、`music.py`、scripts |
 | `triage.py` | ROM 分診：標頭、LZ、Shift-JIS 字數 | 新遊戲開工前 |
 | `spc.py` | SPC700 狀態傾印的 Lua（`SPC_STATE()`）、SPC v0.30 檔、libgme 渲染、OGG（Opus）＋MP3（re-common §10） | `chrono/`（`yokoyama/` 的 `music.py` 是抽出前的寫法，沒有改用） |
 

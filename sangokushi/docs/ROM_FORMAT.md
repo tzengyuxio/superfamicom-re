@@ -1,6 +1,6 @@
 # SFC スーパー三國志 ROM 格式
 
-KOEI，SFC。檔案 `roms/Super Sangokushi (Japan).zip`（1 MB，只有一個版本，SHA-1 `6040fe870205c6221ebe4d3023451e3e701620ff`）。FC 版 `三國志`（`~/works/famicom-re/sangokushi/`）的移植：人物 255、國 58、州 15、劇本 5、勢力 14 都和 FC 一樣。
+KOEI，SFC。檔案 `_original/sfc/Super Sangokushi (Japan).zip`（1 MB，只有一個版本，SHA-1 `6040fe870205c6221ebe4d3023451e3e701620ff`）。FC 版 `三國志`（`~/works/famicom-re/sangokushi/`）的移植：人物 255、國 58、州 15、劇本 5、勢力 14 都和 FC 一樣。
 
 本文的偏移一律是**檔案偏移**（無 copier header 的映像）。CPU 位址寫成 `$bb:aaaa`，HiROM：檔案偏移 = `位址 & 0x3FFFFF`（`$C0:0000` = 檔案 0）。WRAM 位址寫成 `$7E:xxxx`（或只寫 `$xxxx`）。「推測」表示沒有獨立驗證過；「未解」表示意義不明，匯出時只輸出原始值。
 

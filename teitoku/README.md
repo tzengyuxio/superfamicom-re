@@ -2,7 +2,7 @@
 
 KOEI，1992，SFC（LoROM 1.25 MB）。太平洋戰爭的海軍戰略遊戲：9 個劇本（1941-11 日米交渉決裂 ～ 1945-04 大和特攻）、艦船 270 艘、基地 50、艦隊 32、提督 40 人、他國 13。文字是光榮自訂的二字節碼（1036 字）加半形假名。ROM 結構與各表格式見 [docs/ROM_FORMAT.md](docs/ROM_FORMAT.md)。
 
-原版（`roms/Teitoku no Ketsudan (Japan).zip`）與 Rev 1（`… (Rev 1).zip`）都支援：兩版只差程式碼，資料區與用到的程式位址完全相同；LZ 指標表位置不同（`0x4F3EF` → `0x4F3FB`），夾在程式碼間的 printf 格式字串也有幾處移位（驗證腳本用 `rom.REVISIONS` 換算）。`rom.py` 依標頭 `0x7FDB` 的版本 byte 切換。美版 *P.T.O.* 只當參考，沒有解析。
+原版（`_original/sfc/Teitoku no Ketsudan (Japan).zip`）與 Rev 1（`… (Rev 1).zip`）都支援：兩版只差程式碼，資料區與用到的程式位址完全相同；LZ 指標表位置不同（`0x4F3EF` → `0x4F3FB`），夾在程式碼間的 printf 格式字串也有幾處移位（驗證腳本用 `rom.REVISIONS` 換算）。`rom.py` 依標頭 `0x7FDB` 的版本 byte 切換。美版 *P.T.O.* 只當參考，沒有解析。
 
 ## 指令
 
@@ -17,7 +17,7 @@ KOEI，1992，SFC（LoROM 1.25 MB）。太平洋戰爭的海軍戰略遊戲：9 
 .venv/bin/python teitoku/verify_tables.py                       # 約 2 分鐘
 ```
 
-- ROM 預設直接讀 `roms/Teitoku no Ketsudan (Japan).zip`，`--rom` 也接受 Rev 1 或 .sfc。
+- ROM 預設直接讀 `_original/sfc/Teitoku no Ketsudan (Japan).zip`，`--rom` 也接受 Rev 1 或 .sfc。
 - 解壓縮用共用的 `tools/koei_lz.py`（表在 `0x18C8`）；savestate 重播用共用的 `tools/replay.py`。
 - 依賴：Pillow；openpyxl（可選，匯出 .xlsx）。基地標註用 macOS 的ヒラギノ角ゴシック，找不到時退回 PIL 預設字型。
 - 驗證腳本需要 Mesen 2（`tools/mesen.py`）。Mesen 會印大量 `[CPU] Uninitialized memory read`，可用 `2>&1 | rg -v Uninitialized` 濾掉。`verify_maps.py` 會用子程序分兩段跑（一個 process 只能開一次 Mesen）。

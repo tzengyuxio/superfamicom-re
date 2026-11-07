@@ -3,10 +3,14 @@
 Offsets are file offsets of the headerless 1.5 MB HiROM image (CPU $C0:0000 = file 0). See docs/ROM_FORMAT.md.
 """
 import os
+import sys
 import zipfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-DEFAULT_ROM = os.path.join(os.path.dirname(HERE), "roms", "Kouryuuki (Japan).zip")
+sys.path.insert(0, os.path.join(os.path.dirname(HERE), "tools"))
+from paths import ORIGINAL
+
+DEFAULT_ROM = os.path.join(ORIGINAL, "Kouryuuki (Japan).zip")
 CHARSET = os.path.join(HERE, "data", "charset.txt")
 
 # Compressed data: 727 long pointers to streams for the decompressor at $C0:A2AB (same algorithm and tables

@@ -1,6 +1,6 @@
 # SFC 項劉記 ROM 格式
 
-KOEI，SFC。檔案 `roms/Kouryuuki (Japan).zip`。
+KOEI，SFC。檔案 `_original/sfc/Kouryuuki (Japan).zip`。
 
 本文的偏移一律是**檔案偏移**（無 copier header 的 1.5 MB 映像）。CPU 位址寫成 `$bb:aaaa`，HiROM：檔案偏移 = `位址 & 0x3FFFFF`（`$C0:0000` = 檔案 0）。
 

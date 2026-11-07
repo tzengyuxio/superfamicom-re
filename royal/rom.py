@@ -14,9 +14,10 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(HERE)
 sys.path.insert(0, os.path.join(REPO, "tools"))
 import koei_lz
+from paths import ORIGINAL
 
-DEFAULT_ROM = os.path.join(REPO, "roms", "Super Royal Blood (Japan).zip")
-US_ROM = os.path.join(REPO, "roms", "Gemfire (USA).zip")
+DEFAULT_ROM = os.path.join(ORIGINAL, "Super Royal Blood (Japan).zip")
+US_ROM = os.path.join(ORIGINAL, "Gemfire (USA).zip")
 
 # ---------------------------------------------------------------- name tables (bank 1), same records as FC bank 19
 CHAR_NAMES = 0xA900                 # 64 x 14: name (10), 0, age base, 0, unknown

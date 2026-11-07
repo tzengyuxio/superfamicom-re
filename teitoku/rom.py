@@ -14,8 +14,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(HERE)
 sys.path.insert(0, os.path.join(REPO, "tools"))
 import koei_lz
+from paths import ORIGINAL
 
-DEFAULT_ROM = os.path.join(REPO, "roms", "Teitoku no Ketsudan (Japan).zip")
+DEFAULT_ROM = os.path.join(ORIGINAL, "Teitoku no Ketsudan (Japan).zip")
 CHARSET = os.path.join(HERE, "data", "charset.txt")
 LZ_TABLES = 0x18C8
 ENTRY_COUNT = 433

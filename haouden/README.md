@@ -14,7 +14,7 @@ KOEI，1993，SFC（HiROM 2 MB）。3 個劇本（1551、1568、1582 年），�
 .venv/bin/python haouden/verify_battle_maps.py [--quick]     # 約 9 分鐘（--quick 約 2 分鐘）
 ```
 
-- ROM 預設直接讀 `roms/Nobunaga no Yabou - Haouden (Japan).zip`，`--rom` 也接受 .sfc 與 Rev 1（`roms/Nobunaga no Yabou - Haouden (Japan) (Rev 1).zip`），匯出與全部驗證腳本都支援兩版。Rev 1 搬動了大部分的表，偏移分版本放在 `rom.OFFSETS`，由解壓表的位置自動判斷；兩版解出來的資料除了劇本 1 的 34 人的人物 +27（未解欄位）以外完全相同。
+- ROM 預設直接讀 `_original/sfc/Nobunaga no Yabou - Haouden (Japan).zip`，`--rom` 也接受 .sfc 與 Rev 1（`_original/sfc/Nobunaga no Yabou - Haouden (Japan) (Rev 1).zip`），匯出與全部驗證腳本都支援兩版。Rev 1 搬動了大部分的表，偏移分版本放在 `rom.OFFSETS`，由解壓表的位置自動判斷；兩版解出來的資料除了劇本 1 的 34 人的人物 +27（未解欄位）以外完全相同。
 - 解壓縮用共用的 `tools/koei_lz.py`（表在 `0xA0D9`，Rev 1 `0xA0D3`）。
 - 依賴：Pillow；openpyxl（可選，匯出 .xlsx）。地圖標註用 macOS 的ヒラギノ角ゴシック，找不到時退回 PIL 預設字型。
 - 驗證腳本需要 Mesen 2（`tools/mesen.py` 用 ctypes 呼叫 MesenCore），savestate 重播用 `tools/replay.py`。Mesen 會在 stderr 印大量 `Uninitialized memory read`，可以用 `2>&1 | rg -v Uninitialized` 濾掉。

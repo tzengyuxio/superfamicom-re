@@ -1,6 +1,6 @@
 # SFC スーパー三國志II ROM 格式
 
-KOEI，1991，SFC。檔案 `roms/Super Sangokushi II (Japan).zip`（Rev 1 的資料表位置與內容相同，差異在程式與部分圖）。
+KOEI，1991，SFC。檔案 `_original/sfc/Super Sangokushi II (Japan).zip`（Rev 1 的資料表位置與內容相同，差異在程式與部分圖）。
 
 本文的偏移一律是**檔案偏移**（無 copier header 的 1 MB 映像）。CPU 位址寫成 `$bb:aaaa`，LoROM：檔案偏移 = `(bank & 0x7F) × 0x8000 + (addr − 0x8000)`。
 

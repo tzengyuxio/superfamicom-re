@@ -3,10 +3,14 @@
 Offsets are file offsets of the headerless 3 MB HiROM image (CPU $C0:0000 = file 0). See docs/ROM_FORMAT.md.
 """
 import os
+import sys
 import zipfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-DEFAULT_ROM = os.path.join(os.path.dirname(HERE), "roms", "Nobunaga no Yabou - Tenshouki (Japan).zip")
+sys.path.insert(0, os.path.join(os.path.dirname(HERE), "tools"))
+from paths import ORIGINAL
+
+DEFAULT_ROM = os.path.join(ORIGINAL, "Nobunaga no Yabou - Tenshouki (Japan).zip")
 
 # Compressed data: 659 long pointers ($C0-$EF bank) to streams for the decompressor at $C0:F194
 DATA_TABLE = 0x1F95A4

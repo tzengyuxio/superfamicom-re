@@ -4,10 +4,14 @@ Offsets are file offsets of the headerless 1 MB LoROM image. See san2/docs/ROM_F
 """
 import json
 import os
+import sys
 import zipfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-DEFAULT_ROM = os.path.join(os.path.dirname(HERE), "roms", "Super Sangokushi II (Japan).zip")
+sys.path.insert(0, os.path.join(os.path.dirname(HERE), "tools"))
+from paths import ORIGINAL
+
+DEFAULT_ROM = os.path.join(ORIGINAL, "Super Sangokushi II (Japan).zip")
 KANJI_EXT = os.path.join(HERE, "data", "kanji_ext.json")
 
 FILE_TABLE = 0x7800           # bank 0 $F800: 16-byte entries (name[8], bank LE16, addr LE16, size LE32)

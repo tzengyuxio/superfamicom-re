@@ -14,7 +14,7 @@ KOEI，SFC（LoROM 1 MB）。家用錄影機（VTR）產業的經營模擬：玩
 .venv/bin/python leading/verify_maps.py                      # 約 30 秒
 ```
 
-- ROM 預設直接讀 `roms/Leading Company (Japan).zip`，`--rom` 也接受 .sfc。
+- ROM 預設直接讀 `_original/sfc/Leading Company (Japan).zip`，`--rom` 也接受 .sfc。
 - 解壓縮用共用的 `tools/koei_lz.py`。
 - 依賴：Pillow；openpyxl（可選，匯出 .xlsx）。頭像總覽的標註用 macOS 的ヒラギノ角ゴシック。
 - 驗證腳本需要 Mesen 2（`tools/mesen.py`），savestate 重播用共用的 `tools/replay.py`。Mesen 會在 stderr 印大量 `Uninitialized memory read`，可用 `2>&1 | rg -v Uninitialized` 濾掉。

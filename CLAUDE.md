@@ -47,7 +47,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 - Python 一律用 `.venv/bin/python`；lint 用 `uvx ruff check --line-length 120`
 - 新遊戲：開新資料夾，`README.md` 寫指令／檔案／進度，`docs/` 寫 ROM 格式（含尚未解開的部分）；步驟、範本與分診結果見 `docs/PLAYBOOK.md`；資料夾結構與共用／專用工具一覽見 `docs/ARCHITECTURE.md`
-- 共用工具在 `tools/`：`spc.py`（SPC700 狀態傾印 Lua、SPC 檔、libgme 渲染、OGG＋MP3），`drive.py`（按鍵序列、截圖、dump、ROM 讀取追蹤、DMA 記錄）、`replay.py`（savestate 重播，驗證腳本共用；按鍵序列的 `*n`、`expand`、`end_frame`）、`printf_trace.py`（printf／vsprintf 追蹤）、`koei_lz.py`（KOEI LZ 解壓與找表，三國志II、武將風雲錄、航空霸業以外的作品都用它）、`triage.py`（ROM 分診）、`kaodata.py`
+- 共用工具在 `tools/`：`paths.py`（ROM 所在的 `_original/sfc/`），`spc.py`（SPC700 狀態傾印 Lua、SPC 檔、libgme 渲染、OGG＋MP3），`drive.py`（按鍵序列、截圖、dump、ROM 讀取追蹤、DMA 記錄）、`replay.py`（savestate 重播，驗證腳本共用；按鍵序列的 `*n`、`expand`、`end_frame`）、`printf_trace.py`（printf／vsprintf 追蹤）、`koei_lz.py`（KOEI LZ 解壓與找表，三國志II、武將風雲錄、航空霸業以外的作品都用它）、`triage.py`（ROM 分診）、`kaodata.py`
 - 每款遊戲提供：人物資料、頭像（含 kaodata 資料集與驗證）、地點資料、大地圖、戰術地圖，以及分析或攻略用得到的表
 - `output/` 用 `scripts/rebuild.py <遊戲>`（或 `--all`，約 3 分鐘）重建，步驟見 `docs/ARCHITECTURE.md`「重跑 `output/`」
 - 外部資料（不是 ROM 解析出來的）欄位名加 `[EXT]` 前綴
@@ -63,7 +63,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 | 層名 | 本 repo 路徑 |
 |------|--------------|
-| original | `roms/`（No-Intro 命名的 zip，不進版控），程式預設直接讀 zip；分析時暫時解出的 .sfc 用完即刪 |
+| original | `~/game-library/_original/sfc/`（No-Intro 命名的 zip，只有這一份，`SHA1SUMS.txt` 記 hash），程式經 `tools/paths.py` 直接讀 zip（`GAME_LIBRARY` 可換位置）；新 ROM 用 `scripts/add_rom.py` 放進去；分析時暫時解出的 .sfc 寫在 scratch，用完即刪 |
 | references | 沒有固定位置；外部資料抄錄成 `<遊戲>/data/` 的對照表（如 `genchou/data/name_zh.json`），欄位加 `[EXT]` 並註明出處 |
 | captures | `<遊戲>/captures/screenshots/`（不進版控；例：横山光輝 三国志各代的標題畫面 `title*.png`，Claude 用 `tools/drive.py` 擷取）；`tools/drive.py` 其他的截圖、傾印寫到命令列指定的前綴，savestate 只在 Mesen process 內（`tools/replay.py`），用按鍵序列（各遊戲的 `tools/sequences.py` 等）重建，不留檔 |
 | extracted | `<遊戲>/output/` 裡的 CSV、XLSX、單張頭像（`faces/`）、字型圖等（不進版控） |

@@ -15,7 +15,7 @@ KOEI，1992，SFC（LoROM 1 MB，無壓縮）。2 個劇本（1555 戦国の動�
 .venv/bin/python bushou/tools/province_probe.py OUT.png  # 國畫面欄位探測截圖
 ```
 
-- ROM 預設直接讀 `roms/Super Nobunaga no Yabou - Bushou Fuuunroku (Japan).zip`，`--rom` 也接受 .sfc。
+- ROM 預設直接讀 `_original/sfc/Super Nobunaga no Yabou - Bushou Fuuunroku (Japan).zip`，`--rom` 也接受 .sfc。
 - 依賴：Pillow、openpyxl。字型總覽與城地圖示意圖的標字用 macOS 的ヒラギノ角ゴシック，找不到時退回 PIL 預設字型。
 - 驗證腳本需要 Mesen 2（`tools/mesen.py`）。存檔重播用共用的 `tools/replay.py`：先照按鍵序列玩到某一幀、在 NMI handler 的第二個指令（`$00:832C`）存檔，之後每一輪改 ROM／WRAM、重播、在指定幀讀記憶體。Mesen 會在 stderr 印大量 `Uninitialized memory read`，可用 `2>&1 | rg -v Uninitialized` 濾掉。
 

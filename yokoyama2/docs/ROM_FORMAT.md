@@ -1,6 +1,6 @@
 # SFC 横山光輝 三国志2 ROM 格式
 
-エンジェル，1993，SFC。檔案 `roms/Yokoyama Mitsuteru Sangokushi 2 (Japan).zip`（只有一版），1.5 MB LoROM（FastROM）。不是光榮的作品：引擎是前作 `yokoyama/`（横山光輝 三国志，1992）的延續，16-bit 自訂字碼、同一種 LZSS、sprite 組合頭像、mode 7 大地圖都沿用，但程式重新組譯過（前作的位元組樣式在這片 ROM 裡一個都找不到），字型重畫，各表格式也改了（§11）。
+エンジェル，1993，SFC。檔案 `_original/sfc/Yokoyama Mitsuteru Sangokushi 2 (Japan).zip`（只有一版），1.5 MB LoROM（FastROM）。不是光榮的作品：引擎是前作 `yokoyama/`（横山光輝 三国志，1992）的延續，16-bit 自訂字碼、同一種 LZSS、sprite 組合頭像、mode 7 大地圖都沿用，但程式重新組譯過（前作的位元組樣式在這片 ROM 裡一個都找不到），字型重畫，各表格式也改了（§11）。
 
 本文的位址一律寫成 CPU 位址 `$bb:aaaa`（程式在 FastROM 的 `$80–$AF` bank 執行），LoROM：檔案偏移 = `(bb & 0x7F) × 0x8000 + (aaaa − 0x8000)`（`rom.off()`）。WRAM 寫成 `$xxxx`（bank `$7E`）或 `$7E:xxxx`。「推測」表示沒有獨立驗證過；「未解」表示意義不明，匯出時只輸出原始值。
 

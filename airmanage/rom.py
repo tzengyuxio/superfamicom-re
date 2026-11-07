@@ -8,10 +8,14 @@ Both the original release and Rev 1 are supported: Rev 1 moves most files (read 
 its ALNMAIN is 6 bytes longer, which shifts the ALNMAIN tables by +6. See airmanage/docs/ROM_FORMAT.md.
 """
 import os
+import sys
 import zipfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-ROMS = os.path.join(os.path.dirname(HERE), "roms")
+sys.path.insert(0, os.path.join(os.path.dirname(HERE), "tools"))
+from paths import ORIGINAL
+
+ROMS = ORIGINAL
 DEFAULT_ROM = os.path.join(ROMS, "Air Management - Oozora ni Kakeru (Japan).zip")
 REV1_ROM = os.path.join(ROMS, "Air Management - Oozora ni Kakeru (Japan) (Rev 1).zip")
 KANJI_FILE = os.path.join(HERE, "data", "kanji.txt")

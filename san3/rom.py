@@ -11,8 +11,9 @@ import zipfile
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(os.path.dirname(HERE), "tools"))
 import koei_lz
+from paths import ORIGINAL
 
-DEFAULT_ROM = os.path.join(os.path.dirname(HERE), "roms", "Sangokushi III (Japan).zip")
+DEFAULT_ROM = os.path.join(ORIGINAL, "Sangokushi III (Japan).zip")
 CHARSET = os.path.join(HERE, "data", "charset.txt")
 
 # Compressed data: 491 long pointers ($C7:F3A7) to KOEI LZ streams (tools/koei_lz.py, table block at 0x992F)

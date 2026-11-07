@@ -16,7 +16,7 @@ KOEI，SFC（LoROM 1 MB）。主角レオン、航海士 20 人、4 國 × 5 名
 .venv/bin/python daikoukai/verify_towns.py       # 約 2 分鐘
 ```
 
-- ROM 預設直接讀 `roms/Super Daikoukai Jidai (Japan).zip`，`--rom` 也接受 .sfc。
+- ROM 預設直接讀 `_original/sfc/Super Daikoukai Jidai (Japan).zip`，`--rom` 也接受 .sfc。
 - 解壓縮用共用的 `tools/koei_lz.py`（表在 `0x1696`）。
 - 依賴：Pillow；openpyxl（可選，匯出 .xlsx）。
 - 驗證腳本需要 Mesen 2（`tools/mesen.py`）。stderr 的 `Uninitialized memory read` 可用 `2>&1 | rg -v Uninitialized` 濾掉。

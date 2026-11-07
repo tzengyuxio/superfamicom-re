@@ -1,6 +1,6 @@
 # SFC 提督の決断 ROM 格式
 
-KOEI，1992，SFC。檔案 `roms/Teitoku no Ketsudan (Japan).zip`（原版）與 `roms/Teitoku no Ketsudan (Japan) (Rev 1).zip`。美版 `P.T.O. - Pacific Theater of Operations (USA).zip` 只拿來參考。
+KOEI，1992，SFC。檔案 `_original/sfc/Teitoku no Ketsudan (Japan).zip`（原版）與 `_original/sfc/Teitoku no Ketsudan (Japan) (Rev 1).zip`。美版 `P.T.O. - Pacific Theater of Operations (USA).zip` 只拿來參考。
 
 本文的偏移一律是**檔案偏移**（無 copier header 的 1.25 MB 映像）。CPU 位址寫成 `$bb:aaaa`，LoROM：檔案偏移 = `(bb & 0x7F) × 0x8000 + (aaaa − 0x8000)`。WRAM 位址寫 `$7E:xxxx` 或省略 bank 寫 `$xxxx`。「推測」表示沒有獨立驗證過。
 

@@ -12,8 +12,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(HERE)
 sys.path.insert(0, os.path.join(REPO, "tools"))
 import koei_lz
+from paths import ORIGINAL
 
-DEFAULT_ROM = os.path.join(REPO, "roms", "Sangokushi Eiketsuden (Japan).zip")
+DEFAULT_ROM = os.path.join(ORIGINAL, "Sangokushi Eiketsuden (Japan).zip")
 LZ_TABLES = 0xF037                      # decompressor table block ($C0:F037), routine at $C0:F194
 
 # Font: 1655 sorted LE16 Shift-JIS codes; glyph number = index in this table (binary search $C1:0878).

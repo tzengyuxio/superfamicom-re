@@ -1,6 +1,6 @@
 # SFC 三國志III ROM 格式
 
-KOEI，SFC，1992。檔案 `roms/Sangokushi III (Japan).zip`（原版）。
+KOEI，SFC，1992。檔案 `_original/sfc/Sangokushi III (Japan).zip`（原版）。
 
 本文的偏移一律是**檔案偏移**（無 copier header 的 1.5 MB 映像）。CPU 位址寫成 `$bb:aaaa`，HiROM：檔案偏移 = `位址 & 0x3FFFFF`（`$C0:0000` = 檔案 0）。遊戲是編譯過的 C：參數放在 stack，結果在 DP `$00`，乘除法與指標運算走 `$C1:E91C`（16 位元乘）、`$C1:E968`（32 位元乘）、`$C1:EDF2`（表 + idx × n）、`$C1:EA07`／`$C1:EB61`（有號除／餘）等小函式。
 

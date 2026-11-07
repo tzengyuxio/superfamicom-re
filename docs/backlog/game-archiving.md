@@ -188,6 +188,16 @@ san2 以外的 26 款光榮遊戲加上伊忍道，用 `rebuild.py` 重建後跑
 - captures：這 27 款都沒有，來源表不必寫。
 - 狀態表 `koei.md` 依系列分節，狀態寫「封存（repo 未清）」：使用者決定 repo 的 `roms/`、`output/` 等素材庫備份到 dongzhi 之後再刪。
 
+## 原始檔只留一份（2026-11-07，共通語言 v1.3）
+
+使用者決定 `roms/` 和 `_original/` 不要各放一份（太佔空間；megadrive-re 的 Mega-CD、kaodata-re 的 Steam 版尤其大）。
+
+- 程式改成直接讀 `~/game-library/_original/sfc/`：路徑在 `tools/paths.py`（`GAME_LIBRARY` 可換素材庫位置），讀不到時提示從備份取回。`roms/` 裡另外 45 個還沒封存的 ROM 也放進去了，共 103 個，sha1 都核對過。
+- 新 ROM 用 `scripts/add_rom.py` 放進去；`archive.py` 不再複製 ROM，只檢查 `GAMES` 列的 ROM 在 `_original/sfc/`、`SHA1SUMS.txt` 有記。
+- 驗證：把 `roms/` 移開後跑 `rebuild.py --all`。
+- 重啟只要跑 `rebuild.py`；本機為空間刪掉的原始檔，先從 dongzhi 取回。
+- Steam 等商店版不進 `_original/`，只留一份紀錄（appid、depot、manifest id、build id、工具會讀的檔案的 sha1），安裝的資料夾當 runtime。
+
 ## 下一步
 
 1. 使用者確認試做結果與草案方向。

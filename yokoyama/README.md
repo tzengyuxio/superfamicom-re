@@ -17,7 +17,7 @@
 .venv/bin/python yokoyama/verify_lz.py                            # 約 1 分鐘
 ```
 
-- ROM 預設直接讀 `roms/Yokoyama Mitsuteru Sangokushi (Japan).zip`（Rev 0）；`--rom "roms/Yokoyama Mitsuteru Sangokushi (Japan) (Rev 1).zip"` 讀 Rev 1，`--rom` 也接受 .sfc。兩版共用同一份解碼（Rev 1 往後移的表由 `Rom._find` 從程式碼找）。
+- ROM 預設直接讀 `_original/sfc/Yokoyama Mitsuteru Sangokushi (Japan).zip`（Rev 0）；`--rom "_original/sfc/Yokoyama Mitsuteru Sangokushi (Japan) (Rev 1).zip"` 讀 Rev 1，`--rom` 也接受 .sfc。兩版共用同一份解碼（Rev 1 往後移的表由 `Rom._find` 從程式碼找）。
 - 依賴：Pillow；openpyxl（可選，匯出 .xlsx）。音樂另需 Homebrew 的 `game-music-emu`（libgme）與 ffmpeg。字型核對圖用 macOS 的ヒラギノ角ゴシック，找不到時退回 PIL 預設字型。
 - 驗證腳本需要 Mesen 2（`tools/mesen.py`），savestate 重播用共用的 `tools/replay.py`。Mesen 會在 stderr 印大量 `Uninitialized memory read`，可以用 `2>&1 | rg -v Uninitialized` 濾掉。一個 process 只能開一次 Mesen，兩個劇本開機序列不同的腳本（`verify_persons.py`、`verify_countries.py`）會自己開兩個子程序平行跑（`--scenario 0|1` 只跑一個）。
 
@@ -91,6 +91,6 @@
 | `verify_maps.py` | 劇本選擇存 savestate；2 輪各到第一個月的地圖：VRAM 0x0000–0x7FFF 與 `Rom.map_vram`；`$05:81B1` 設完時的 CGRAM 影子與 `Rom.map_cgram(月, 縮放)`；畫面 CGRAM 第 5、14、15 列（顏色 1–15）與視窗調色盤 | 2/2 劇本：VRAM 32768/32768、調色盤 512/512、視窗列 90/90 bytes 相同，OK（38 秒） |
 | `verify_lz.py` | 開機（第 20 幀存 savestate）到兩劇本第一個月的地圖，攔 `$01:F8FE` 的來源與返回時 `$7E:8000` 的大小、checksum | 20/20 個串流相同，OK（52 秒） |
 
-Rev 1（`--rom "roms/Yokoyama Mitsuteru Sangokushi (Japan) (Rev 1).zip"`）全部腳本也通過：劇本 6/6 輪 bytes 全同、人物 224/224 × 2 劇本、國 19/19 與 28/28、頭像 224/224、字碼 1280/1280、大地圖 2/2、LZ 20/20（解壓程式在 `$01:F903`）。Rev 1 的資料差異（許褚的字形、張嶷的讀音、典韋的登用者）見 ROM_FORMAT.md §9。
+Rev 1（`--rom "_original/sfc/Yokoyama Mitsuteru Sangokushi (Japan) (Rev 1).zip"`）全部腳本也通過：劇本 6/6 輪 bytes 全同、人物 224/224 × 2 劇本、國 19/19 與 28/28、頭像 224/224、字碼 1280/1280、大地圖 2/2、LZ 20/20（解壓程式在 `$01:F903`）。Rev 1 的資料差異（許褚的字形、張嶷的讀音、典韋的登用者）見 ROM_FORMAT.md §9。
 
 另外對照遊戲畫面：冀州的國情報（金 1008 米 1152 民 670000 …）與田豊、審配、曹操的武將詳細畫面截圖，和解碼值相同。

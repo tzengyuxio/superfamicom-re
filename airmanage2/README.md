@@ -16,7 +16,7 @@ KOEI，SFC（LoROM 1 MB）。航空公司經營：4 劇本（1955／1970／1985�
 .venv/bin/python airmanage2/verify_text.py                      # 約 80 秒
 ```
 
-- ROM 預設直接讀 `roms/Air Management II - Koukuu Ou o Mezase (Japan).zip`，`--rom` 也接受 .sfc。
+- ROM 預設直接讀 `_original/sfc/Air Management II - Koukuu Ou o Mezase (Japan).zip`，`--rom` 也接受 .sfc。
 - 解壓縮用共用的 `tools/koei_lz.py`。
 - 依賴：Pillow；openpyxl（可選，匯出 .xlsx）。地圖與頭像總覽的標註用 macOS 的ヒラギノ角ゴシック。
 - 驗證腳本需要 Mesen 2（`tools/mesen.py`），savestate 重播用共用的 `tools/replay.py`。Mesen 會在 stderr 印大量 `Uninitialized memory read`，可用 `2>&1 | rg -v Uninitialized` 濾掉。

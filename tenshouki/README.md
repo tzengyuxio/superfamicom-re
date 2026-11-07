@@ -14,7 +14,7 @@ KOEI，1996，SFC（HiROM 3 MB）。PC 版天翔記的移植，劇本只有 2 �
 .venv/bin/python tenshouki/verify_field_maps.py               # 約 3.5 分鐘
 ```
 
-- ROM 預設直接讀 `roms/Nobunaga no Yabou - Tenshouki (Japan).zip`，`--rom` 也接受 .sfc。
+- ROM 預設直接讀 `_original/sfc/Nobunaga no Yabou - Tenshouki (Japan).zip`，`--rom` 也接受 .sfc。
 - 依賴：Pillow；openpyxl（可選，匯出 .xlsx）。地圖標註用 macOS 的ヒラギノ角ゴシック，找不到時退回 PIL 預設字型。
 - 驗證腳本需要 Mesen 2（`tools/mesen.py` 用 ctypes 呼叫 MesenCore）。
 

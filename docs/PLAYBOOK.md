@@ -8,8 +8,9 @@
 - 先跑分診，知道是 LoROM 或 HiROM、有沒有 KOEI LZ、文字是不是 Shift-JIS：
 
 ```bash
-.venv/bin/python tools/triage.py "roms/<遊戲>.zip"
-.venv/bin/python tools/koei_lz.py "roms/<遊戲>.zip"     # LZ 表、解壓程式位置、指標表
+.venv/bin/python scripts/add_rom.py "<下載的 No-Intro zip>"    # 放進 _original/sfc/ 並記 sha1（只有這一份）
+.venv/bin/python tools/triage.py "$HOME/game-library/_original/sfc/<遊戲>.zip"
+.venv/bin/python tools/koei_lz.py "$HOME/game-library/_original/sfc/<遊戲>.zip"     # LZ 表、解壓程式位置、指標表
 ```
 
 ## 1. 共用工具

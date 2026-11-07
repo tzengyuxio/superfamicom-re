@@ -21,10 +21,12 @@ import time
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PY = os.path.join(ROOT, ".venv", "bin", "python")
+sys.path.insert(0, os.path.join(ROOT, "tools"))
+from paths import ORIGINAL
+
 RENDER = os.path.expanduser("~/.claude/skills/portrait-sheet/render.py")
 # other editions exported to their own subfolder of output/
-EXPORT_ROMS = {"winning2": ["roms/Winning Post 2 - Program '96 (Japan).zip",
-                            "roms/Winning Post 2 - Program '96 (Japan) (Rev 1).zip"]}
+EXPORT_ROMS = {"winning2": ["Winning Post 2 - Program '96 (Japan).zip", "Winning Post 2 - Program '96 (Japan) (Rev 1).zip"]}
 
 
 def games() -> list[str]:
@@ -35,7 +37,7 @@ def games() -> list[str]:
 def steps(game: str) -> list[list[str]]:
     g = os.path.join(ROOT, game)
     export = os.path.join(g, "export.py")
-    runs = [[PY, export]] + [[PY, export, "--rom", os.path.join(ROOT, r)] for r in EXPORT_ROMS.get(game, [])]
+    runs = [[PY, export]] + [[PY, export, "--rom", os.path.join(ORIGINAL, r)] for r in EXPORT_ROMS.get(game, [])]
     runs = runs if os.path.exists(export) else []
     scripts = sorted(glob.glob(os.path.join(g, "tools", "*_sheet.py")))
     scripts += [p for p in [os.path.join(g, "tools", "music.py")] if os.path.exists(p)]

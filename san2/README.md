@@ -16,7 +16,7 @@ KOEI，1991，SFC（LoROM 1 MB）。FC 版三國志II 的移植，資料表大�
 .venv/bin/python san2/tools/build_kanji_map.py --pc <kaodata-re>/PERSONS_TABLE/san2_persons.csv
 ```
 
-- ROM 預設直接讀 `roms/Super Sangokushi II (Japan).zip`。`--rom` 也接受 .sfc 或 Rev 1 的 zip，資料表相同。
+- ROM 預設直接讀 `_original/sfc/Super Sangokushi II (Japan).zip`。`--rom` 也接受 .sfc 或 Rev 1 的 zip，資料表相同。
 - 依賴：Pillow；openpyxl（可選，匯出 .xlsx）。
 - 驗證腳本需要 Mesen 2（`tools/mesen.py` 用 ctypes 呼叫 MesenCore）。
 

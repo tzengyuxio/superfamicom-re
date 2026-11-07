@@ -16,7 +16,7 @@ KOEI，1993，SFC（HiROM 2 MB；原版與 Rev 1）。賽馬經營模擬：1997 
 .venv/bin/python winning/verify_text.py         # 約 195 秒
 ```
 
-- ROM 預設直接讀 `roms/Winning Post (Japan).zip`；`--rom` 也接受 Rev 1（`roms/Winning Post (Japan) (Rev 1).zip`）或 .sfc。Rev 1 的表位址在 `rom.REV1`；驗證腳本的 hook 位址是原版的，只對原版跑。
+- ROM 預設直接讀 `_original/sfc/Winning Post (Japan).zip`；`--rom` 也接受 Rev 1（`_original/sfc/Winning Post (Japan) (Rev 1).zip`）或 .sfc。Rev 1 的表位址在 `rom.REV1`；驗證腳本的 hook 位址是原版的，只對原版跑。
 - 解壓縮用共用的 `tools/koei_lz.py`。
 - 依賴：Pillow；openpyxl（可選，匯出 .xlsx）。頭像總覽的標註用 macOS 的ヒラギノ角ゴシック。
 - 驗證腳本需要 Mesen 2（`tools/mesen.py`），savestate 重播用共用的 `tools/replay.py`。Mesen 會在 stderr 印大量 `Uninitialized memory read`，可用 `2>&1 | rg -v Uninitialized` 濾掉。

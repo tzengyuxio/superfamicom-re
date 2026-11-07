@@ -1,6 +1,6 @@
 # SFC 信長の野望・天翔記 ROM 格式
 
-KOEI，1996，SFC。檔案 `roms/Nobunaga no Yabou - Tenshouki (Japan).zip`。
+KOEI，1996，SFC。檔案 `_original/sfc/Nobunaga no Yabou - Tenshouki (Japan).zip`。
 
 本文的偏移一律是**檔案偏移**（無 copier header 的 3 MB 映像）。CPU 位址寫成 `$bb:aaaa`，HiROM：檔案偏移 = `位址 & 0x3FFFFF`（`$C0:0000` = 檔案 0）。
 

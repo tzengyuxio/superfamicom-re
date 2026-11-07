@@ -1,6 +1,6 @@
 # SFC スーパー信長の野望・武将風雲録 ROM 格式
 
-KOEI，1992，SFC。ROM 直接讀 `roms/Super Nobunaga no Yabou - Bushou Fuuunroku (Japan).zip` 內的 `.sfc`（1 MB，無檔頭）。
+KOEI，1992，SFC。ROM 直接讀 `_original/sfc/Super Nobunaga no Yabou - Bushou Fuuunroku (Japan).zip` 內的 `.sfc`（1 MB，無檔頭）。
 
 LoROM：檔案偏移 = `(bank & 0x7F) × 0x8000 + (位址 − 0x8000)`。本文的偏移一律是**檔案偏移**；`$bb:aaaa` 是 CPU 位址。資料沒有壓縮。標「推定」的欄位還沒用遊戲程式或畫面確認，標「未解」的只輸出原始值。
 

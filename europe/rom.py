@@ -13,8 +13,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(HERE)
 sys.path.insert(0, os.path.join(REPO, "tools"))
 import koei_lz
+from paths import ORIGINAL
 
-DEFAULT_ROM = os.path.join(REPO, "roms", "Europe Sensen (Japan).zip")
+DEFAULT_ROM = os.path.join(ORIGINAL, "Europe Sensen (Japan).zip")
 CHARSET = os.path.join(HERE, "data", "charset.txt")
 LZ_TABLES = 0x9939                       # decompressor table block, routine at $C0:9A96
 LZ_POINTERS = 0x14978                    # 650 long pointers ($C1:4978)

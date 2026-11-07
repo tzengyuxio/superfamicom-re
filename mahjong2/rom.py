@@ -11,9 +11,10 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(HERE)
 sys.path.insert(0, os.path.join(REPO, "tools"))
 import koei_lz
+from paths import ORIGINAL
 from replay import load_rom_bytes
 
-DEFAULT_ROM = os.path.join(REPO, "roms", "Mahjong Taikai II (Japan).zip")
+DEFAULT_ROM = os.path.join(ORIGINAL, "Mahjong Taikai II (Japan).zip")
 CHARSET = os.path.join(HERE, "data", "charset.txt")
 GLYPH16 = os.path.join(HERE, "data", "glyph16.txt")
 PERSONS_TSV = os.path.join(HERE, "data", "persons.tsv")

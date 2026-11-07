@@ -4,7 +4,7 @@
 潜水艦 32、航空機 60、戦車 10、基地 70、拠点 100、提督 60、將軍 30、國家 9。文字是光榮自訂的二字節碼（1216 字）
 加半形假名。格式細節見 [docs/ROM_FORMAT.md](docs/ROM_FORMAT.md)。
 
-ROM：`roms/Teitoku no Ketsudan II (Japan).zip`（原版，預設）與 `roms/Teitoku no Ketsudan II (Japan) (Rev 1).zip`。
+ROM：`_original/sfc/Teitoku no Ketsudan II (Japan).zip`（原版，預設）與 `_original/sfc/Teitoku no Ketsudan II (Japan) (Rev 1).zip`。
 兩版都支援：`rom.py` 依 header 版本 byte（0xFFDB）選位址表 `REVISIONS`，劇本資料區塊則直接解析劇本載入程式取得；
 畫面格式字串以內容搜尋（`rom.FORMATS`）。兩版資料內容相同（只有字型最後 2 字 1214、1215 不同，兩字是非文字的 〓），Rev 1 是程式與資料搬家（位址對照見 ROM_FORMAT.md「版本」）。
 美版 *P.T.O. II* 沒有解析。

@@ -14,8 +14,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(HERE)
 sys.path.insert(0, os.path.join(REPO, "tools"))
 import koei_lz
+from paths import ORIGINAL
 
-DEFAULT_ROM = os.path.join(REPO, "roms", "Super Daikoukai Jidai (Japan).zip")
+DEFAULT_ROM = os.path.join(ORIGINAL, "Super Daikoukai Jidai (Japan).zip")
 LZ_TABLES = 0x1696                      # decompressor table block, routine at $00:97F3 (file 0x17F3)
 
 # ---------------------------------------------------------------- initial game state

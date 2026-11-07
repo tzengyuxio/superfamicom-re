@@ -1,6 +1,6 @@
 # SFC 信長の野望・覇王伝 ROM 格式
 
-KOEI，1993，SFC。檔案 `roms/Nobunaga no Yabou - Haouden (Japan).zip`（另有 `(Rev 1).zip`）。
+KOEI，1993，SFC。檔案 `_original/sfc/Nobunaga no Yabou - Haouden (Japan).zip`（另有 `(Rev 1).zip`）。
 
 本文的偏移一律是**檔案偏移**（無 copier header 的 2 MB 映像）。CPU 位址寫成 `$bb:aaaa`，HiROM：檔案偏移 = `位址 & 0x3FFFFF`（`$C0:0000` = 檔案 0）。程式位址都是原版（Rev 0）的；Rev 1 搬動了大部分的表與程式，資料表的兩版偏移見 `rom.OFFSETS` 與 §12。「推測」表示沒有獨立驗證過。
 

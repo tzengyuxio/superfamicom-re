@@ -13,8 +13,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(HERE)
 sys.path.insert(0, os.path.join(REPO, "tools"))
 import koei_lz
+from paths import ORIGINAL
 
-DEFAULT_ROM = os.path.join(REPO, "roms", "Nobunaga no Yabou - Haouden (Japan).zip")
+DEFAULT_ROM = os.path.join(ORIGINAL, "Nobunaga no Yabou - Haouden (Japan).zip")
 CHARSET = os.path.join(HERE, "data", "charset.txt")
 
 # Per-revision file offsets (key: decompressor table offset). Everything not listed is the same in both.

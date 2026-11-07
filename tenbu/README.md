@@ -16,7 +16,7 @@ SFC（LoROM SlowROM 1.5 MB，一版）。標題畫面「© WOLF TEAM © TELENET 
 .venv/bin/python tenbu/verify_lz.py                           # 約 15 秒（四個劇本平行）
 ```
 
-- ROM 預設直接讀 `roms/Sangokushi Seishi - Tenbu Spirits (Japan).zip`；`--rom` 也接受 .sfc。
+- ROM 預設直接讀 `_original/sfc/Sangokushi Seishi - Tenbu Spirits (Japan).zip`；`--rom` 也接受 .sfc。
 - 依賴：Pillow；openpyxl（可選，匯出 .xlsx）。
 - 驗證腳本需要 Mesen 2（`tools/mesen.py`），savestate 重播用共用的 `tools/replay.py`。Mesen 會在 stderr 印大量 `Uninitialized memory read`，可以用 `2>&1 | rg -v Uninitialized` 濾掉。一個 process 只能開一次 Mesen，四個劇本分開的腳本會自己開四個子程序平行跑（`--scenario 0-3` 只跑一個；`verify_persons.py` 另有 `--persons`）。
 - 這個遊戲在選單畫面把 NMI 關掉，改輪詢 `$4212` 等 vblank：選單畫面的 savestate 掛 `$00:ADA2`（`tools/sequences.py` 的 `FRAME_HOOK`），主地圖上 NMI 又打開，用 `tools/replay.py` 預設的 NMI handler（`MAP_HOOK`）。

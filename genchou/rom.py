@@ -13,8 +13,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(HERE)
 sys.path.insert(0, os.path.join(REPO, "tools"))
 import koei_lz
+from paths import ORIGINAL
 
-DEFAULT_ROM = os.path.join(REPO, "roms", "Super Aoki Ookami to Shiroki Mejika - Genchou Hishi (Japan).zip")
+DEFAULT_ROM = os.path.join(ORIGINAL, "Super Aoki Ookami to Shiroki Mejika - Genchou Hishi (Japan).zip")
 CHARSET = os.path.join(HERE, "data", "charset.txt")
 LZ_TABLES = 0x9C57                       # decompressor table block, routine at $C0:9DB4
 LZ_POINTERS = 0x8A9DA                    # 352 long pointers ($C8:A9DA, read by $C6:7EC9)

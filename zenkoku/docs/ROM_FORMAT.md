@@ -1,6 +1,6 @@
 # SFC スーパー信長の野望・全国版 ROM 格式
 
-KOEI，SFC。檔案 `roms/Super Nobunaga no Yabou - Zenkoku Ban (Japan).zip`（單一版本，sha1 `92b62361d59aef006859fa574f27c8f1de523f1c`）。
+KOEI，SFC。檔案 `_original/sfc/Super Nobunaga no Yabou - Zenkoku Ban (Japan).zip`（單一版本，sha1 `92b62361d59aef006859fa574f27c8f1de523f1c`）。
 
 本文的偏移一律是**檔案偏移**（無 copier header 的 512 KB 映像）。CPU 位址寫成 `$bb:aaaa`，HiROM：檔案偏移 = `位址 & 0x3FFFFF`（`$C0:0000` = 檔案 0）。WRAM 位址 `$xxxx` 指 `$7E:xxxx`。「推測」表示沒有獨立驗證過。
 
