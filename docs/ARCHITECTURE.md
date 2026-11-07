@@ -32,8 +32,8 @@ superfamicom-re/
 ├── verify_*.py             每項解碼一支，用 Mesen 跑遊戲本身的程式獨立驗證
 ├── tools/                  遊戲專用的輔助程式（按鍵序列、追蹤 Lua、核對圖）
 ├── data/                   字碼對照表等人工整理的資料（charset.txt 等）
-├── docs/ROM_FORMAT.md      ROM 格式、操作序列、未解部分（繁體中文）
-├── README.md               指令、檔案、輸出、進度、驗證結果表（繁體中文）
+├── docs/ROM_FORMAT.md      ROM 格式、操作序列、未解部分，最後是下一輪候選、負面結論（繁體中文）
+├── README.md               指令、檔案、輸出、進度表、未解、驗證結果表（繁體中文）
 └── output/                 匯出結果（不進版控）
 ```
 

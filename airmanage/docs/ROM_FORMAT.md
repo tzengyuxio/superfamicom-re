@@ -161,3 +161,11 @@ KOEI，SFC。檔案 `_original/sfc/Air Management - Oozora ni Kakeru (Japan).zip
 - `AMAP`（89296 bytes）是多組 UI 視窗的 tilemap／CHR，未逐一解析
 - 符號 `＊`、`＆` 自訂字形的用途
 - COM 玩家本社的選法（兩版結果不同）
+
+## 下一輪候選
+
+目前沒有
+
+## 負面結論
+
+- 片頭 mode 7 地球的調色盤：在片頭讀 CGRAM → 多為 0，推測調色盤走 HDMA → 重試條件未記

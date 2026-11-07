@@ -44,22 +44,36 @@ KOEI，1992，HiROM 1.5 MB（標頭 `EUROPE SENSEN`，SRAM 32 KB），只做日�
 
 ## 進度
 
-| 項目 | 解碼 | 驗證 |
-|------|------|------|
-| 劇本 6 個（名稱、日期、地圖號、區塊） | ✓（header 大半未解） | ✓ `verify_scenarios.py` |
-| 將領 94 人（名、國籍、指揮、魅力、歩兵、砲兵、戦車、経験） | ✓（+12 +13 +14 +19 +21 未解） | ✓ `verify_persons.py` |
-| 經歷 94 × 7 行 | ✓ | ✓ 行指標（`verify_persons.py`） |
-| 頭像 120 張＋調色盤 | ✓ | ✓ VRAM＋CGRAM（`verify_persons.py`）、kaodata（`verify_kaodata_export.py`） |
-| 文字編碼／字型 652 字、半形 年月日 Ⅰ Ⅱ | ✓（字形→字元靠字型比對＋人工） | ✓ 碼→字形位址（`verify_persons.py`）；`$`=Ⅰ、`'`=Ⅱ 截圖確認 |
-| 領袖 6 人 | ✓（+19、+21 意義推測） | 只驗頭像 |
-| 兵器 158 種（名稱、AP AT 防 速 射、國籍） | ✓（種別名稱、登場時期推測；+10 +11 +13 未解） | ✓ `verify_weapons.py`；國旗截圖 |
-| 都市 94 個（名、座標、弾薬／燃料／食料、耐久、駐軍、陣營） | ✓（第二組三值、+57 其他位元未解） | ✓ `verify_cities.py`（駐軍只驗畫面顯示的前 3 槽）；座標全在「都市」格 |
-| 歐洲地圖（選單背景） | ✓ | ✓ `verify_europe_map.py` |
-| 戰場地圖 6 張（格碼、地形、tile、調色盤） | ✓（地形 high nibble 未解） | ✓ `verify_maps.py` |
-| kaodata `europe-sfc` | ✓ | ✓ `verify_kaodata_export.py` |
-| 部隊（師団／連隊）結構、勝利條件 | 未解 | — |
+| 項目 | 狀態 | 證據 | 說明 |
+|------|------|------|------|
+| 劇本 6 個 | ✅ | emu | 名稱、日期、地圖號、區塊；`verify_scenarios.py` 在 MVN 剛結束時比 WRAM，見 ROM_FORMAT「劇本」 |
+| 將領 94 人 | ✅ | emu+modified | 名、國籍、指揮、魅力、歩兵、砲兵、戦車、経験；`verify_persons.py` 把 WRAM 將領槽換成各 id 的記錄 |
+| 經歷 94 × 7 行 | ✅ | emu+modified | 行指標（`verify_persons.py`） |
+| 頭像 120 張＋調色盤 | ✅ | emu+modified | VRAM＋CGRAM（`verify_persons.py`） |
+| 文字編碼／字型 652 字、半形 年月日 Ⅰ Ⅱ | ✅ | emu+modified+capture | 碼→字形位址（`verify_persons.py`）；字形→字元靠字型比對＋人工；`$`=Ⅰ、`'`=Ⅱ 截圖確認 |
+| 領袖 6 人 | 🟡 | emu+modified | 只驗頭像；+19、+21 意義推測 |
+| 兵器 158 種 | ✅ | emu+modified+capture | 名稱、AP AT 防 速 射（`verify_weapons.py` 換清單位元組）；國籍靠國旗截圖；種別名稱、登場時期推測 |
+| 都市 94 個 | ✅ | emu+modified | 名、耐久、三項物資、駐軍（只驗畫面顯示的前 3 槽）、陣營（`verify_cities.py` 換 WRAM 都市表）；座標全在「都市」格 |
+| 歐洲地圖（選單背景） | ✅ | emu | `verify_europe_map.py` |
+| 戰場地圖 6 張 | ✅ | emu | 格碼、地形、tile、調色盤（`verify_maps.py`，0 人模式進戰場） |
+| 頭像（kaodata `europe-sfc`） | ✅ | checksum | `verify_kaodata_export.py` |
+| 部隊（師団／連隊）結構 | ❌ | | 見「未解」 |
+| 勝利條件 | ❌ | | 見「未解」 |
 
-### 驗證方式
+## 未解
+
+- 部隊（師団／連隊）— 區塊 0x590 之後有 25-byte 類結構，複製後填入 WRAM 指標，推測為師団／連隊串列（ROM_FORMAT「未解」）
+- 勝利條件 — 情報→条件畫面還沒看（ROM_FORMAT「未解」）
+- 劇本 header — +0～+5 已知，+0x1E 推測玩家陣營，其餘未解（ROM_FORMAT「劇本」）
+- 將領 +12 +13 +14 +19 +21 — +12 在 1 人模式枢軸固定 99、+13 = +14；領袖 +21 推測元首／參謀長（ROM_FORMAT「將領表」）
+- 兵器 +4 +5 +10 +11 +13 — +4 推測登場時期、+5 推測種別，都只依名稱歸納（ROM_FORMAT「兵器」）
+- 都市第二組三值、+57 bit 6 與低 4 位元、駐軍槽後 2 bytes — 第二組在 ROM 裡和第一組相同、畫面不印（ROM_FORMAT「都市」）
+- 半形字型排列 — `0xA8000` 起 128 個 8×16 字形，不是 ASCII 順序（ROM_FORMAT「文字」）
+- 地形 high nibble — ROM 裡 0 或 8，執行時會加 1、2，推測佔領／部隊（ROM_FORMAT「戰場地圖」）
+- LZ entry 207–365 — 159 筆 × 1760 bytes，推測圖示／圖片（ROM_FORMAT「LZ」）
+- 戰場畫面從 ROM `0x1468C` 直接 DMA 到 CGRAM 的調色盤 — 用途未解（ROM_FORMAT「未解」）
+
+## 驗證方式
 
 - `verify_persons.py`：1 人枢軸的能力審查畫面，每一頁把 WRAM 將領槽換成 id n 的記錄，擷取 vprintf 參數、經歷行的 `$C1:195E` 指標、VRAM 0xEC00 頭像與 CGRAM 調色盤 11；
   另外掛 `$C1:19C0` 記錄遊戲為每個 2-byte 碼抄字形的來源位址，與 `rom.glyph_address` 比對。
@@ -70,7 +84,7 @@ KOEI，1992，HiROM 1.5 MB（標頭 `EUROPE SENSEN`，SRAM 32 KB），只做日�
 - `verify_cities.py`：1 人連合到指令畫面 → 情報 → 都市 → 自軍 → 第一個都市；每個都市一輪，把 WRAM 都市表換成該 ROM 記錄（+57 bit 4 設成連合），擷取名字指標、耐久、三項物資與駐軍；
   再兩輪測陣營位元（清掉後不在連合清單）與兩組三值（畫面印第一組）。
 
-### 驗證結果（實際輸出）
+## 驗證結果（實際輸出）
 
 | 腳本 | 時間 | 結果 |
 |------|------|------|
@@ -150,8 +164,3 @@ ALL OK (369 s)
 [checksums] OK
 ALL OK
 ```
-
-## 未解
-
-見 `docs/ROM_FORMAT.md` 最後一節：部隊（師団／連隊）結構、勝利條件、劇本 header、將領 +12 +13 +14 +19 +21、兵器 +4 +5（推測）+10 +11 +13、
-都市第二組三值與 +57 其他位元、駐軍槽後 2 bytes、半形字型排列、地形 high nibble、LZ entry 207–365。

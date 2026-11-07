@@ -50,12 +50,28 @@ kaodata 資料集 `royal-sfc`：64 人、68 張頭像（P64–67 group「相談�
 
 ## 進度
 
-- ✓ 名稱表（人物 64、領地 30 含相鄰與標記格、部隊 23、家名 41）、相談役名 4、Gemfire 英語名
-- ✓ 4 劇本：ROM 區塊位置（`0xB45A + 0x76C s` → `$7E:C004`）、家、人物、領地；可選当主表
-- ✓ 頭像 68 張（單一調色盤，bank 邊界每 34 張）；kaodata `royal-sfc`
-- ✓ 戰略地圖（15×20 tilemap、LZ tile）與家標記
-- ✓ 戰場 30 張（metatile、tile、川的動畫 tile、調色盤）
-- 未解：劇本標頭、多個未知欄位、部隊頭像、漢字文字、寶石（docs §7）
+| 項目 | 狀態 | 證據 | 說明 |
+|------|------|------|------|
+| 名稱表（人物 64、領地 30、部隊 23、家名 41） | ✅ | cross | 和 FC 版逐 byte 相同；領地含相鄰與家標記格，見 ROM_FORMAT §2 |
+| 相談役名 4 | ✅ | code | 相談役選單的名字，FC 版 ROM 裡沒有；見 ROM_FORMAT §2 |
+| Gemfire 英語名 | ✅ | code | 美版同樣四張表，位移 − 0x264 |
+| 4 劇本（家、人物、領地） | ✅ | emu+capture | ROM 區塊 `0xB45A + 0x76C s` → `$7E:C004`；`verify_scenarios.py`，見 ROM_FORMAT §3 |
+| 可選当主表 | ✅ | emu+modified | 選家畫面的頭像與數值取自這張表；見 ROM_FORMAT §3.3 |
+| 頭像 68 張 | ✅ | emu+modified | 單一調色盤，bank 邊界每 34 張；`verify_faces.py`，見 ROM_FORMAT §4 |
+| 頭像（kaodata `royal-sfc`） | ✅ | checksum | `verify_kaodata_export.py` |
+| 戰略地圖與家標記 | ✅ | emu | 15×20 tilemap、LZ tile；`verify_map.py`，見 ROM_FORMAT §5 |
+| 戰場 30 張 | ✅ | emu+modified | metatile、tile、川的動畫 tile、調色盤；`verify_battle_maps.py`，見 ROM_FORMAT §6 |
+| 劇本標頭、多個未知欄位 | ❌ | | 見「未解」 |
+| 部隊頭像、漢字文字、寶石 | ❌ | | 見「未解」 |
+
+## 未解
+
+- 劇本標頭 `+3`–`+0x2D` 的意義；家記錄 +3 旗標位元、人物 +8 +9、姓名表 +13、領地部隊槽、部隊表多個欄位（ROM_FORMAT §3.1、§7）
+- 能力與領地右欄的名稱是依圖示推定，畫面只有圖示（ROM_FORMAT §7）
+- 部隊（第 5 部隊）頭像、戰鬥中的部隊圖、魔術效果圖：FC 版 23 張部隊頭像在 SFC 版的位置未找到（ROM_FORMAT §4、§7）
+- 故事、對話用的 2-byte 漢字碼與字型沒有解；人名、地名、家名是半形片假名，不受影響（ROM_FORMAT §7）
+- 6 個寶石、魔術師歸屬在 WRAM 的位置未找（ROM_FORMAT §7）
+- 戰略地圖周圍的海、框等版面沒有逐一解析（ROM_FORMAT §5、§7）
 
 ## 驗證結果
 

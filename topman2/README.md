@@ -52,15 +52,32 @@ KOEI，SFC（LoROM 1.5 MB）。電腦公司經營模擬：3 家公司（ＮＥ�
 
 ## 進度
 
-- ✓ 檔案表 249 檔、KOEI LZ（共用）
-- ✓ 都道府縣 47：名稱、5 時期人口（開局依開始年選一筆）、JAPANS 填色段、JAPANL 畫面位置
-- ✓ 劇本：PRESENT 6（年份、說明）、FREE 3 種長度（開始年規則）
-- ✓ 公司 3：預設名、本社候補 15 對與開局抽選規則、據點遮罩
-- ✓ 產品 3、難度 5、股票產業 4、新聞 26（只有名稱）
-- ✓ 頭像：11 檔 96 frame、FACEPAL；kaodata 資料集 `topman2-sfc`
-- ✓ 大地圖 JAPANL；JAPANS 只從檔案解出（遊戲中的畫面沒找到，未驗證）
-- － 戰術地圖：本作沒有戰鬥，不適用
-- … 未解：開機複製的 .data 表、`$CBA1`、`$CC69` 的用途、產品能力值與市場模擬、景氣曲線數列、事件、SHABU／BAIBU 的部門、多數檔的用途（ROM_FORMAT.md §9）
+| 項目 | 狀態 | 證據 | 說明 |
+|------|------|------|------|
+| 檔案表 249 檔、KOEI LZ | ✅ | code | LZ 用共用的 `tools/koei_lz.py`；見 ROM_FORMAT §2 |
+| 都道府縣 47：名稱、5 時期人口 | ✅ | emu+modified | 開局依開始年選一筆人口；見 ROM_FORMAT §4 |
+| JAPANS 填色段、JAPANL 畫面位置 | 🟡 | code | 只確認填色段剛好填滿 JAPANS 的縣界（`prefecture_map.png`），`$CBAD` 由圖比對推得；見 ROM_FORMAT §4 |
+| 劇本：PRESENT 6、FREE 3 種長度 | ✅ | emu | 年份、說明、開始年規則；見 ROM_FORMAT §5.1 |
+| 公司 3 | ✅ | emu+modified | 預設名、本社候補 15 對與開局抽選規則、據點遮罩；見 ROM_FORMAT §5.2 |
+| 產品 3、難度 5、股票產業 4、新聞 26 | ✅ | code | 只有名稱；見 ROM_FORMAT §4 |
+| 頭像 11 檔 96 frame、FACEPAL | ✅ | emu+modified | 会長 12、社長 3、秘書 9、部長 72；見 ROM_FORMAT §6 |
+| 頭像（kaodata `topman2-sfc`） | ✅ | checksum | 96 張 portrait，沒有 character |
+| 部長檔的部門 | 🟡 | capture | 開発／営業／製造／広告由 Mesen 畫面觀察，人事、経理由檔名推斷，SHABU、BAIBU 未定；見 ROM_FORMAT §6 |
+| 大地圖 JAPANL | ✅ | emu | 見 ROM_FORMAT §7 |
+| JAPANS 示意圖 | 🟡 | code | 只從檔案解出，遊戲中的畫面沒找到 |
+
+戰術地圖：本作沒有戰鬥，不適用。
+
+## 未解
+
+- 開機 MVN 複製的 .data 表 — `$01:BCF8` 起 7 段，複製目的地已知，意義未解（ROM_FORMAT §1、§9）
+- `$CBA1` 的 6 個值（10000 7500 5000 5000 7500 10000）（ROM_FORMAT §4）
+- `$CC69` 座標用在哪個畫面 — 約等於 JAPANS 填色段的重心 ＋(12, 19)；`$CBAD` 讀取它的程式未追（ROM_FORMAT §4）
+- JAPANS 在遊戲中的畫面 — 載入 `$13:EA63`、上色 `$13:EAEE`，未在 Mesen 驗證；`KMAP`、`PREMAP`～`PREMAP4`、`PREFECT` 的用途（ROM_FORMAT §7、§9）
+- 市場模擬 — 景氣曲線（FLUCT／FLUCT2 是預畫 tile）背後的數列、市場與需求模擬、事業計畫、股票、事件（`MEVENT*`）（ROM_FORMAT §9）
+- 產品的能力值與價格表（ROM_FORMAT §9）
+- `$2814` 的意義 — 值 4，推測是起始月（ROM_FORMAT §5.1）
+- 部長檔 SHABU、BAIBU 對應的部門；JINBU、KEIBU 由檔名推斷（ROM_FORMAT §6）
 
 ## 驗證
 

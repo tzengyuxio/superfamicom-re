@@ -134,3 +134,11 @@ year LE16、quarter LE16、message、target、type、value；year 不在 1951–
 - 關聯事業名稱未在畫面驗證，事業 → 類別對應未解。
 - `$05:E233` 世界座標沒有獨立的 Mesen 驗證。
 - `AREAMAP`、`WOLDBASE`、`TOUSHI`、`INFOSALE` 等多數檔的用途；投資、廣告、服務等經營參數表。
+
+## 下一輪候選
+
+目前沒有
+
+## 負面結論
+
+目前沒有

@@ -115,6 +115,7 @@
 ## 4. 交付清單
 
 - `<game>/rom.py`、`export.py`、`export_kaodata.py`、`verify_*.py`、`README.md`、`docs/ROM_FORMAT.md`（含未解部分）
+- `README.md` 的「進度」「未解」和 `docs/ROM_FORMAT.md` 最後的「下一輪候選」「負面結論」照 `~/.claude/re-common.md` §9 的樣板；狀態與證據的寫法見 §3、§6
 - 根目錄 `CLAUDE.md` 遊戲表加一列
 - 輸出放 `<game>/output/`，CSV 用 UTF-8-BOM；外部資料欄位加 `[EXT]` 並註明出處
 - `uvx ruff check --line-length 120`；有 shebang 的腳本 `chmod +x`，`rom.py` 不要
