@@ -9,6 +9,34 @@
 
 目前沒有。アンジェリーク、EMIT、Falcom 作品（ブランディッシュ、イースV）、シヴィライゼーション不做（2026-10-17）。
 
+## 封存與素材庫
+
+過程與規則見 `docs/backlog/game-archiving.md`。
+
+- [ ] 素材庫備份到 dongzhi — 先定 rsync 指令與頻率（正本 → dongzhi Personal；iCloud 那份不含 `_original/`）。完成前 `_original/` 只有本機一份（2026-11-07）
+- [ ] 刪光榮 28 款的 `roms/`、`output/` — 等 dongzhi 備份確認後才刪，`koei.md` 的狀態從「封存（repo 未清）」改成「封存」；若緊接著要做光榮作品的音樂，可以等那批做完再刪（2026-11-07）
+- [ ] 非光榮作品封存 — yokoyama2、tenbu、chrono（chrono 只有音樂）；yokoyama2 有 captures，要先補來源表（2026-11-07）
+- [ ] yokoyama-bangi 的 captures 來源表 — 目前只有一張標題截圖；開始研究或封存時補（2026-11-07）
+- [ ] 「封存（repo 未清）」是否寫進共通語言 §11 — 素材庫已齊但 repo 還沒刪的中間狀態，這次 28 款都在這個狀態；改 re-common 要使用者確認（2026-11-07）
+- [ ] 重新封存時清掉素材庫的舊檔 — `archive.py` 只覆寫、不刪，yokoyama 改曲名後要手動刪 54 個舊檔；可加 `--clean`（先清該款資料夾，README 保留）（2026-11-07）
+- [ ] `rebuild.py --fresh` — 先清空 `output/` 再重建，避免舊檔殘留後被封存；和上一項一起決定（2026-11-07）
+
+## 發文素材
+
+- [ ] 光榮 SFC 作品的音樂 — 從 san2 或 san4 開始；先認出驅動程式（是不是 N-SPC 系），SPC 傾印與 OGG／MP3 用 `tools/spc.py`。這些遊戲已封存，動工時從 `_original/` 取回 ROM（2026-11-07）
+- [ ] yokoyama 剩下 11 首的用途 — 14／15／16 由 `$00:F612` 送出，場景未知（patch 去呼叫它會卡住），其餘仍是 unknown（2026-11-07）
+- [ ] chrono 的音樂收尾 — 用途 unknown 9 首（12 19 1A 20 21 34 37 41 43），循環 35 首仍是 🟡（波形相關度不到 0.9）（2026-11-07）
+
+## 機制與未解項目
+
+- [ ] 各遊戲 README 的未解項目 — 戰鬥規則、劇本腳本、戰術地圖渲染等；依發文或想了解的題目挑幾款。已封存的遊戲照 §11「重啟」（2026-11-07）
+- [ ] yokoyama-bangi（横山光輝三国志盤戯）— 唯一還沒開始研究的一款，目前只有標題截圖（2026-11-07）
+
+## 跨 repo（由各自的 session 處理）
+
+- [ ] megadrive-re：`tools/repos.py` 改讀 `_original/sfc/` — 需要的 ROM 已經放好（2026-11-07）
+- [ ] famicom-re：把 `sangokushi/tools` 拆到根目錄、決定進了版控的 `output/` 怎麼處理 — 要使用者同意；`rebuild.py` 已移植（2026-11-07）
+
 ## Repo 整理
 
 - [ ] 遊戲資料夾統一收納（暫不做）— 31 款遊戲和 `roms/`、`tools/` 等混在根目錄。2026-11-07 和 famicom-re、megadrive-re 一起評估：三個 repo 都靠往上數層找根目錄（本 repo 約 250 行、另兩個各約 125 行），加上文件與 skill 範本，合計約 1.5 天，驗證要跑模擬器；好處只有三個 repo 一致，暫不做，等三個 repo 都要大整理時再一起搬到 `games/<遊戲>/`。搬之前先統一找根目錄的方式：共用的 `tools/paths.py` 本身也得先被 import，所以還是要數一次層，要完全不數層得在 `.venv` 放 `.pth` 或用 editable install，這要三個 repo 一起決定。`_` 前綴改名不做：違反全域命名慣例，而且根目錄和遊戲內都有 `tools/`、`docs/`，難以機械取代（2026-11-07）
