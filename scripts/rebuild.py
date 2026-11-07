@@ -3,7 +3,8 @@
 Usage: .venv/bin/python scripts/rebuild.py GAME [GAME ...] | --all [--dry-run]
 
 The steps of a game are found by file name, in this order:
-  1. <game>/export.py                       CSV, XLSX, PNG (once more per ROM in EXPORT_ROMS)
+  1. <game>/export.py                       CSV, XLSX, PNG (once more per ROM in EXPORT_ROMS); a game may have
+                                            only tools/music.py
   2. <game>/tools/*_sheet.py                font / kanji check sheets
   3. <game>/tools/music.py                  music (Mesen)
   4. <game>/*_manifest.py                   portrait-sheet/1 manifests, then each sheet.json under
@@ -27,13 +28,15 @@ EXPORT_ROMS = {"winning2": ["roms/Winning Post 2 - Program '96 (Japan).zip",
 
 
 def games() -> list[str]:
-    return sorted(os.path.basename(os.path.dirname(p)) for p in glob.glob(os.path.join(ROOT, "*", "export.py")))
+    found = glob.glob(os.path.join(ROOT, "*", "export.py")) + glob.glob(os.path.join(ROOT, "*", "tools", "music.py"))
+    return sorted({os.path.relpath(p, ROOT).split(os.sep)[0] for p in found})
 
 
 def steps(game: str) -> list[list[str]]:
     g = os.path.join(ROOT, game)
     export = os.path.join(g, "export.py")
     runs = [[PY, export]] + [[PY, export, "--rom", os.path.join(ROOT, r)] for r in EXPORT_ROMS.get(game, [])]
+    runs = runs if os.path.exists(export) else []
     scripts = sorted(glob.glob(os.path.join(g, "tools", "*_sheet.py")))
     scripts += [p for p in [os.path.join(g, "tools", "music.py")] if os.path.exists(p)]
     scripts += sorted(glob.glob(os.path.join(g, "*_manifest.py")))

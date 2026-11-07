@@ -16,7 +16,7 @@ superfamicom-re/
 │   └── ARCHITECTURE.md   本檔
 ├── BACKLOG.md            待解析的遊戲
 ├── CLAUDE.md             遊戲一覽與開發慣例
-└── <game>/               每款遊戲一個資料夾（26 款）
+└── <game>/               每款遊戲一個資料夾
 ```
 
 ## 每款遊戲的資料夾
@@ -51,7 +51,7 @@ flowchart LR
 
 ## 重跑 `output/`
 
-`output/` 都能從 ROM 重建，不必保留：`.venv/bin/python scripts/rebuild.py <game> ...`（或 `--all`，`--dry-run` 只列步驟）。步驟照檔名找：`export.py`（winning2 另外用 '96 原版與 Rev 1 各跑一次）→ `tools/*_sheet.py` → `tools/music.py` → `*_manifest.py`，再用 portrait-sheet skill 的 `render.py` 畫 `output/portrait-sheet/*/sheet.json`。新加的產出程式照這些名字取，就會自動納入。
+`output/` 都能從 ROM 重建，不必保留：`.venv/bin/python scripts/rebuild.py <game> ...`（或 `--all`，`--dry-run` 只列步驟）。步驟照檔名找（只有 `tools/music.py` 的遊戲也算，例如 `chrono/`）：`export.py`（winning2 另外用 '96 原版與 Rev 1 各跑一次）→ `tools/*_sheet.py` → `tools/music.py` → `*_manifest.py`，再用 portrait-sheet skill 的 `render.py` 畫 `output/portrait-sheet/*/sheet.json`。新加的產出程式照這些名字取，就會自動納入。
 
 不跑的：`verify_*.py`（只驗證；eiketsu 的 `verify_tables_status.png` 只有它會寫）、`export_kaodata.py`（寫到 kaodata）、需要 repo 外輸入的 `san2/tools/build_kanji_map.py`、探測用的工具。
 
@@ -69,6 +69,7 @@ flowchart LR
 | `kaodata.py` | kaodata/1 的寫入、讀取、參考渲染、checksums | 所有 `export_kaodata.py` |
 | `parts_sheet.py` | 組合臉零件總覽圖 | 有組合臉的遊戲 |
 | `triage.py` | ROM 分診：標頭、LZ、Shift-JIS 字數 | 新遊戲開工前 |
+| `spc.py` | SPC700 狀態傾印的 Lua（`SPC_STATE()`）、SPC v0.30 檔、libgme 渲染、OGG（Opus）＋MP3（re-common §10） | `chrono/`（`yokoyama/` 的 `music.py` 是抽出前的寫法，沒有改用） |
 
 遊戲資料夾裡的程式用 `sys.path.insert(0, <repo>/tools)` 引用共用工具。
 

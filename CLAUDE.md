@@ -41,12 +41,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | `yokoyama/` | 横山光輝 三国志 (Angel, 1992, LoROM 1 MB，原版與 Rev 1，非光榮，不出 kaodata)：自訂 16-bit 字碼 1280 字、人物 224、2 劇本（189／219）人物／配置／國 31／勢力、頭像 224 張（sprite 組合）、大地圖（mode 7）與地形格，全部有 Mesen 驗證（地形格除外）；沒有戰術地圖（在大地圖上交戰），配置觸發條件、訊息表、戰鬥規則未解 |
 | `yokoyama2/` | 横山光輝 三国志2 (Angel, 1993, LoROM FastROM 1.5 MB，非光榮，不出 kaodata)：前作引擎重新組譯、自訂 16-bit 字碼 1280 字、人物 229（名表 239）、3 劇本（189／200／215）人物／配置／國 35／勢力、難易度金米表、頭像 229 張（sprite 組合，5 人有專用 metasprite）、大地圖（mode 7，LZ＋交錯，砦與行軍部隊），全部有 Mesen 驗證；戰鬥與地形表未找到，配置種類 1–5、訊息表、國標記圖形未解 |
 | `tenbu/` | 三国志正史 天舞スピリッツ (WOLF TEAM／TELENET JAPAN, LoROM SlowROM 1.5 MB，非光榮，不出 kaodata；游標操作)：SJIS＋字表 1113 字（自訂 92）、LZSS、4 劇本人物 600／勢力 15／郡国 126、郡国欄位（人口 兵 金 糧 士 規模 太）、官職 48、頭像 250、地域拡大図 270×230 chip、中国全土図，全部有 Mesen 驗證；勢力上色、相鄰、戰鬥、人物／郡国多個欄位未解 |
+| `chrono/` | クロノ・トリガー (Square, 1995, HiROM 4 MB，非光榮，不出 kaodata；只做音樂)：曲目表 `$C7:0D18` 80 首、Akao 樂譜（循環點、tempo、驅動漏步造成的變慢）、SPC／OGG／MP3，曲名對 Zophar 美版 SPC；SPC ✅ emu+modified，循環長度 31 首 ✅ emu、35 首 🟡；場景與其他資料未做 |
 
 ## 開發慣例
 
 - Python 一律用 `.venv/bin/python`；lint 用 `uvx ruff check --line-length 120`
 - 新遊戲：開新資料夾，`README.md` 寫指令／檔案／進度，`docs/` 寫 ROM 格式（含尚未解開的部分）；步驟、範本與分診結果見 `docs/PLAYBOOK.md`；資料夾結構與共用／專用工具一覽見 `docs/ARCHITECTURE.md`
-- 共用工具在 `tools/`：`drive.py`（按鍵序列、截圖、dump、ROM 讀取追蹤、DMA 記錄）、`replay.py`（savestate 重播，驗證腳本共用；按鍵序列的 `*n`、`expand`、`end_frame`）、`printf_trace.py`（printf／vsprintf 追蹤）、`koei_lz.py`（KOEI LZ 解壓與找表，三國志II、武將風雲錄、航空霸業以外的作品都用它）、`triage.py`（ROM 分診）、`kaodata.py`
+- 共用工具在 `tools/`：`spc.py`（SPC700 狀態傾印 Lua、SPC 檔、libgme 渲染、OGG＋MP3），`drive.py`（按鍵序列、截圖、dump、ROM 讀取追蹤、DMA 記錄）、`replay.py`（savestate 重播，驗證腳本共用；按鍵序列的 `*n`、`expand`、`end_frame`）、`printf_trace.py`（printf／vsprintf 追蹤）、`koei_lz.py`（KOEI LZ 解壓與找表，三國志II、武將風雲錄、航空霸業以外的作品都用它）、`triage.py`（ROM 分診）、`kaodata.py`
 - 每款遊戲提供：人物資料、頭像（含 kaodata 資料集與驗證）、地點資料、大地圖、戰術地圖，以及分析或攻略用得到的表
 - `output/` 用 `scripts/rebuild.py <遊戲>`（或 `--all`，約 3 分鐘）重建，步驟見 `docs/ARCHITECTURE.md`「重跑 `output/`」
 - 外部資料（不是 ROM 解析出來的）欄位名加 `[EXT]` 前綴

@@ -1,0 +1,72 @@
+曲號	[EXT]Zophar 檔名	[EXT]Zophar 曲名	[EXT]比對
+01	105 Memories of Green.spc	Memories of Green	開頭 32 bytes 相同
+02	109 Wind Scene.spc	Wind Scene	開頭 32 bytes 相同
+03	304 Corridors of Time.spc	Corridors of Time	開頭 32 bytes 相同
+04	220 Rhythm of Wind, Sky and Earth.spc	Rhythm of Wind, Sky and Earth	開頭 32 bytes 相同
+05	201 Ruined World.spc	Ruined World	開頭 300 bytes 相似 0.93
+06	106 Guardia Millennial Fair.spc	Guardia Millennial Fair	開頭 32 bytes 相同
+07	309 Far Off Promise.spc	Far Off Promise	開頭 32 bytes 相同
+08	111 Secret of the Forest.spc	Secret of the Forest	開頭 32 bytes 相同
+09	305 Zeal Palace.spc	Zeal Palace	開頭 32 bytes 相同
+0A	210 Remains of the Factory.spc	Remains of the Factory	開頭 32 bytes 相同
+0B	219 Ayla's Theme.spc	Ayla's Theme	開頭 32 bytes 相同
+0C	113 Courage and Pride.spc	Courage and Pride	開頭 32 bytes 相同
+0D	205 Lavos' Theme (Extended).spc / 205 Lavos' Theme.spc	Lavos' Theme (Extended) / Lavos' Theme	開頭 32 bytes 相同
+0E	209 Robo's Theme.spc	Robo's Theme	開頭 32 bytes 相同
+0F	103 Morning Sunlight.spc	Morning Sunlight	byte 相同（$2024 起的樂譜本體）
+10	115 Manoria Cathedral.spc	Manoria Cathedral	開頭 32 bytes 相同
+11	999 Quiet Beach.spc	Quiet Beach	開頭 32 bytes 相同
+13	310 Wings That Cross Time.spc	Wings That Cross Time	開頭 32 bytes 相同
+14	306 Schala's Theme.spc	Schala's Theme	開頭 32 bytes 相同
+15	214 Delightful Spekkio.spc	Delightful Spekkio	開頭 32 bytes 相同
+16	123 A Shot of Crisis.spc	A Shot of Crisis	開頭 32 bytes 相同
+17	121 Kingdom Trial.spc	Kingdom Trial	開頭 32 bytes 相同
+18	102 Chrono Trigger (Looped).spc / 102 Chrono Trigger.spc	Chrono Trigger (Looped) / Chrono Trigger	開頭 32 bytes 相同
+1B	120 Fanfare 1.spc	Fanfare 1	開頭 32 bytes 相同
+1C	212 Fanfare 2.spc	Fanfare 2	byte 相同（$2024 起的樂譜本體）
+1D	303 At the Bottom of Night.spc	At the Bottom of Night	開頭 32 bytes 相同
+1E	104 Peaceful Days.spc	Peaceful Days	開頭 32 bytes 相同
+1F	108 A Strange Happening.spc	A Strange Happening	開頭 32 bytes 相同
+22	999 Strong Wind.spc	Strong Wind	開頭 32 bytes 相同
+23	122 The Hidden Truth (Looped).spc / 122 The Hidden Truth.spc	The Hidden Truth (Looped) / The Hidden Truth	開頭 32 bytes 相同
+24	116 A Prayer to the Road that Leads.spc	A Prayer to the Road that Leads	byte 相同（$2024 起的樂譜本體）
+25	114 Huh_!.spc	Huh_!	byte 相同（$2024 起的樂譜本體）
+26	206 The Day the World Revived.spc	The Day the World Revived	開頭 32 bytes 相同
+27	207 Robo Gang Johnny.spc	Robo Gang Johnny	開頭 32 bytes 相同
+28	224 Battle with Magus.spc	Battle with Magus	開頭 32 bytes 相同
+29	118 Boss Battle 1.spc	Boss Battle 1	開頭 32 bytes 相同
+2A	119 Frog's Theme.spc	Frog's Theme	開頭 32 bytes 相同
+2B	110 Goodnight.spc	Goodnight	byte 相同（$2024 起的樂譜本體）
+2C	208 Bike Chase.spc	Bike Chase	開頭 32 bytes 相同
+2D	204 People Without Hope (Variant 1).spc / 204 People Without Hope (Variant 2).spc / 204 People Without Hope.spc	People Without Hope (Variant 1) / People Without Hope (Variant 2) / People Without Hope	開頭 32 bytes 相同
+2E	202 Mystery of the Past.spc	Mystery of the Past	byte 相同（$2024 起的樂譜本體）
+2F	216 Underground Sewer (No Water).spc / 216 Underground Sewer.spc	Underground Sewer (No Water) / Underground Sewer	開頭 32 bytes 相同
+30	101 Presentiment.spc	Presentiment	byte 相同（$2024 起的樂譜本體）
+31	308 Undersea Palace.spc	Undersea Palace	開頭 32 bytes 相同
+32	314 Last Battle.spc	Last Battle	開頭 32 bytes 相同
+33	203 Lab 16's Ruin.spc	Lab 16's Ruin	開頭 32 bytes 相同
+35	999 Earthquake.spc	Earthquake	開頭 32 bytes 相同
+36	221 Burn! Bobonga!.spc	Burn! Bobonga!	開頭 32 bytes 相同
+38	218 Primitive Mountain.spc	Primitive Mountain	開頭 32 bytes 相同
+39	313 World Revolution.spc	World Revolution	開頭 32 bytes 相同
+3A	999 Voice of Lavos.spc	Voice of Lavos	byte 相同（$2024 起的樂譜本體）
+3B	307 Sealed Door.spc	Sealed Door	開頭 32 bytes 相同
+3C	117 Silent Light.spc	Silent Light	開頭 32 bytes 相同
+3D	215 Fanfare 3.spc	Fanfare 3	byte 相同（$2024 起的樂譜本體）
+3E	213 Brink of Time.spc	Brink of Time	開頭 32 bytes 相同
+3F	317 To Far Away Times.spc	To Far Away Times	開頭 32 bytes 相同
+40	223 Confusing Melody.spc / 999 Ozzie Scream.spc	Confusing Melody / Ozzie Scream	開頭 32 bytes 相同
+42	107 Gato's Song.spc	Gato's Song	開頭 32 bytes 相同
+44	311 Black Omen.spc	Black Omen	開頭 32 bytes 相同
+45	112 Battle 1.spc	Battle 1	開頭 32 bytes 相同
+46	302 Tyran Castle.spc	Tyran Castle	開頭 32 bytes 相同
+47	999 Tsunami.spc	Tsunami	byte 相同（$2024 起的樂譜本體）
+48	222 Magus' Castle.spc / 999 Ozzie Laugh.spc	Magus' Castle / Ozzie Laugh	byte 相同（$2024 起的樂譜本體） / 開頭 300 bytes 相似 0.99
+49	315 First Festival of Stars.spc	First Festival of Stars	開頭 32 bytes 相同
+4A	999 Fall of Zeal.spc	Fall of Zeal	開頭 32 bytes 相同
+4B	999 Ocean Waves.spc	Ocean Waves	開頭 32 bytes 相同
+4C	999 Breath of Lavos.spc	Breath of Lavos	開頭 32 bytes 相同
+4D	316 Epilogue ~ To Good Friends.spc	Epilogue ~ To Good Friends	開頭 32 bytes 相同
+4E	217 Boss Battle 2.spc	Boss Battle 2	開頭 32 bytes 相同
+4F	999 Rat-a-Tat-Tat It's... Mitsuda.spc	Rat-a-Tat-Tat It's... Mitsuda	byte 相同（$2024 起的樂譜本體）
+50	312 Determination.spc	Determination	開頭 32 bytes 相同
