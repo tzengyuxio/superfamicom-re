@@ -44,7 +44,7 @@ PALETTE_NAMES = ["紫底", "藍底", "水藍底", "綠底"]
 SURNAMES = os.path.join(HERE, "data", "surnames.tsv")
 # The ROM writes some names with a stand-in kanji (or cut to 3 kanji); the dataset uses the historical spelling.
 NAME_FIXES = {
-    "張資": "張咨", "雷同": "雷銅", "夏侯懋": "夏侯楙", "桓楷": "桓階", "陳嬉": "陳紀", "辛毘": "辛毗",
+    "張資": "張咨", "雷同": "雷銅", "夏侯懋": "夏侯楙", "桓楷": "桓階", "辛毘": "辛毗",
     "李湛": "李堪", "寥化": "廖化", "歩鷙": "歩隲", "蔡仲": "蔡中", "尚拳": "向挙", "尚寵": "向寵",
     "鮑龍": "鮑隆", "朵思王": "朶思大王", "金環結": "金環三結", "沙摩可": "沙摩柯", "母丘倹": "毌丘倹",
 }
